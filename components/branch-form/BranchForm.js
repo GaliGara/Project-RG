@@ -1,4 +1,4 @@
-import { LitElement, html} from 'lit';
+import { LitElement, html, nothing} from 'lit';
 import '../grid-table/GridTable';
 
 export class BranchForm extends LitElement {
@@ -6,6 +6,7 @@ export class BranchForm extends LitElement {
     return {
       branchNames: { type: Array },
       configBranch: { type: Object },
+      newFormBtn: {type: Boolean},
     };
   }
     
@@ -13,6 +14,7 @@ export class BranchForm extends LitElement {
     super();
     this.branchNames = [];
     this.configBranch = {};
+    this.newFormBtn = false;
   }
 
   createRenderRoot() {
@@ -32,6 +34,14 @@ export class BranchForm extends LitElement {
     };
 
     return html`
+
+    <button
+    class="new-form-btn"
+    @click=${() => this.newFormBtn = !this.newFormBtn}
+    >Agregar Sucursal
+    </button>
+
+    ${this.newFormBtn ? html`
       <div
         class="modal-branch"
       >
@@ -53,6 +63,7 @@ export class BranchForm extends LitElement {
             <!-- Buttons -->
             <div class="card-buttons">
               <button
+                @click=${()=> this.newFormBtn = !this.newFormBtn}
                 class="close-btn"
                 type="button"
               >
@@ -68,6 +79,8 @@ export class BranchForm extends LitElement {
         </div>
       </div>
 
+        ` : nothing }
+      
       <grid-table .config=${configBranch}></grid-table>
     `;
   }

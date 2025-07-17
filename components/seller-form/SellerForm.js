@@ -1,16 +1,18 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import '../grid-table/GridTable';
 
 export class SellerForm extends LitElement {
   static get properties() {
     return {
       configSell: { type: Object },
+      newFormBtn: {type: Boolean},
     };
   }
 
   constructor() {
     super();
     this.configSell = {};
+    this.newFormBtn = false;
   }
 
   createRenderRoot() {
@@ -66,6 +68,14 @@ export class SellerForm extends LitElement {
     };
 
     return html`
+
+    <button
+    @click=${()=> this.newFormBtn = !this.newFormBtn}
+    class="new-form-btn"
+    >Agregar Venta
+    </button>
+
+    ${this.newFormBtn ? html`
       <div
         id="card-sell"
         class="modal-seller"
@@ -155,6 +165,7 @@ export class SellerForm extends LitElement {
               <button
                 class="close-btn"
                 type="button"
+                @click=${()=> this.newFormBtn = !this.newFormBtn}
               >
                 Cerrar
               </button>
@@ -167,6 +178,8 @@ export class SellerForm extends LitElement {
           </form>
         </div>
       </div>
+        `
+        :nothing}
       <grid-table .config=${configSell}></grid-table>
     `;
   }

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import '../grid-table/GridTable';
 
 export class EmployerForm extends LitElement {
@@ -9,6 +9,7 @@ export class EmployerForm extends LitElement {
       apellidoPaterno: { type: String },
       apellidoMaterno: { type: String },
       configEmployers: { type: Object },
+      newFormBtn: {type: Boolean},
     };
   }
 
@@ -19,6 +20,7 @@ export class EmployerForm extends LitElement {
     this.apellidoMaterno = "";
     this.apellidoPaterno = "";
     this.configEmployers = {};
+    this.newFormBtn = false;
   }
 
   createRenderRoot() {
@@ -91,6 +93,13 @@ export class EmployerForm extends LitElement {
     };
 
     return html`
+
+    <button
+    class="new-form-btn"
+    @click=${()=> this.newFormBtn = !this.newFormBtn}
+    >Agregar Empleado</button>
+
+    ${this.newFormBtn ? html`
       <div
         id="card-sell"
         class="modal-employer"
@@ -185,6 +194,7 @@ export class EmployerForm extends LitElement {
               <button
                 class="close-btn"
                 type="button"
+                @click=${()=> this.newFormBtn = !this.newFormBtn}
               >
                 Cerrar
               </button>
@@ -197,6 +207,8 @@ export class EmployerForm extends LitElement {
           </form>
         </div>
       </div>
+        `
+        :nothing}
       <grid-table .config=${configEmployers}></grid-table>
     `;
   }
