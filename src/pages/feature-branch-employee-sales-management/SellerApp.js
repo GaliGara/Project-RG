@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import '@components/seller-form/SellerForm';
 import '@components/employer-form/EmployerForm';
 import '@components/branch-form/BranchForm';
+import '@components/nav-bar/NavBar';
 import './index.css'; 
 
 export class SellerApp extends LitElement {
@@ -22,7 +23,8 @@ export class SellerApp extends LitElement {
 
   render() {
     return html`
-      <seller-form></seller-form>
+      <nav-bar></nav-bar>
+      <!-- <seller-form></seller-form> -->
       <!-- <employer-form></employer-form> -->
       <!-- <branch-form></branch-form> -->
     `;
