@@ -1,26 +1,45 @@
-import { LitElement, html, nothing } from 'lit';
-import '../grid-table/GridTable';
+import { LitElement, html, nothing } from "lit";
+import "../grid-table/GridTable";
 
 export class SellerForm extends LitElement {
   static get properties() {
     return {
-      configSell: { type: Object },
-      newFormBtn: {type: Boolean},
+      /**
+       * Object of table config
+       * @type {Object}
+       * @default '{}'
+       */
+      tableConfig: { type: Object },
+
+      /**
+       * Boolean to show form
+       * @type {Boolean}
+       * @default 'false'
+       */
+      showForm: { type: Boolean },
     };
   }
 
   constructor() {
     super();
-    this.configSell = {};
-    this.newFormBtn = false;
+    this.tableConfig = {};
+    this.showForm = false;
   }
 
+  /**
+   * Overrides LitElement's default behavior to render into the light DOM.
+   * @returns {SellerForm} This component without shadow DOM.
+   */
   createRenderRoot() {
     return this;
   }
 
-  render() {
-    const configSell = {
+  /**
+   * Provides the config object for the grid-table.
+   * @returns {Object}
+   */
+  get salesTableConfig() {
+    return {
       columns: [
         "ID",
         "Fecha",
@@ -66,121 +85,107 @@ export class SellerForm extends LitElement {
       search: true,
       pagination: { limit: 3 },
     };
+  }
 
+  /**
+   * Renders the modal form for adding a new sale.
+   * @returns {import('lit-html').TemplateResult}
+   */
+  _tplSaleFormModal() {
     return html`
-
-    <button
-    @click=${()=> this.newFormBtn = !this.newFormBtn}
-    class="new-form-btn"
-    >Agregar Venta
-    </button>
-
-    ${this.newFormBtn ? html`
-      <div
-        id="card-sell"
-        class="modal-seller"
-      >
+      <div id="card-sell" class="modal-seller">
         <div class="card-div">
-          <h2 class="card-title">Registro de Venta</h2>
+          <h2 class="card-title">Registro de venta</h2>
           <form>
             <div class="grid-div">
               <div>
-                <label class="card-label">Sucursal</label>
-                <select
-                  name="sucursal"
-                  class="card-select"
-                >
-                  <option>Seleccionar</option>
+                <label class="card-label">Sucursal:</label>
+                <select name="branch" class="card-select">
+                  <option>Select</option>
                   <option>Mitika</option>
                 </select>
               </div>
-              <div>
-                <label class="card-label">Fecha</label>
-                <input
-                  type="date"
-                  name="fecha"
-                  class="card-input"
-                />
-              </div>
-              <div class="col-span-1">
-                <label class="card-label">Vendedor</label>
 
-                <select
-                  name="vendedor"
-                  class="card-select"
-                >
-                  <option>Seleccionar</option>
+              <div>
+                <label class="card-label">Fecha:</label>
+                <input type="date" name="date" class="card-input" />
+              </div>
+
+              <div class="col-span-1">
+                <label class="card-label">Vendedor:</label>
+                <select name="seller" class="card-select">
+                  <option>Select</option>
                   <option>Enrique</option>
                 </select>
               </div>
+
               <div class="col-span-1">
-                <!-- <label class="block text-sm font-medium mb-1">Venta</label>  -->
                 <input
-                  id="ventas"
-                  placeholder="Venta"
                   type="number"
                   step=".01"
+                  placeholder="Venta"
                   class="card-input mt-6 text-right"
                 />
               </div>
-              <div class="col-span-1">
-                <label class="card-label"
-                  >Tipo de pago</label
-                >
 
-                <select
-                  name="vendedor"
-                  class="card-select"
-                >
-                  <option>Seleccionar</option>
-                  <option>Efectivo</option>
-                  <option>Tarjeta</option>
+              <div class="col-span-1">
+                <label class="card-label">Metodo de Pago:</label>
+                <select name="paymentType" class="card-select">
+                  <option>Select</option>
+                  <option>Cash</option>
+                  <option>Card</option>
                 </select>
               </div>
-              <div class="col-span-1">
-                <!-- <label class="block text-sm font-medium mb-1">Cantidad</label>    -->
 
+              <div class="col-span-1">
                 <input
-                  id="ventas"
-                  placeholder="Cantidad"
                   type="number"
                   step=".01"
+                  placeholder="Cantidad"
                   class="card-input mt-6 text-right"
                 />
               </div>
+
               <div class="col-span-2">
                 <label class="card-label">Notas:</label>
-
                 <textarea
-                  name="notas"
+                  name="notes"
                   rows="3"
-                  placeholder="Escribe alguna observación..."
+                  placeholder="Escribe una observacion..."
                   class="card-textarea"
                 ></textarea>
               </div>
             </div>
 
-            <!-- Buttons -->
+            <!-- Action Buttons -->
             <div class="card-buttons">
               <button
-                class="close-btn"
                 type="button"
-                @click=${()=> this.newFormBtn = !this.newFormBtn}
+                class="close-btn"
+                @click=${() => (this.showForm = false)}
               >
                 Cerrar
               </button>
-              <button
-                class="agree-btn"
-              >
-                Agregar
-              </button>
+              <button class="agree-btn">Agregar</button>
             </div>
           </form>
         </div>
       </div>
-        `
-        :nothing}
-      <grid-table .config=${configSell}></grid-table>
+    `;
+  }
+
+  render() {
+    return html`
+      <button
+        class="new-form-btn"
+        @click=${() => (this.showForm = !this.showForm)}
+      >
+        Agregar Venta
+      </button>
+
+      ${this.showForm ? this._tplSaleFormModal() : nothing}
+
+      <grid-table .config=${this.salesTableConfig}></grid-table>
     `;
   }
 }

@@ -4,6 +4,10 @@ import { Grid } from "https://unpkg.com/gridjs?module";
 export class GridTable extends LitElement {
   static get properties() {
     return {
+      
+      /**
+       * Configuration object passed into Grid.js
+       */
       config: { type: Object },
     };
   }
@@ -13,6 +17,10 @@ export class GridTable extends LitElement {
     this.config = {};
   }
 
+  /**
+   * Lifecycle method triggered after the component is rendered for the first time.
+   * Initializes Grid.js and injects its CSS.
+   */
   firstUpdated() {
     this._injectGridCSS();
 
@@ -21,6 +29,11 @@ export class GridTable extends LitElement {
     );
   }
 
+  /**
+   * Injects Grid.js theme stylesheet into Shadow DOM if it hasn't been added yet.
+   * Prevents duplicate stylesheets on multiple instances.
+   * @private
+   */
   _injectGridCSS() {
     const alreadyInjected = Array.from(
       this.shadowRoot.querySelectorAll("link")

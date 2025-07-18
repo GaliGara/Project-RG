@@ -1,15 +1,32 @@
-import { LitElement, html, nothing} from 'lit';
-import '../grid-table/GridTable';
+import { LitElement, html, nothing } from "lit";
+import "../grid-table/GridTable";
 
 export class BranchForm extends LitElement {
   static get properties() {
     return {
+      /**
+       * List of branches
+       * @type {Array}
+       * @default '[]'
+       */
       branchNames: { type: Array },
-      configBranch: { type: Object },
-      newFormBtn: {type: Boolean},
+
+      /**
+       * Object of table config
+       * @type {Object}
+       * @default '{}'
+       */
+      tableConfig: { type: Object },
+
+      /**
+       * Boolean to show form
+       * @type {Boolean}
+       * @default 'false'
+       */
+      showForm: { type: Boolean },
     };
   }
-    
+
   constructor() {
     super();
     this.branchNames = [];
@@ -17,12 +34,20 @@ export class BranchForm extends LitElement {
     this.newFormBtn = false;
   }
 
+  /**
+   * Overrides LitElement's default behavior to render into the light DOM.
+   * @returns {BranchForm} This component without shadow DOM.
+   */
   createRenderRoot() {
     return this;
   }
 
-  render() {
-    const configBranch = {
+  /**
+   * Provides the config object for the grid-table.
+   * @returns {Object}
+   */
+  get tableConfig() {
+    return {
       columns: ["ID", "Sucursal", "Acciones"],
       data: [
         ["1", "Mitika", "btn"],
@@ -32,56 +57,54 @@ export class BranchForm extends LitElement {
       search: true,
       pagination: { limit: 3 },
     };
+  }
 
+  /**
+   * Renders the modal form to register a new branch.
+   * @returns {import('lit-html').TemplateResult}
+   */
+  _tplBranchFormModal() {
     return html`
-
-    <button
-    class="new-form-btn"
-    @click=${() => this.newFormBtn = !this.newFormBtn}
-    >Agregar Sucursal
-    </button>
-
-    ${this.newFormBtn ? html`
-      <div
-        class="modal-branch"
-      >
+      <div class="modal-branch">
         <div class="card-div">
-          <h2 class="card-title">Registro de Sucursal</h2>
+          <h2 class="card-title">Registrar Sucursal</h2>
           <form>
             <div class="grid-div">
               <div class="grid-cols-2">
-                <label class="card-label"
-                  >Nombre de Sucursal:</label
-                >
-                <input
-                  class="card-input"
-                  type="text"
-                  name="sucursales"
-                />
+                <label class="card-label">Nombre de Sucursal:</label>
+                <input class="card-input" type="text" name="branch" />
               </div>
             </div>
-            <!-- Buttons -->
+
+            <!-- Action Buttons -->
             <div class="card-buttons">
               <button
-                @click=${()=> this.newFormBtn = !this.newFormBtn}
                 class="close-btn"
                 type="button"
+                @click=${() => (this.showForm = false)}
               >
                 Cerrar
               </button>
-              <button
-                class="agree-btn"
-              >
-                Agregar
-              </button>
+              <button class="agree-btn">Agregar</button>
             </div>
           </form>
         </div>
       </div>
+    `;
+  }
 
-        ` : nothing }
-      
-      <grid-table .config=${configBranch}></grid-table>
+  render() {
+    return html`
+      <button
+        class="new-form-btn"
+        @click=${() => (this.showForm = !this.showForm)}
+      >
+        Agregar Sucursal
+      </button>
+
+      ${this.showForm ? this._tplBranchFormModal() : nothing}
+
+      <grid-table .config=${this.tableConfig}></grid-table>
     `;
   }
 }
