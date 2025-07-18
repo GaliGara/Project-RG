@@ -1,3 +1,26 @@
-    .menu {
-      @apply w-1/4 flex flex-col gap-2 bg-gray-700 text-white px-4 py-2
-    }
+.overlay {
+  @apply fixed inset-0 bg-black/30 backdrop-blur-sm z-40
+}
+
+.header-nav {
+  @apply bg-gray-800 text-white p-4 flex justify-between items-center
+}
+
+.header-btn {
+  @apply text-2xl border border-white rounded px-3 py-1 hover:bg-gray-700 hover:border-gray-400 transition
+}
+.nav-title {
+  @apply ml-auto text-xl font-semibold
+}
+.nav-animation {
+  @apply fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white flex flex-col gap-6 p-6 shadow-xl z-50
+          transform transition-transform duration-300 ease-in-out
+}
+
+.close-menu-btn {
+  @apply text-white text-3xl hover:text-gray-400 self-end transition
+}
+
+.menu-buttons {
+  @apply hover:bg-gray-600 rounded px-4 py-2 text-left font-medium tracking-wide transition-colors
+}
