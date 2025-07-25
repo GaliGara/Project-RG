@@ -12,6 +12,7 @@ export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
     return {
       crudSalesIsVisible: { type: Boolean },
+      dataSalesBranch: { type: Array },
 
     };
   }
@@ -19,6 +20,7 @@ export class FeatureSalesManagementCrud extends LitElement {
   constructor() {
     super();
     this.crudSalesIsVisible = false;
+    this.dataSalesBranch = [];
   }
 
   createRenderRoot() {
@@ -38,11 +40,17 @@ export class FeatureSalesManagementCrud extends LitElement {
       
       ${this.crudSalesIsVisible ? 
         html`
-        <feature-sales-management-crud-sales></feature-sales-management-crud-sales>
+        <feature-sales-management-crud-sales
+        .data='${this.dataSalesBranch}'
+        ></feature-sales-management-crud-sales>
         `
         :nothing}
 
-      <feature-sales-management-crud-dm></feature-sales-management-crud-dm>
+      <feature-sales-management-crud-dm
+       .dispatchFetchCrudSales='${this.crudSalesIsVisible}'
+       @set-data-sales-branch='${(e) => this.dataSalesBranch = e.detail}'
+       >
+      </feature-sales-management-crud-dm>
 
       <!-- <seller-form></seller-form> -->
       <!-- <employer-form></employer-form> -->

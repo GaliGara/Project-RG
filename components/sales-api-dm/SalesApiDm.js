@@ -30,9 +30,13 @@ export class SalesApiDm extends LitElement{
         this.employeeData = await employeeRes.json();
         this.branchesData = await branchesRes.json();
 
-        this.dispatchEvent(new CustomEvent('handelData', { 
-            detail:{salesData: this.salesData, employeeData: this.employeeData, branchesData: this.branchesData}
+        this.dispatchEvent(new CustomEvent('get-sales-branch', { 
+           detail: this.salesData
          }));
+
+         console.log(this.salesData);
+         console.log(this.employeeData);
+         console.log(this.branchesData);
 
     }
     
