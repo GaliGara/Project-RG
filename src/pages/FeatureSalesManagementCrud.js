@@ -6,6 +6,7 @@ import '@components/nav-bar/NavBar';
 import '@components/sales-api-dm/SalesApiDm';
 import './FeatureSalesManagementCrud.css'; 
 import './feature-sales-management-crud-sales/FeatureSalesManagementCrudSales'
+import './FeatureSalesManagementCrudDM'
 
 export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
@@ -31,13 +32,18 @@ export class FeatureSalesManagementCrud extends LitElement {
 
   render() {
     return html`
-      <!-- <sales-api-dm></sales-api-dm> -->
+      <sales-api-dm></sales-api-dm>
+
       <nav-bar @crud-sales-visible=${(e) => this.handlePages(e.detail)}></nav-bar>
+      
       ${this.crudSalesIsVisible ? 
         html`
         <feature-sales-management-crud-sales></feature-sales-management-crud-sales>
         `
         :nothing}
+
+      <feature-sales-management-crud-dm></feature-sales-management-crud-dm>
+
       <!-- <seller-form></seller-form> -->
       <!-- <employer-form></employer-form> -->
       <!-- <branch-form></branch-form> -->

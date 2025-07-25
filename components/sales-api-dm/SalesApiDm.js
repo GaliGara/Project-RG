@@ -2,6 +2,10 @@ import { LitElement, html } from "lit";
 
 export class SalesApiDm extends LitElement{
 
+    static get is(){
+        return 'sales-api-dm'
+    }
+
     static get properties() {
         return {
             salesData: {type : Array},
@@ -19,7 +23,7 @@ export class SalesApiDm extends LitElement{
 
     }
 
-    async getInitialData() {
+    async getSalesBranch() {
         const [salesRes, employeeRes, branchesRes] = await Promise.all([
             fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch'),
             fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/employees'),
@@ -34,16 +38,16 @@ export class SalesApiDm extends LitElement{
             detail:{salesData: this.salesData, employeeData: this.employeeData, branchesData: this.branchesData}
          }));
 
-        console.log(this.branchesData)
-        console.log(this.salesData)
-        console.log(this.employeeData)
+        console.log('branches', this.branchesData)
+        console.log('sales', this.salesData)
+        console.log('employee', this.employeeData)
 
     }
     
-    connectedCallback(){
-        super.connectedCallback();
-        this.getInitialData();
-    }
+    // connectedCallback(){
+    //     super.connectedCallback();
+    //     this.getSalesBranch();
+    // }
     
     render() {
         return html`
