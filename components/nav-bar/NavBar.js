@@ -7,13 +7,6 @@ export class NavBar extends LitElement {
   static get properties() {
     return {
       /**
-       * Current view component
-       * @type {String}
-       * 
-       */
-      currentView: { type: String },
-
-      /**
        * Boolean that indicates if the menu is open 
        * @type {Boolean}
        */
@@ -23,7 +16,6 @@ export class NavBar extends LitElement {
 
   constructor() {
     super();
-    this.currentView = '';
     this.menuOpen = false;
   }
 
@@ -43,34 +35,13 @@ export class NavBar extends LitElement {
     this.menuOpen = !this.menuOpen;
   }
 
-  /**
-   * Handles menu item selection:
-   * - Sets the current view
-   * - Closes the sidebar menu
-   * @public
-   * @param {string} view - The view to activate
-   */
-  handleNavigation(view) {
-    this.currentView = view;
-    this.menuOpen = false;
+  handleNavigation(){
+    this.dispatchEvent(new CustomEvent('crud-sales-visible', {
+       detail: 'hola desde el navbar'
+      }));
   }
 
-   /**
-   * Returns the component associated with the currently selected view.
-   * @public
-   */
-  getCurrentComponent() {
-    switch (this.currentView) {
-      case 'ventas':
-        return html`<seller-form></seller-form>`;
-      case 'empleados':
-        return html`<employer-form></employer-form>`;
-      case 'sucursales':
-        return html`<branch-form></branch-form>`;
-      default:
-        return html``;
-    }
-  }  
+ 
 
   render() {
     return html`
@@ -99,29 +70,26 @@ export class NavBar extends LitElement {
           &times;
         </button>
 
-        <button
+        <a
           class="menu-buttons"
-          @click=${() => this.handleNavigation('ventas')}
+          @click=${this.handleNavigation}
         >
           Ventas
-        </button>
-        <button
+        </a>
+        <a
           class="menu-buttons"
-          @click=${() => this.handleNavigation('empleados')}
+          href="../employer-form/EmployerForm"
         >
           Empleados
-        </button>
-        <button
+        </a>
+        <a
           class="menu-buttons"
-          @click=${() => this.handleNavigation('sucursales')}
+          href="../branch-form-BranchForm"
         >
           Sucursales
-        </button>
+        </a>
       </nav>
 
-      <section class="view mt-4">
-        ${this.getCurrentComponent()}
-      </section>
     `;
   }
 }
