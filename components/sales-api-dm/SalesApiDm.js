@@ -2,10 +2,6 @@ import { LitElement, html } from "lit";
 
 export class SalesApiDm extends LitElement{
 
-    static get is(){
-        return 'sales-api-dm'
-    }
-
     static get properties() {
         return {
             salesData: {type : Array},
@@ -38,16 +34,8 @@ export class SalesApiDm extends LitElement{
             detail:{salesData: this.salesData, employeeData: this.employeeData, branchesData: this.branchesData}
          }));
 
-        console.log('branches', this.branchesData)
-        console.log('sales', this.salesData)
-        console.log('employee', this.employeeData)
-
     }
     
-    // connectedCallback(){
-    //     super.connectedCallback();
-    //     this.getSalesBranch();
-    // }
     
     render() {
         return html`
