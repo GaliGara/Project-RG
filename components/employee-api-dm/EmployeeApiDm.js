@@ -1,26 +1,20 @@
 import { LitElement, html } from "lit";
 
-export class SalesApiDm extends LitElement {
+export class EmployeeApiDm extends LitElement {
   static get properties() {
     return {
-      salesData: { type: Array },
-      employeeData: { type: Array },
-      branchesData: { type: Array },
     };
   }
 
   constructor() {
     super();
-    this.salesData = [];
-    this.employeeData = [];
-    this.branchesData = [];
   }
 
-  async getSalesBranch() {
+  async getEmployee() {
     console.log("🚀 ~ SalesApiDm ~ getSalesBranch ~ getSalesBranch:")
     try {
       const res = await fetch(
-        "https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch"
+        "https://keysarcosmetics.fly.dev/keysarCosmetics/employees"
       );
 
       if (!res.ok) {
@@ -28,7 +22,7 @@ export class SalesApiDm extends LitElement {
         
         const error = await res.json();
         this.dispatchEvent(
-          new CustomEvent("sales-api-dm-fetch-error", { detail: error })
+          new CustomEvent("employee-api-dm-fetch-error", { detail: error })
         );
         return;
       }
@@ -36,20 +30,17 @@ export class SalesApiDm extends LitElement {
       
       const data = await res.json();
       this.dispatchEvent(
-        new CustomEvent("sales-api-dm-fetch", { detail: data })
+        new CustomEvent("employee-api-dm-fetch", { detail: data })
       );
     } catch (error) {
       console.log('error');
       
       this.dispatchEvent(
-        new CustomEvent("sales-api-dm-error", { detail: error })
+        new CustomEvent("employee-api-dm-error", { detail: error })
       );
     }
   }
 
-  render() {
-    return html``;
-  }
 }
 
-customElements.define("sales-api-dm", SalesApiDm);
+customElements.define("employee-api-dm", EmployeeApiDm);

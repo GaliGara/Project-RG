@@ -41,6 +41,12 @@ export class NavBar extends LitElement {
       }));
   }
 
+  handleEmployee(){
+    this.dispatchEvent(new CustomEvent('crud-employee-visible', {
+       detail: 'hola desde el navbar employee'
+      }));
+  }
+
  
 
   render() {
@@ -78,7 +84,7 @@ export class NavBar extends LitElement {
         </a>
         <a
           class="menu-buttons"
-          href="../employer-form/EmployerForm"
+           @click=${this.handleEmployee}
         >
           Empleados
         </a>
