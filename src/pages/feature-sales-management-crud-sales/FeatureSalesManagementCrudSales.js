@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
-import '@components/seller-form/SellerForm'
-import '@components/grid-table/GridTable'
+import '../../../components/seller-form/SellerForm'
+import '../../../components/grid-table/GridTable'
 
 
 export class FeatureSalesManagementCrudSales extends LitElement{

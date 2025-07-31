@@ -1,9 +1,9 @@
 import { LitElement, html, nothing } from 'lit';
-import '@components/seller-form/SellerForm';
-import '@components/employer-form/EmployerForm';
-import '@components/branch-form/BranchForm';
-import '@components/nav-bar/NavBar';
-import '@components/sales-api-dm/SalesApiDm';
+import '../../components/seller-form/SellerForm';
+import '../../components/employer-form/EmployerForm';
+import '../../components/branch-form/BranchForm';
+import '../../components/nav-bar/NavBar';
+import '../../components/sales-api-dm/SalesApiDm';
 import './FeatureSalesManagementCrud.css'; 
 import './feature-sales-management-crud-sales/FeatureSalesManagementCrudSales'
 import './FeatureSalesManagementCrudDM'

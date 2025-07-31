@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from "lit";
-import "@components/sales-api-dm/SalesApiDm";
+import "../../components/sales-api-dm/SalesApiDm";
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
