@@ -2,6 +2,7 @@
   "name": "@web-components-features/feature-sales-management-crud",
   "private": true,
   "version": "0.0.0",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
