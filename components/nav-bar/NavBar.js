@@ -36,18 +36,21 @@ export class NavBar extends LitElement {
   }
 
   handleNavigation(){
+    this.toggleMenu();
     this.dispatchEvent(new CustomEvent('crud-sales-visible', {
        detail: 'hola desde el navbar'
       }));
   }
 
   handleEmployee(){
+    this.toggleMenu();
     this.dispatchEvent(new CustomEvent('crud-employee-visible', {
        detail: 'hola desde el navbar employee'
       }));
   }
 
   handleBranches(){
+    this.toggleMenu();
     this.dispatchEvent(new CustomEvent('crud-branches-visible', {
        detail: 'hola desde el navbar branches'
       }));

@@ -47,19 +47,25 @@ export class FeatureSalesManagementCrud extends LitElement {
 
   handleGetSalesBranch(){
     console.log('handleGetSalesBranch')
-    this.crudSalesIsVisible = true
+    this.crudSalesIsVisible = true;
+    this.crudEmployeeIsVisible = false;
+    this.crudBranchesIsVisible = false;
     this._salesManagementCrudDm.getSalesBranch();
   }
 
   handleGetEmployee(){
     console.log('handleGetEmployee')
-    this.crudEmployeeIsVisible = true
+    this.crudEmployeeIsVisible = true;
+    this.crudSalesIsVisible = false;
+    this.crudBranchesIsVisible = false;
     this._salesManagementCrudDm.getEmployee();
   }
 
   handleGetBranches(){
     console.log('handleGetBranches')
-    this.crudBranchesIsVisible = true
+    this.crudBranchesIsVisible = true;
+    this.crudEmployeeIsVisible = false;
+    this.crudSalesIsVisible = false;
     this._salesManagementCrudDm.getBranches();
   }
 
