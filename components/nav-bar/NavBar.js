@@ -47,6 +47,12 @@ export class NavBar extends LitElement {
       }));
   }
 
+  handleBranches(){
+    this.dispatchEvent(new CustomEvent('crud-branches-visible', {
+       detail: 'hola desde el navbar branches'
+      }));
+  }
+
  
 
   render() {
@@ -84,13 +90,13 @@ export class NavBar extends LitElement {
         </a>
         <a
           class="menu-buttons"
-           @click=${this.handleEmployee}
+          @click=${this.handleEmployee}
         >
           Empleados
         </a>
         <a
           class="menu-buttons"
-          href="../branch-form-BranchForm"
+          @click=${this.handleBranches}
         >
           Sucursales
         </a>

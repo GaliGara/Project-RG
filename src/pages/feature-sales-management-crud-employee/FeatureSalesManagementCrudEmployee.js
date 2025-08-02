@@ -1,6 +1,5 @@
 import { LitElement, html } from "lit";
-import '../../../components/seller-form/SellerForm'
-import '../../../components/grid-table/GridTable'
+import '../../../components/employer-form/EmployerForm'
 
 
 export class FeatureSalesManagementCrudEmployee extends LitElement{
@@ -24,11 +23,8 @@ export class FeatureSalesManagementCrudEmployee extends LitElement{
         console.log('data', this?.data);
         
         return html`
-        <h1>hola desde page</h1>
-        <seller-form></seller-form>        
-        <!-- <grid-table
-        
-        ></grid-table> -->
+        <h1>hola desde employee page</h1>
+        <employer-form></employer-form>        
         `;
     }
 

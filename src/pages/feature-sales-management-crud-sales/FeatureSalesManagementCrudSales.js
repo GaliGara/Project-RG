@@ -24,11 +24,8 @@ export class FeatureSalesManagementCrudSales extends LitElement{
         console.log('data', this.data);
         
         return html`
-        <h1>hola desde page</h1>
+        <h1>hola desde sales page</h1>
         <seller-form></seller-form>        
-        <!-- <grid-table
-        
-        ></grid-table> -->
         `;
     }
 

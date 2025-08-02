@@ -1,0 +1,32 @@
+import { LitElement, html } from "lit";
+import '../../../components/branch-form/BranchForm'
+
+
+export class FeatureSalesManagementCrudBranch extends LitElement{
+    static get properties(){
+        return{
+            data: {type: Array},
+
+        }
+    }
+
+    constructor(){
+        super();
+        this.data = [];
+
+    }
+    createRenderRoot(){
+        return this;
+    }
+
+    render(){
+        console.log('data', this?.data);
+        
+        return html`
+        <h1>hola desde branch page</h1>
+        <branch-form></branch-form>        
+        `;
+    }
+
+}
+customElements.define('feature-sales-management-crud-branch', FeatureSalesManagementCrudBranch);

@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import "../../components/sales-api-dm/SalesApiDm";
 import "../../components/employee-api-dm/EmployeeApiDm";
+import "../../components/branches-api-dm/BranchesApiDm";
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
@@ -8,6 +9,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dispatchFetchCrudSales: { type: Boolean },
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Array },
+      dataBranches: { type: Array },
     };
   }
 
@@ -16,6 +18,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dispatchFetchCrudSales = false;
     this.dataSalesBranch = [];
     this.dataEmployee = [];
+    this.dataBranches = [];
   }
 
   get _salesDm() {
@@ -26,8 +29,12 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     return this.shadowRoot.querySelector("employee-api-dm");
   }
 
+  get _branchesDm() {
+    return this.shadowRoot.querySelector("branches-api-dm");
+  }
+
   getEmployee() {
-    console.log("_getSalesBranch");
+    console.log("_getEmployee");
     this._employeeDm.getEmployee();
 
   }
@@ -35,6 +42,12 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   getSalesBranch() {
     console.log("_getSalesBranch");
     this._salesDm.getSalesBranch();
+
+  }
+
+  getBranches() {
+    console.log("_getBranches");
+    this._branchesDm.getBranches();
 
   }
 
@@ -58,6 +71,16 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  _setDataBranches(e) {
+    console.log("_setDataBranches", e);
+    this.dataBranches = e.detail;
+    this.dispatchEvent(
+      new CustomEvent("set-data-branches", {
+        detail: this.dataBranches,
+      })
+    );
+  }
+
 
   render() {
     return html`
@@ -72,6 +95,12 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @employee-api-dm-fetch=${(e) => this._setDataEmployee(e)}
       > 
       </employee-api-dm>
+      <branches-api-dm
+        @branches-api-dm-error=${(e) => console.log('error', e.detail)}
+        @branches-api-dm-fetch-error=${(e) => console.log('error', e.detail)}
+        @branches-api-dm-fetch=${(e) => this._setDataBranches(e)}
+      > 
+      </branches-api-dm>
       <h1>hola dm</h1>
     `;
   }

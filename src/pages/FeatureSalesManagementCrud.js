@@ -7,6 +7,7 @@ import '../../components/sales-api-dm/SalesApiDm';
 import './FeatureSalesManagementCrud.css'; 
 import './feature-sales-management-crud-sales/FeatureSalesManagementCrudSales'
 import './feature-sales-management-crud-employee/FeatureSalesManagementCrudEmployee'
+import './feature-sales-management-crud-branch/FeatureSalesManagementCrudBranch'
 import './FeatureSalesManagementCrudDM'
 
 export class FeatureSalesManagementCrud extends LitElement {
@@ -14,9 +15,11 @@ export class FeatureSalesManagementCrud extends LitElement {
     return {
       crudSalesIsVisible: { type: Boolean },
       crudEmployeeIsVisible: { type: Boolean },
+      crudBranchesIsVisible: { type: Boolean },
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Array },
-
+      dataBranches: { type: Array },
+      
     };
   }
 
@@ -24,8 +27,10 @@ export class FeatureSalesManagementCrud extends LitElement {
     super();
     this.crudSalesIsVisible = false;
     this.crudEmployeeIsVisible = false;
+    this.crudBranchesIsVisible = false;
     this.dataSalesBranch = [];
     this.dataEmployee = [];
+    this.dataBranches = [];
   }
 
   createRenderRoot() {
@@ -47,9 +52,15 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   handleGetEmployee(){
-    console.log('handleGetSalesBranch')
+    console.log('handleGetEmployee')
     this.crudEmployeeIsVisible = true
     this._salesManagementCrudDm.getEmployee();
+  }
+
+  handleGetBranches(){
+    console.log('handleGetBranches')
+    this.crudBranchesIsVisible = true
+    this._salesManagementCrudDm.getBranches();
   }
 
 
@@ -59,6 +70,7 @@ export class FeatureSalesManagementCrud extends LitElement {
 
       <nav-bar
       @crud-employee-visible=${this.handleGetEmployee}
+      @crud-branches-visible=${this.handleGetBranches}
       @crud-sales-visible=${this.handleGetSalesBranch}></nav-bar>
       
       ${this.crudSalesIsVisible ? 
@@ -77,17 +89,22 @@ export class FeatureSalesManagementCrud extends LitElement {
         `
         :nothing}
 
+      ${this.crudBranchesIsVisible ? 
+        html`
+        <feature-sales-management-crud-branch
+        .data='${this.dataBranches}'
+        ></feature-sales-management-crud-branch>
+        `
+        :nothing}
+
       <feature-sales-management-crud-dm
         
        @set-data-sales-branch='${(e) => this.dataSalesBranch = e.detail}'
        @set-data-employee='${(e) => this.dataEmployee = e.detail}'
+       @set-data-branches='${(e) => this.dataBranches = e.detail}'
        >
       </feature-sales-management-crud-dm>
       
-
-      <!-- <seller-form></seller-form> -->
-      <!-- <employer-form></employer-form> -->
-      <!-- <branch-form></branch-form> -->
     `;
   }
 }
