@@ -10,6 +10,7 @@ export default defineConfig({
     }
   },
   server: {
+    port: 5173,
     fs: {
       allow: ['.', '..'] // habilita lectura fuera de src
     }
