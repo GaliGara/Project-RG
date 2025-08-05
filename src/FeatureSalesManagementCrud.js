@@ -154,10 +154,18 @@ export class FeatureSalesManagementCrud extends LitElement {
         : nothing}
 
       <feature-sales-management-crud-dm
-        @set-data-sales-branch="${e => (this.dataSalesBranch = e.detail)}"
-        @set-data-employee="${e => (this.dataEmployee = e.detail)}"
-        @set-data-branches="${e => (this.dataBranches = e.detail)}"
-        @set-data-payment-method="${e => (this.dataPaymentMethod = e.detail)}"
+        @set-data-sales-branch="${e => {
+          this.dataSalesBranch = e.detail;
+        }}"
+        @set-data-employee="${e => {
+          this.dataEmployee = e.detail;
+        }}"
+        @set-data-branches="${e => {
+          this.dataBranches = e.detail;
+        }}"
+        @set-data-payment-method="${e => {
+          this.dataPaymentMethod = e.detail;
+        }}"
         @set-data-sales-branch-chart-report="${e => {
           this._setDashboardConfig(e.detail);
         }}"
