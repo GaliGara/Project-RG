@@ -13,7 +13,14 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataEmployee: { type: Array },
       dataBranches: { type: Array },
       dataPaymentMethod: { type: Array },
-      _dataSalesBranchChartReport: { type: Object },
+      /**
+       * Set of data for the charts
+       * @type Object
+       * @default {}
+       */
+      _dataSalesBranchChartReport: {
+        type: Object,
+      },
     };
   }
 
@@ -110,8 +117,13 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  /**
+   * Format and set data for the sales branch chart report.
+   * @param {Array} data
+   * @event 'feature-sales-management-crud-dm-set-data-branch-chart'
+   * @private
+   */
   _setDataSalesBranchChartReport(data) {
-    // this.dataSalesBranchChartReport = e.detail;
     const labels = data.map(row => row.branch);
     const sales = data.map(row => row.sales);
 
@@ -129,12 +141,8 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       colors: chatColors,
     };
 
-    console.log(
-      '🚀 ~ FeatureSalesManagementCrudDM ~ _setDataSalesBranchChartReport ~ this.dataSalesBranchChartReport:',
-      this.dataSalesBranchChartReport,
-    );
     this.dispatchEvent(
-      new CustomEvent('set-data-sales-branch-chart-report', {
+      new CustomEvent('feature-sales-management-crud-dm-set-data-branch-chart', {
         detail: this._dataSalesBranchChartReport,
       }),
     );

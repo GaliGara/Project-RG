@@ -4,7 +4,14 @@ import '../../../components/keysar-chart/KeysarChart.js';
 export class FeatureSalesManagementCrudDashboard extends LitElement {
   static get properties() {
     return {
-      data: { type: Object },
+      /**
+       * Set of data for the charts.
+       * @type Object
+       * @default {}
+       */
+      data: {
+        type: Object,
+      },
     };
   }
 

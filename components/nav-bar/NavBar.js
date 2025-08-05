@@ -71,9 +71,14 @@ export class NavBar extends LitElement {
     );
   }
 
-  handleDashboard() {
+  /**
+   * Handles the dashboard visibility event.
+   * @private
+   * @event set-dashboard-visible
+   */
+  _handleDashboard() {
     this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('crud-dashboard-visible'));
+    this.dispatchEvent(new CustomEvent('set-dashboard-visible'));
   }
 
   render() {
@@ -105,7 +110,7 @@ export class NavBar extends LitElement {
         <a class="menu-buttons" @click=${this.handleEmployee}> Empleados </a>
         <a class="menu-buttons" @click=${this.handleBranches}> Sucursales </a>
         <a class="menu-buttons" @click=${this.handlePaymentMethod}> Metodos de Pago </a>
-        <a class="menu-buttons" @click=${this.handleDashboard}> Dashboard </a>
+        <button class="menu-buttons" @click=${this._handleDashboard}>Dashboard</button>
       </nav>
     `;
   }

@@ -4,11 +4,46 @@ import Chart from 'chart.js/auto';
 export class KeysarChart extends LitElement {
   static get properties() {
     return {
-      colors: { type: Array },
-      chartType: { type: String },
-      dataBarChart: { type: Array },
-      labels: { type: Array },
-      sales: { type: Array },
+      /**
+       * Set of colors for the chart.
+       * @type Array
+       * @default []
+       */
+      colors: {
+        type: Array,
+      },
+      /**
+       * Type of chart to display.
+       * @type String
+       * @default ''
+       */
+      chartType: {
+        type: String,
+      },
+      /**
+       * Data for the bar chart.
+       * @type Array
+       * @default []
+       */
+      dataBarChart: {
+        type: Array,
+      },
+      /**
+       * Set of labels for the pie chart.
+       * @type Array
+       * @default []
+       */
+      labels: {
+        type: Array,
+      },
+      /**
+       * Set of sales data for the pie chart.
+       * @type Array
+       * @default []
+       */
+      sales: {
+        type: Array,
+      },
     };
   }
 
@@ -27,7 +62,7 @@ export class KeysarChart extends LitElement {
 
   firstUpdated() {
     const ctx = this.querySelector('#myChart').getContext('2d');
-    const chartData = this.getChartData(this.chartType);
+    const chartData = this._formatChartData(this.chartType);
 
     this.chart = new Chart(ctx, {
       type: this.chartType,
@@ -35,7 +70,12 @@ export class KeysarChart extends LitElement {
     });
   }
 
-  getChartData(type) {
+  /**
+   * Formats the chart data based on the type.
+   * @param {String} type
+   * @private
+   */
+  _formatChartData(type) {
     const dataTypes = {
       bar: {
         labels: ['Ventas'],
@@ -52,7 +92,6 @@ export class KeysarChart extends LitElement {
         ],
       },
     };
-
     return dataTypes[type];
   }
 

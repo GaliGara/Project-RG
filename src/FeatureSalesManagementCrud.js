@@ -19,12 +19,27 @@ export class FeatureSalesManagementCrud extends LitElement {
       crudEmployeeIsVisible: { type: Boolean },
       crudBranchesIsVisible: { type: Boolean },
       crudPaymentMethodIsVisible: { type: Boolean },
-      crudDashboardIsVisible: { type: Boolean },
+      /**
+       * Show dashboard page.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _crudDashboardIsVisible: {
+        type: Boolean,
+      },
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Array },
       dataBranches: { type: Array },
       dataPaymentMethod: { type: Array },
-      dataSalesBranchChartReport: { type: Array },
+      /**
+       * Data for dashboard page.
+       * @type Array
+       * @default []
+       */
+      _dataSalesBranchChartReport: {
+        type: Array,
+      },
     };
   }
 
@@ -34,12 +49,12 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudEmployeeIsVisible = false;
     this.crudBranchesIsVisible = false;
     this.crudPaymentMethodIsVisible = false;
-    this.crudDashboardIsVisible = false;
+    this._crudDashboardIsVisible = false;
     this.dataSalesBranch = [];
     this.dataEmployee = [];
     this.dataBranches = [];
     this.dataPaymentMethod = [];
-    this.dataSalesBranchChartReport = [];
+    this._dataSalesBranchChartReport = [];
   }
 
   createRenderRoot() {
@@ -95,13 +110,18 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._salesManagementCrudDm.getSalesBranchChartReport();
   }
 
+  /**
+   * Sets dashboard pages config.
+   * @param {Object} event
+   * @private
+   */
   _setDashboardConfig(detail) {
-    this._dashboardConfig = detail;
+    this._dataSalesBranchChartReport = detail;
     this.crudPaymentMethodIsVisible = false;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;
     this.crudSalesIsVisible = false;
-    this.crudDashboardIsVisible = true;
+    this._crudDashboardIsVisible = true;
   }
 
   render() {
@@ -113,7 +133,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         @crud-employee-visible=${this.handleGetEmployee}
         @crud-branches-visible=${this.handleGetBranches}
         @crud-payment-method-visible=${this.handleGetPaymentMethod}
-        @crud-dashboard-visible=${this.handleGetSalesBranchChartReport}
+        @set-dashboard-visible=${this.handleGetSalesBranchChartReport}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -138,10 +158,10 @@ export class FeatureSalesManagementCrud extends LitElement {
             ></feature-sales-management-crud-branch>
           `
         : nothing}
-      ${this.crudDashboardIsVisible
+      ${this._crudDashboardIsVisible
         ? html`
             <feature-sales-management-crud-dashboard
-              .data="${this?._dashboardConfig}"
+              .data="${this?._dataSalesBranchChartReport}"
             ></feature-sales-management-crud-dashboard>
           `
         : nothing}
@@ -166,7 +186,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-data-payment-method="${e => {
           this.dataPaymentMethod = e.detail;
         }}"
-        @set-data-sales-branch-chart-report="${e => {
+        @feature-sales-management-crud-dm-set-data-branch-chart="${e => {
           this._setDashboardConfig(e.detail);
         }}"
       >
