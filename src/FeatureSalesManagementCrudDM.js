@@ -102,6 +102,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  createBranch(body) {
+    this._branchesDm.createBranch(body)
+  }
+
 
   render() {
     return html`

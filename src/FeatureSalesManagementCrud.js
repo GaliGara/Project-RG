@@ -83,6 +83,10 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._salesManagementCrudDm.getPaymentMethod();
   }
 
+  handleSummit(detail) {
+    this._salesManagementCrudDm.createBranch(detail)
+  }
+
 
   render() {
     return html`
@@ -114,6 +118,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       ${this.crudBranchesIsVisible ? 
         html`
         <feature-sales-management-crud-branch
+        @submit-event="${(e) => this.handleSummit(e.detail)}"
         .data='${this.dataBranches}'
         ></feature-sales-management-crud-branch>
         `

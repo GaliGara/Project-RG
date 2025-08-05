@@ -6,10 +6,10 @@ export class BranchForm extends LitElement {
     return {
       /**
        * List of branches
-       * @type {Array}
-       * @default '[]'
+       * @type {String}
+       * @default ''
        */
-      branchNames: { type: Array },
+      branchName: { type: String },
 
       /**
        * Object of table config
@@ -29,7 +29,7 @@ export class BranchForm extends LitElement {
 
   constructor() {
     super();
-    this.branchNames = [];
+    this.branchName = "";
     this.configBranch = {};
     this.newFormBtn = false;
   }
@@ -72,20 +72,24 @@ export class BranchForm extends LitElement {
             <div class="grid-div">
               <div class="grid-cols-2">
                 <label class="card-label">Nombre de Sucursal:</label>
-                <input class="card-input" type="text" name="branch" />
+                <input
+                  class="card-input"
+                  type="text"
+                  name="branch"
+                  .value=${this.branchName}
+                  @input=${(e) => {
+                    this.branchName = e.target.value;
+                  }}
+                />
               </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="card-buttons">
-              <button
-                class="close-btn"
-                type="button"
-                @click=${() => (this.showForm = false)}
-              >
+              <button class="close-btn" type="button" @click=${() => (this.showForm = false)}>
                 Cerrar
               </button>
-              <button class="agree-btn">Agregar</button>
+              <button class="agree-btn" @click=${this.submit}>Agregar</button>
             </div>
           </form>
         </div>
@@ -93,12 +97,13 @@ export class BranchForm extends LitElement {
     `;
   }
 
+  submit() {
+    this.dispatchEvent(new CustomEvent("request-submit", { detail: this.branchName }));
+  }
+
   render() {
     return html`
-      <button
-        class="new-form-btn"
-        @click=${() => (this.showForm = !this.showForm)}
-      >
+      <button class="new-form-btn" @click=${() => (this.showForm = !this.showForm)}>
         Agregar Sucursal
       </button>
 

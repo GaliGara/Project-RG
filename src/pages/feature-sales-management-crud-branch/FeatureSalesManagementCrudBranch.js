@@ -19,12 +19,16 @@ export class FeatureSalesManagementCrudBranch extends LitElement{
         return this;
     }
 
+    submitPage(data) {
+        this.dispatchEvent(new CustomEvent('submit-event', { detail: data}));
+    }
+
     render(){
         console.log('data', this?.data);
         
         return html`
         <h1>hola desde branch page</h1>
-        <branch-form></branch-form>        
+        <branch-form @request-submit=${(e) => this.submitPage(e.detail)}></branch-form>
         `;
     }
 
