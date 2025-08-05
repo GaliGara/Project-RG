@@ -1,5 +1,5 @@
-import { LitElement, html, nothing } from "lit";
-import "../grid-table/GridTable";
+import { LitElement, html, nothing } from 'lit';
+import '../grid-table/GridTable.js';
 
 export class BranchForm extends LitElement {
   static get properties() {
@@ -29,7 +29,7 @@ export class BranchForm extends LitElement {
 
   constructor() {
     super();
-    this.branchName = "";
+    this.branchName = '';
     this.configBranch = {};
     this.newFormBtn = false;
   }
@@ -48,11 +48,11 @@ export class BranchForm extends LitElement {
    */
   get tableConfig() {
     return {
-      columns: ["ID", "Sucursal", "Acciones"],
+      columns: ['ID', 'Sucursal', 'Acciones'],
       data: [
-        ["1", "Mitika", "btn"],
-        ["2", "Delta", "btn"],
-        ["3", "Zona", "btn"],
+        ['1', 'Mitika', 'btn'],
+        ['2', 'Delta', 'btn'],
+        ['3', 'Zona', 'btn'],
       ],
       search: true,
       pagination: { limit: 3 },
@@ -77,7 +77,7 @@ export class BranchForm extends LitElement {
                   type="text"
                   name="branch"
                   .value=${this.branchName}
-                  @input=${(e) => {
+                  @input=${e => {
                     this.branchName = e.target.value;
                   }}
                 />
@@ -98,7 +98,7 @@ export class BranchForm extends LitElement {
   }
 
   submit() {
-    this.dispatchEvent(new CustomEvent("request-submit", { detail: this.branchName }));
+    this.dispatchEvent(new CustomEvent('request-submit', { detail: this.branchName }));
   }
 
   render() {
@@ -114,4 +114,4 @@ export class BranchForm extends LitElement {
   }
 }
 
-customElements.define("branch-form", BranchForm);
+customElements.define('branch-form', BranchForm);

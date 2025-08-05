@@ -1,10 +1,9 @@
 import { LitElement, html } from 'lit';
-import { Grid } from "https://unpkg.com/gridjs?module";
+import { Grid } from 'https://unpkg.com/gridjs?module';
 
 export class GridTable extends LitElement {
   static get properties() {
     return {
-      
       /**
        * Configuration object passed into Grid.js
        */
@@ -24,9 +23,7 @@ export class GridTable extends LitElement {
   firstUpdated() {
     this._injectGridCSS();
 
-    new Grid(this.config).render(
-      this.shadowRoot.querySelector("#grid-container")
-    );
+    new Grid(this.config).render(this.shadowRoot.querySelector('#grid-container'));
   }
 
   /**
@@ -35,14 +32,14 @@ export class GridTable extends LitElement {
    * @private
    */
   _injectGridCSS() {
-    const alreadyInjected = Array.from(
-      this.shadowRoot.querySelectorAll("link")
-    ).some((link) => link.href.includes("gridjs"));
+    const alreadyInjected = Array.from(this.shadowRoot.querySelectorAll('link')).some(link =>
+      link.href.includes('gridjs'),
+    );
 
     if (!alreadyInjected) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "https://unpkg.com/gridjs/dist/theme/mermaid.min.css";
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/gridjs/dist/theme/mermaid.min.css';
       this.shadowRoot.appendChild(link);
     }
   }
@@ -51,4 +48,4 @@ export class GridTable extends LitElement {
     return html` <div id="grid-container"></div> `;
   }
 }
-customElements.define("grid-table", GridTable);
+customElements.define('grid-table', GridTable);

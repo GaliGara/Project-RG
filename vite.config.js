@@ -7,12 +7,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, 'components'), // crea un alias para importar fácil
-    }
+    },
   },
   server: {
     port: 5173,
     fs: {
-      allow: ['.', '..'] // habilita lectura fuera de src
-    }
-  }
+      allow: ['.', '..'], // habilita lectura fuera de src
+    },
+  },
 });

@@ -1,5 +1,5 @@
-import { LitElement, html } from "lit";
-import "../../../components/keysar-chart/KeysarChart.js";
+import { LitElement, html } from 'lit';
+import '../../../components/keysar-chart/KeysarChart.js';
 
 export class FeatureSalesManagementCrudDashboard extends LitElement {
   static get properties() {
@@ -24,19 +24,19 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
         .sales="${this?.data?.sales}"
         .dataBarChart="${this?.data?.dataBarChart}"
         .colors="${this?.data?.colors}"
-        .chartType="${"pie"}"
+        .chartType="${'pie'}"
       ></keysar-chart>
       <keysar-chart
         .labels="${this?.data?.labels}"
         .sales="${this?.data?.sales}"
         .dataBarChart="${this?.data?.dataBarChart}"
         .colors="${this?.data?.colors}"
-        .chartType="${"bar"}"
+        .chartType="${'bar'}"
       ></keysar-chart>
     `;
   }
 }
 customElements.define(
-  "feature-sales-management-crud-dashboard",
-  FeatureSalesManagementCrudDashboard
+  'feature-sales-management-crud-dashboard',
+  FeatureSalesManagementCrudDashboard,
 );

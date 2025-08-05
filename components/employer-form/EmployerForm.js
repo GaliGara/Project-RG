@@ -1,5 +1,5 @@
-import { LitElement, html, nothing } from "lit";
-import "../grid-table/GridTable";
+import { LitElement, html, nothing } from 'lit';
+import '../grid-table/GridTable.js';
 
 export class EmployerForm extends LitElement {
   static get properties() {
@@ -44,9 +44,9 @@ export class EmployerForm extends LitElement {
   constructor() {
     super();
     this.employees = [];
-    this.firstName = "";
-    this.lastName = "";
-    this.middleName = "";
+    this.firstName = '';
+    this.lastName = '';
+    this.middleName = '';
     this.showForm = false;
   }
 
@@ -73,9 +73,7 @@ export class EmployerForm extends LitElement {
    * @returns {string}
    */
   get fullName() {
-    return [this.firstName, this.lastName, this.middleName]
-      .filter(Boolean)
-      .join(" ");
+    return [this.firstName, this.lastName, this.middleName].filter(Boolean).join(' ');
   }
 
   /**
@@ -85,49 +83,49 @@ export class EmployerForm extends LitElement {
   get tableConfig() {
     return {
       columns: [
-        "ID",
-        "Nombre Completo",
-        "Apellido Paterno",
-        "Apellido Materno",
-        "Nombre",
-        "Banco",
-        "Numero de Cuenta",
-        "Puesto",
-        "Actions",
+        'ID',
+        'Nombre Completo',
+        'Apellido Paterno',
+        'Apellido Materno',
+        'Nombre',
+        'Banco',
+        'Numero de Cuenta',
+        'Puesto',
+        'Actions',
       ],
       data: [
         [
-          "1",
-          "Enrique Galicia Garatachia",
-          "Galicia",
-          "Garatachia",
-          "Enrique",
-          "BBVA",
-          "xxx xxx x33",
-          "Sales",
-          "btn",
+          '1',
+          'Enrique Galicia Garatachia',
+          'Galicia',
+          'Garatachia',
+          'Enrique',
+          'BBVA',
+          'xxx xxx x33',
+          'Sales',
+          'btn',
         ],
         [
-          "2",
-          "Emanuel Rangel",
-          "Rangel",
-          "No.",
-          "Emanuel",
-          "Santander",
-          "xxx xxx x12",
-          "Director",
-          "btn",
+          '2',
+          'Emanuel Rangel',
+          'Rangel',
+          'No.',
+          'Emanuel',
+          'Santander',
+          'xxx xxx x12',
+          'Director',
+          'btn',
         ],
         [
-          "3",
-          "Brandon Galicia Garatachia",
-          "Galicia",
-          "Garatachia",
-          "Brandon",
-          "Azteca",
-          "xxx xxx x99",
-          "Cosmetologist",
-          "btn",
+          '3',
+          'Brandon Galicia Garatachia',
+          'Galicia',
+          'Garatachia',
+          'Brandon',
+          'Azteca',
+          'xxx xxx x99',
+          'Cosmetologist',
+          'btn',
         ],
       ],
       search: true,
@@ -212,11 +210,7 @@ export class EmployerForm extends LitElement {
             </div>
 
             <div class="card-buttons">
-              <button
-                class="close-btn"
-                type="button"
-                @click=${() => (this.showForm = false)}
-              >
+              <button class="close-btn" type="button" @click=${() => (this.showForm = false)}>
                 Cerrar
               </button>
               <button class="agree-btn">Agregar</button>
@@ -229,10 +223,7 @@ export class EmployerForm extends LitElement {
 
   render() {
     return html`
-      <button
-        class="new-form-btn"
-        @click=${() => (this.showForm = !this.showForm)}
-      >
+      <button class="new-form-btn" @click=${() => (this.showForm = !this.showForm)}>
         Agregar Empleado</button
       >t ${this.showForm ? this._tplFormModal() : nothing}
 
@@ -241,4 +232,4 @@ export class EmployerForm extends LitElement {
   }
 }
 
-customElements.define("employer-form", EmployerForm);
+customElements.define('employer-form', EmployerForm);

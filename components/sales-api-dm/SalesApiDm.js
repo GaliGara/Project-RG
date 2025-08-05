@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html } from 'lit';
 
 export class SalesApiDm extends LitElement {
   static get properties() {
@@ -17,33 +17,25 @@ export class SalesApiDm extends LitElement {
   }
 
   async getSalesBranch() {
-    console.log("🚀 ~ SalesApiDm ~ getSalesBranch ~ getSalesBranch:")
+    console.log('🚀 ~ SalesApiDm ~ getSalesBranch ~ getSalesBranch:');
     try {
-      const res = await fetch(
-        "https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch"
-      );
+      const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch');
 
       if (!res.ok) {
         console.log('if');
-        
+
         const error = await res.json();
-        this.dispatchEvent(
-          new CustomEvent("sales-api-dm-fetch-error", { detail: error })
-        );
+        this.dispatchEvent(new CustomEvent('sales-api-dm-fetch-error', { detail: error }));
         return;
       }
       console.log('succes');
-      
+
       const data = await res.json();
-      this.dispatchEvent(
-        new CustomEvent("sales-api-dm-fetch", { detail: data })
-      );
+      this.dispatchEvent(new CustomEvent('sales-api-dm-fetch', { detail: data }));
     } catch (error) {
       console.log('error');
-      
-      this.dispatchEvent(
-        new CustomEvent("sales-api-dm-error", { detail: error })
-      );
+
+      this.dispatchEvent(new CustomEvent('sales-api-dm-error', { detail: error }));
     }
   }
 
@@ -52,4 +44,4 @@ export class SalesApiDm extends LitElement {
   }
 }
 
-customElements.define("sales-api-dm", SalesApiDm);
+customElements.define('sales-api-dm', SalesApiDm);

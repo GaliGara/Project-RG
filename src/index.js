@@ -9,4 +9,4 @@ export * from '../components/employer-form/EmployerForm';
 export * from '../components/grid-table/GridTable';
 export * from '../components/nav-bar/NavBar';
 export * from '../components/sales-api-dm/SalesApiDm';
-export * from '../components/seller-form/SellerForm'; 
+export * from '../components/seller-form/SellerForm';

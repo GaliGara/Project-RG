@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @import '../components/branch-form/branch-form.css';
 @import '../components/employer-form/employer-form.css';
 @import '../components/seller-form/seller-form.css';

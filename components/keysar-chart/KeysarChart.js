@@ -1,5 +1,5 @@
-import { LitElement, html } from "lit";
-import Chart from "chart.js/auto";
+import { LitElement, html } from 'lit';
+import Chart from 'chart.js/auto';
 
 export class KeysarChart extends LitElement {
   static get properties() {
@@ -15,7 +15,7 @@ export class KeysarChart extends LitElement {
   constructor() {
     super();
     this.colors = [];
-    this.chartType = "";
+    this.chartType = '';
     this.dataBarChart = [];
     this.labels = [];
     this.sales = [];
@@ -26,7 +26,7 @@ export class KeysarChart extends LitElement {
   }
 
   firstUpdated() {
-    const ctx = this.querySelector("#myChart").getContext("2d");
+    const ctx = this.querySelector('#myChart').getContext('2d');
     const chartData = this.getChartData(this.chartType);
 
     this.chart = new Chart(ctx, {
@@ -38,7 +38,7 @@ export class KeysarChart extends LitElement {
   getChartData(type) {
     const dataTypes = {
       bar: {
-        labels: ["Ventas"],
+        labels: ['Ventas'],
         datasets: this?.dataBarChart,
       },
       pie: {
@@ -60,4 +60,4 @@ export class KeysarChart extends LitElement {
     return html` <canvas id="myChart"></canvas> `;
   }
 }
-customElements.define("keysar-chart", KeysarChart);
+customElements.define('keysar-chart', KeysarChart);

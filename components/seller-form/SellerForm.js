@@ -1,5 +1,5 @@
-import { LitElement, html, nothing } from "lit";
-import "../grid-table/GridTable";
+import { LitElement, html, nothing } from 'lit';
+import '../grid-table/GridTable.js';
 
 export class SellerForm extends LitElement {
   static get properties() {
@@ -41,46 +41,19 @@ export class SellerForm extends LitElement {
   get salesTableConfig() {
     return {
       columns: [
-        "ID",
-        "Fecha",
-        "Sucursal",
-        "Vendedor",
-        "Tipo de Pago",
-        "Notas",
-        "Total Ventas",
-        "Acciones",
+        'ID',
+        'Fecha',
+        'Sucursal',
+        'Vendedor',
+        'Tipo de Pago',
+        'Notas',
+        'Total Ventas',
+        'Acciones',
       ],
       data: [
-        [
-          "1",
-          "25-02-25",
-          "Mitika",
-          "Enrique",
-          "Transferencia",
-          "Notas",
-          "$100",
-          "btn",
-        ],
-        [
-          "1",
-          "31-11-25",
-          "Delta",
-          "Emanuel",
-          "Efectivo",
-          "Notas2",
-          "$200",
-          "btn",
-        ],
-        [
-          "1",
-          "19-06-25",
-          "Opatra",
-          "Brandon",
-          "Deposito",
-          "Notas3",
-          "$300",
-          "btn",
-        ],
+        ['1', '25-02-25', 'Mitika', 'Enrique', 'Transferencia', 'Notas', '$100', 'btn'],
+        ['1', '31-11-25', 'Delta', 'Emanuel', 'Efectivo', 'Notas2', '$200', 'btn'],
+        ['1', '19-06-25', 'Opatra', 'Brandon', 'Deposito', 'Notas3', '$300', 'btn'],
       ],
       search: true,
       pagination: { limit: 3 },
@@ -159,11 +132,7 @@ export class SellerForm extends LitElement {
 
             <!-- Action Buttons -->
             <div class="card-buttons">
-              <button
-                type="button"
-                class="close-btn"
-                @click=${() => (this.showForm = false)}
-              >
+              <button type="button" class="close-btn" @click=${() => (this.showForm = false)}>
                 Cerrar
               </button>
               <button class="agree-btn">Agregar</button>
@@ -176,10 +145,7 @@ export class SellerForm extends LitElement {
 
   render() {
     return html`
-      <button
-        class="new-form-btn"
-        @click=${() => (this.showForm = !this.showForm)}
-      >
+      <button class="new-form-btn" @click=${() => (this.showForm = !this.showForm)}>
         Agregar Venta
       </button>
 
@@ -189,4 +155,4 @@ export class SellerForm extends LitElement {
     `;
   }
 }
-customElements.define("seller-form", SellerForm);
+customElements.define('seller-form', SellerForm);
