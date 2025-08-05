@@ -8,6 +8,7 @@ import './FeatureSalesManagementCrud.css';
 import './pages/feature-sales-management-crud-sales/FeatureSalesManagementCrudSales'
 import './pages/feature-sales-management-crud-employee/FeatureSalesManagementCrudEmployee'
 import './pages/feature-sales-management-crud-branch/FeatureSalesManagementCrudBranch'
+import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagementCrudPaymentMethod'
 import './FeatureSalesManagementCrudDM'
 
 export class FeatureSalesManagementCrud extends LitElement {
@@ -16,9 +17,11 @@ export class FeatureSalesManagementCrud extends LitElement {
       crudSalesIsVisible: { type: Boolean },
       crudEmployeeIsVisible: { type: Boolean },
       crudBranchesIsVisible: { type: Boolean },
+      crudPaymentMethodIsVisible: { type: Boolean },
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Array },
       dataBranches: { type: Array },
+      dataPaymentMethod: { type: Array },
       
     };
   }
@@ -28,9 +31,11 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudSalesIsVisible = false;
     this.crudEmployeeIsVisible = false;
     this.crudBranchesIsVisible = false;
+    this.crudPaymentMethodIsVisible = false;
     this.dataSalesBranch = [];
     this.dataEmployee = [];
     this.dataBranches = [];
+    this.dataPaymentMethod = [];
   }
 
   createRenderRoot() {
@@ -69,15 +74,26 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._salesManagementCrudDm.getBranches();
   }
 
+  handleGetPaymentMethod(){
+    console.log('handleGetPaymentMethod')
+    this.crudPaymentMethodIsVisible = true;
+    this.crudBranchesIsVisible = false;
+    this.crudEmployeeIsVisible = false;
+    this.crudSalesIsVisible = false;
+    this._salesManagementCrudDm.getPaymentMethod();
+  }
+
 
   render() {
     return html`
       <sales-api-dm></sales-api-dm>
 
       <nav-bar
+      @crud-sales-visible=${this.handleGetSalesBranch}
       @crud-employee-visible=${this.handleGetEmployee}
       @crud-branches-visible=${this.handleGetBranches}
-      @crud-sales-visible=${this.handleGetSalesBranch}></nav-bar>
+      @crud-payment-method-visible=${this.handleGetPaymentMethod}
+      ></nav-bar>
       
       ${this.crudSalesIsVisible ? 
         html`
@@ -103,11 +119,20 @@ export class FeatureSalesManagementCrud extends LitElement {
         `
         :nothing}
 
+      ${this.crudPaymentMethodIsVisible ? 
+        html`
+        <feature-sales-management-crud-payment-method
+        .data='${this.dataPaymentMethod}'
+        ></feature-sales-management-crud-payment-method>
+        `
+        :nothing}
+
       <feature-sales-management-crud-dm
         
        @set-data-sales-branch='${(e) => this.dataSalesBranch = e.detail}'
        @set-data-employee='${(e) => this.dataEmployee = e.detail}'
        @set-data-branches='${(e) => this.dataBranches = e.detail}'
+       @set-data-payment-method='${(e) => this.dataPaymentMethod = e.detail}'
        >
       </feature-sales-management-crud-dm>
       

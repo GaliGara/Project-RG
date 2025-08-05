@@ -56,6 +56,13 @@ export class NavBar extends LitElement {
       }));
   }
 
+  handlePaymentMethod(){
+    this.toggleMenu();
+    this.dispatchEvent(new CustomEvent('crud-payment-method-visible', {
+       detail: 'hola desde el navbar payment method'
+      }));
+  }
+
  
 
   render() {
@@ -102,6 +109,12 @@ export class NavBar extends LitElement {
           @click=${this.handleBranches}
         >
           Sucursales
+        </a>
+        <a
+          class="menu-buttons"
+          @click=${this.handlePaymentMethod}
+        >
+          Metodos de Pago
         </a>
       </nav>
 

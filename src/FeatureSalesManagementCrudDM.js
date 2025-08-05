@@ -2,23 +2,24 @@ import { LitElement, html, nothing } from "lit";
 import "../components/sales-api-dm/SalesApiDm";
 import "../components/employee-api-dm/EmployeeApiDm";
 import "../components/branches-api-dm/BranchesApiDm";
+import "../components/payment-method-api-dm/PaymentMethodApiDm";
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
     return {
-      dispatchFetchCrudSales: { type: Boolean },
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Array },
       dataBranches: { type: Array },
+      dataPaymentMethod: { type: Array },
     };
   }
 
   constructor() {
     super();
-    this.dispatchFetchCrudSales = false;
     this.dataSalesBranch = [];
     this.dataEmployee = [];
     this.dataBranches = [];
+    this.dataPaymentMethod = [];
   }
 
   get _salesDm() {
@@ -31,6 +32,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   get _branchesDm() {
     return this.shadowRoot.querySelector("branches-api-dm");
+  }
+
+  get _paymentMethodDm() {
+    return this.shadowRoot.querySelector("payment-method-api-dm");
   }
 
   getEmployee() {
@@ -48,6 +53,12 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   getBranches() {
     console.log("_getBranches");
     this._branchesDm.getBranches();
+
+  }
+
+  getPaymentMethod() {
+    console.log("_getPaymentMethod");
+    this._paymentMethodDm.getPaymentMethod();
 
   }
 
@@ -81,6 +92,16 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  _setDataPaymentMethod(e) {
+    console.log("_setDataPaymentMethod", e);
+    this.dataPaymentMethod = e.detail;
+    this.dispatchEvent(
+      new CustomEvent("set-data-payment-method", {
+        detail: this.dataPaymentMethod,
+      })
+    );
+  }
+
 
   render() {
     return html`
@@ -101,6 +122,13 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @branches-api-dm-fetch=${(e) => this._setDataBranches(e)}
       > 
       </branches-api-dm>
+      <payment-method-api-dm
+        @payment-method-api-dm-error=${(e) => console.log('error', e.detail)}
+        @payment-method-api-dm-fetch-error=${(e) => console.log('error', e.detail)}
+        @payment-method-api-dm-fetch=${(e) => this._setDataPaymentMethod(e)}
+      > 
+      </payment-method-api-dm>
+
       <h1>hola dm</h1>
     `;
   }
