@@ -1,7 +1,7 @@
 import './pages/FeatureSalesManagementCrud.css';
 
-export * from './pages/FeatureSalesManagementCrud';
-export * from './pages/FeatureSalesManagementCrudDM';
+export * from './FeatureSalesManagementCrud';
+export * from './FeatureSalesManagementCrudDM';
 export * from './pages/feature-sales-management-crud-sales/FeatureSalesManagementCrudSales';
 
 export * from '../components/branch-form/BranchForm';

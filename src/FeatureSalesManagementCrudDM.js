@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from "lit";
-import "../../components/sales-api-dm/SalesApiDm";
-import "../../components/employee-api-dm/EmployeeApiDm";
-import "../../components/branches-api-dm/BranchesApiDm";
+import "../components/sales-api-dm/SalesApiDm";
+import "../components/employee-api-dm/EmployeeApiDm";
+import "../components/branches-api-dm/BranchesApiDm";
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
