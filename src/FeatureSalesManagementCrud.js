@@ -10,6 +10,7 @@ import './pages/feature-sales-management-crud-employee/FeatureSalesManagementCru
 import './pages/feature-sales-management-crud-branch/FeatureSalesManagementCrudBranch'
 import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagementCrudPaymentMethod'
 import './FeatureSalesManagementCrudDM'
+import './pages/feature-sales-management-crud-dashboard/FeatureSalesManagementCrudDashboard';
 
 export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
@@ -18,10 +19,12 @@ export class FeatureSalesManagementCrud extends LitElement {
       crudEmployeeIsVisible: { type: Boolean },
       crudBranchesIsVisible: { type: Boolean },
       crudPaymentMethodIsVisible: { type: Boolean },
+      crudDashboardIsVisible: { type: Boolean },
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Array },
       dataBranches: { type: Array },
       dataPaymentMethod: { type: Array },
+      dataSalesBranchChartReport: { type: Array },
       
     };
   }
@@ -32,10 +35,12 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudEmployeeIsVisible = false;
     this.crudBranchesIsVisible = false;
     this.crudPaymentMethodIsVisible = false;
+    this.crudDashboardIsVisible = false;
     this.dataSalesBranch = [];
     this.dataEmployee = [];
     this.dataBranches = [];
     this.dataPaymentMethod = [];
+    this.dataSalesBranchChartReport = [];
   }
 
   createRenderRoot() {
@@ -87,6 +92,18 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._salesManagementCrudDm.createBranch(detail)
   }
 
+  handleGetSalesBranchChartReport(){
+    this._salesManagementCrudDm.getSalesBranchChartReport();
+  }
+
+  _setDashboardConfig(detail) {
+    this._dashboardConfig = detail;
+    this.crudPaymentMethodIsVisible = false;
+    this.crudBranchesIsVisible = false;
+    this.crudEmployeeIsVisible = false;
+    this.crudSalesIsVisible = false;
+    this.crudDashboardIsVisible = true;
+  }
 
   render() {
     return html`
@@ -97,6 +114,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       @crud-employee-visible=${this.handleGetEmployee}
       @crud-branches-visible=${this.handleGetBranches}
       @crud-payment-method-visible=${this.handleGetPaymentMethod}
+      @crud-dashboard-visible=${this.handleGetSalesBranchChartReport}
       ></nav-bar>
       
       ${this.crudSalesIsVisible ? 
@@ -124,7 +142,15 @@ export class FeatureSalesManagementCrud extends LitElement {
         `
         :nothing}
 
-      ${this.crudPaymentMethodIsVisible ? 
+      ${this.crudDashboardIsVisible ? 
+        html`
+        <feature-sales-management-crud-dashboard
+          .data='${this?._dashboardConfig}'
+        ></feature-sales-management-crud-dashboard>
+        `
+        :nothing}
+
+        ${this.crudPaymentMethodIsVisible ? 
         html`
         <feature-sales-management-crud-payment-method
         .data='${this.dataPaymentMethod}'
@@ -138,6 +164,9 @@ export class FeatureSalesManagementCrud extends LitElement {
        @set-data-employee='${(e) => this.dataEmployee = e.detail}'
        @set-data-branches='${(e) => this.dataBranches = e.detail}'
        @set-data-payment-method='${(e) => this.dataPaymentMethod = e.detail}'
+       @set-data-sales-branch-chart-report='${(e) => {
+          this._setDashboardConfig(e.detail);
+       } }'
        >
       </feature-sales-management-crud-dm>
       

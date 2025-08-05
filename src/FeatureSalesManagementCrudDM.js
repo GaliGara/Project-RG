@@ -3,6 +3,8 @@ import "../components/sales-api-dm/SalesApiDm";
 import "../components/employee-api-dm/EmployeeApiDm";
 import "../components/branches-api-dm/BranchesApiDm";
 import "../components/payment-method-api-dm/PaymentMethodApiDm";
+import "../components/report-api-dm/ReportApiDm";
+import { chatColors } from "./utils/configPages.js";
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
@@ -11,6 +13,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataEmployee: { type: Array },
       dataBranches: { type: Array },
       dataPaymentMethod: { type: Array },
+      _dataSalesBranchChartReport: { type: Object },
     };
   }
 
@@ -20,6 +23,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataEmployee = [];
     this.dataBranches = [];
     this.dataPaymentMethod = [];
+    this._dataSalesBranchChartReport = {};
   }
 
   get _salesDm() {
@@ -36,6 +40,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   get _paymentMethodDm() {
     return this.shadowRoot.querySelector("payment-method-api-dm");
+  }
+
+  get _reportApiDm() {
+    return this.shadowRoot.querySelector("report-api-dm");
   }
 
   getEmployee() {
@@ -60,6 +68,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     console.log("_getPaymentMethod");
     this._paymentMethodDm.getPaymentMethod();
 
+  }
+
+  getSalesBranchChartReport() {
+    this._reportApiDm.getSalesBranchChartReport();
   }
 
   _setDataSalesBranch(e) {
@@ -102,6 +114,33 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  _setDataSalesBranchChartReport(data) {
+    // this.dataSalesBranchChartReport = e.detail;
+    const labels = data.map((row) => row.branch);
+    const sales = data.map((row) => row.sales);
+
+    const dataBarChart = data.map((row, i) => ({
+      label: row.branch,
+      data: [row.sales],
+      backgroundColor: chatColors[i % chatColors.length],
+      borderWidth: 1,
+    }));
+
+    this._dataSalesBranchChartReport = {
+      labels: labels,
+      sales: sales,
+      dataBarChart: dataBarChart,
+      colors: chatColors,
+    }
+
+    console.log("🚀 ~ FeatureSalesManagementCrudDM ~ _setDataSalesBranchChartReport ~ this.dataSalesBranchChartReport:", this.dataSalesBranchChartReport)
+    this.dispatchEvent(
+      new CustomEvent("set-data-sales-branch-chart-report", {
+        detail: this._dataSalesBranchChartReport,
+      })
+    );
+  }
+
   createBranch(body) {
     this._branchesDm.createBranch(body)
   }
@@ -132,7 +171,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @payment-method-api-dm-fetch=${(e) => this._setDataPaymentMethod(e)}
       > 
       </payment-method-api-dm>
-
+      <report-api-dm
+        @branch-chart-report-api-dm-fetch=${(e) => this._setDataSalesBranchChartReport(e.detail)}
+      >
+      </report-api-dm>
       <h1>hola dm</h1>
     `;
   }

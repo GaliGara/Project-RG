@@ -63,6 +63,10 @@ export class NavBar extends LitElement {
       }));
   }
 
+  handleDashboard(){
+    this.toggleMenu();
+    this.dispatchEvent(new CustomEvent('crud-dashboard-visible'));
+  }
  
 
   render() {
@@ -115,6 +119,12 @@ export class NavBar extends LitElement {
           @click=${this.handlePaymentMethod}
         >
           Metodos de Pago
+        </a>
+        <a
+          class="menu-buttons"
+          @click=${this.handleDashboard}
+        >
+          Dashboard
         </a>
       </nav>
 
