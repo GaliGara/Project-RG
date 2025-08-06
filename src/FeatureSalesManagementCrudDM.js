@@ -14,11 +14,12 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataBranches: { type: Array },
       dataPaymentMethod: { type: Array },
       /**
-       * Set of data for the charts
+       * Set of data for dashboard charts and cards.
        * @type Object
        * @default {}
+       * @private
        */
-      _dataSalesBranchChartReport: {
+      _dataSalesBranchReport: {
         type: Object,
       },
     };
@@ -30,7 +31,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataEmployee = [];
     this.dataBranches = [];
     this.dataPaymentMethod = [];
-    this._dataSalesBranchChartReport = {};
+    this._dataSalesBranchReport = {};
   }
 
   get _salesDm() {
@@ -73,8 +74,20 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._paymentMethodDm.getPaymentMethod();
   }
 
+  /**
+   * Dispatch request to get sales branch chart report.
+   * @public
+   */
   getSalesBranchChartReport() {
     this._reportApiDm.getSalesBranchChartReport();
+  }
+
+  /**
+   * Dispatch request to get sales branch card report.
+   * @public
+   */
+  getSalesBranchReport() {
+    this._reportApiDm.getSalesBranchReport();
   }
 
   _setDataSalesBranch(e) {
@@ -134,16 +147,34 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       borderWidth: 1,
     }));
 
-    this._dataSalesBranchChartReport = {
-      labels,
-      sales,
-      dataBarChart,
-      colors: chatColors,
+    this._dataSalesBranchReport = {
+      ...this._dataSalesBranchReport,
+      chart: {
+        labels,
+        sales,
+        dataBarChart,
+        colors: chatColors,
+      },
     };
 
     this.dispatchEvent(
       new CustomEvent('feature-sales-management-crud-dm-set-data-branch-chart', {
-        detail: this._dataSalesBranchChartReport,
+        detail: this._dataSalesBranchReport,
+      }),
+    );
+  }
+
+  /**
+   * Set data for the sales branch card report.
+   * @param {Array} data
+   * @event 'feature-sales-management-crud-dm-set-data-branch-card'
+   * @private
+   */
+  _setDataSalesBranchCardReport(data) {
+    this._dataSalesBranchReport = { ...this._dataSalesBranchReport, card: data };
+    this.dispatchEvent(
+      new CustomEvent('feature-sales-management-crud-dm-set-data-branch-card', {
+        detail: this._dataSalesBranchReport,
       }),
     );
   }
@@ -179,6 +210,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       </payment-method-api-dm>
       <report-api-dm
         @branch-chart-report-api-dm-fetch=${e => this._setDataSalesBranchChartReport(e.detail)}
+        @branch-report-api-dm-fetch=${e => this._setDataSalesBranchCardReport(e.detail)}
       >
       </report-api-dm>
       <h1>hola dm</h1>

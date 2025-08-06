@@ -37,7 +37,7 @@ export class FeatureSalesManagementCrud extends LitElement {
        * @type Array
        * @default []
        */
-      _dataSalesBranchChartReport: {
+      _dashboardData: {
         type: Array,
       },
     };
@@ -54,7 +54,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.dataEmployee = [];
     this.dataBranches = [];
     this.dataPaymentMethod = [];
-    this._dataSalesBranchChartReport = [];
+    this._dashboardData = [];
   }
 
   createRenderRoot() {
@@ -106,8 +106,13 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._salesManagementCrudDm.createBranch(detail);
   }
 
-  handleGetSalesBranchChartReport() {
+  /**
+   * Handles the event to get sales branch chart report from api.
+   * @private
+   */
+  _handleGetSalesBranch() {
     this._salesManagementCrudDm.getSalesBranchChartReport();
+    this._salesManagementCrudDm.getSalesBranchReport();
   }
 
   /**
@@ -116,7 +121,7 @@ export class FeatureSalesManagementCrud extends LitElement {
    * @private
    */
   _setDashboardConfig(detail) {
-    this._dataSalesBranchChartReport = detail;
+    this._dashboardData = detail;
     this.crudPaymentMethodIsVisible = false;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;
@@ -133,7 +138,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         @crud-employee-visible=${this.handleGetEmployee}
         @crud-branches-visible=${this.handleGetBranches}
         @crud-payment-method-visible=${this.handleGetPaymentMethod}
-        @set-dashboard-visible=${this.handleGetSalesBranchChartReport}
+        @set-dashboard-visible=${this._handleGetSalesBranch}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -161,7 +166,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       ${this._crudDashboardIsVisible
         ? html`
             <feature-sales-management-crud-dashboard
-              .data="${this?._dataSalesBranchChartReport}"
+              .data="${this._dashboardData}"
             ></feature-sales-management-crud-dashboard>
           `
         : nothing}
@@ -187,6 +192,9 @@ export class FeatureSalesManagementCrud extends LitElement {
           this.dataPaymentMethod = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-branch-chart="${e => {
+          this._setDashboardConfig(e.detail);
+        }}"
+        @feature-sales-management-crud-dm-set-data-branch-card="${e => {
           this._setDashboardConfig(e.detail);
         }}"
       >
