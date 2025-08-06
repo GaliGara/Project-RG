@@ -18,6 +18,7 @@ export class FeatureSalesManagementCrudBranch extends LitElement {
   }
 
   submitPage(data) {
+    console.log('data', data)
     this.dispatchEvent(new CustomEvent('submit-event', { detail: data }));
   }
 

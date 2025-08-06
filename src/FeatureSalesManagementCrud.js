@@ -70,7 +70,6 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   handleGetSalesBranch() {
-    console.log('handleGetSalesBranch');
     this.crudSalesIsVisible = true;
     this.crudEmployeeIsVisible = false;
     this.crudBranchesIsVisible = false;
@@ -78,7 +77,6 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   handleGetEmployee() {
-    console.log('handleGetEmployee');
     this.crudEmployeeIsVisible = true;
     this.crudSalesIsVisible = false;
     this.crudBranchesIsVisible = false;
@@ -86,7 +84,6 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   handleGetBranches() {
-    console.log('handleGetBranches');
     this.crudBranchesIsVisible = true;
     this.crudEmployeeIsVisible = false;
     this.crudSalesIsVisible = false;
@@ -94,7 +91,6 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   handleGetPaymentMethod() {
-    console.log('handleGetPaymentMethod');
     this.crudPaymentMethodIsVisible = true;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;

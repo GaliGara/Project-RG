@@ -31,7 +31,7 @@ export class BranchForm extends LitElement {
     super();
     this.branchName = '';
     this.configBranch = {};
-    this.newFormBtn = false;
+    this.showForm = false;
   }
 
   /**
@@ -68,7 +68,7 @@ export class BranchForm extends LitElement {
       <div class="modal-branch">
         <div class="card-div">
           <h2 class="card-title">Registrar Sucursal</h2>
-          <form>
+          <form id="branch-form">
             <div class="grid-div">
               <div class="grid-cols-2">
                 <label class="card-label">Nombre de Sucursal:</label>
@@ -86,7 +86,7 @@ export class BranchForm extends LitElement {
 
             <!-- Action Buttons -->
             <div class="card-buttons">
-              <button class="close-btn" type="button" @click=${() => (this.showForm = false)}>
+              <button class="close-btn" type="button" @click=${() => {this.showForm = false}}>
                 Cerrar
               </button>
               <button class="agree-btn" @click=${this.submit}>Agregar</button>
@@ -97,13 +97,21 @@ export class BranchForm extends LitElement {
     `;
   }
 
-  submit() {
-    this.dispatchEvent(new CustomEvent('request-submit', { detail: this.branchName }));
+  submit(event) {
+    event.preventDefault()
+    this.dispatchEvent(new CustomEvent('request-submit', {
+      detail: {branchName: this.branchName },
+      bubbles: true,
+      composed: true,
+    }
+    ));
+    
   }
+
 
   render() {
     return html`
-      <button class="new-form-btn" @click=${() => (this.showForm = !this.showForm)}>
+      <button class="new-form-btn" @click=${() => {this.showForm = !this.showForm}}>
         Agregar Sucursal
       </button>
 

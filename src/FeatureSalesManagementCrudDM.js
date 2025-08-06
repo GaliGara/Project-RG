@@ -91,7 +91,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   _setDataSalesBranch(e) {
-    console.log('_setDataSalesBranch', e);
     this.dataSalesBranch = e.detail;
     this.dispatchEvent(
       new CustomEvent('set-data-sales-branch', {
@@ -101,7 +100,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   _setDataEmployee(e) {
-    console.log('_setDataEmployee', e);
     this.dataEmployee = e.detail;
     this.dispatchEvent(
       new CustomEvent('set-data-employee', {
@@ -111,7 +109,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   _setDataBranches(e) {
-    console.log('_setDataBranches', e);
     this.dataBranches = e.detail;
     this.dispatchEvent(
       new CustomEvent('set-data-branches', {
@@ -121,7 +118,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   _setDataPaymentMethod(e) {
-    console.log('_setDataPaymentMethod', e);
     this.dataPaymentMethod = e.detail;
     this.dispatchEvent(
       new CustomEvent('set-data-payment-method', {
