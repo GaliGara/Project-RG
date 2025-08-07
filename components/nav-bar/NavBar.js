@@ -84,7 +84,7 @@ export class NavBar extends LitElement {
   render() {
     return html`
       ${this.menuOpen
-        ? html` <div class="overlay" @click=${() => (this.menuOpen = false)}></div> `
+        ? html`<div class="overlay"></div>`
         : nothing}
 
       <header class="header-nav">
@@ -100,16 +100,16 @@ export class NavBar extends LitElement {
       >
         <button
           class="close-menu-btn"
-          @click=${() => (this.menuOpen = false)}
+          @click=${() => {this.menuOpen = false}}
           aria-label="Cerrar menú"
         >
           &times;
         </button>
 
-        <a class="menu-buttons" @click=${this.handleNavigation}> Ventas </a>
-        <a class="menu-buttons" @click=${this.handleEmployee}> Empleados </a>
-        <a class="menu-buttons" @click=${this.handleBranches}> Sucursales </a>
-        <a class="menu-buttons" @click=${this.handlePaymentMethod}> Metodos de Pago </a>
+        <button class="menu-buttons" @click=${this.handleNavigation}> Ventas </button>
+        <button class="menu-buttons" @click=${this.handleEmployee}> Empleados </button>
+        <button class="menu-buttons" @click=${this.handleBranches}> Sucursales </button>
+        <button class="menu-buttons" @click=${this.handlePaymentMethod}> Metodos de Pago </button>
         <button class="menu-buttons" @click=${this._handleDashboard}>Dashboard</button>
       </nav>
     `;
