@@ -17,12 +17,18 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
     return this;
   }
 
-  render() {
-    console.log('data', this?.data);
+  /**
+   * Set Object data on CustomEvent
+   * @param {Object} data
+   */
+  submitPage(data) {
+    this.dispatchEvent(new CustomEvent('submit-employee-event', { detail: data }));
+  }
 
+  render() {
     return html`
       <h1>hola desde employee page</h1>
-      <employer-form></employer-form>
+      <employer-form @request-submit=${e => this.submitPage(e.detail)}></employer-form>
     `;
   }
 }

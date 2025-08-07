@@ -55,22 +55,18 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   getEmployee() {
-    console.log('_getEmployee');
     this._employeeDm.getEmployee();
   }
 
   getSalesBranch() {
-    console.log('_getSalesBranch');
     this._salesDm.getSalesBranch();
   }
 
   getBranches() {
-    console.log('_getBranches');
     this._branchesDm.getBranches();
   }
 
   getPaymentMethod() {
-    console.log('_getPaymentMethod');
     this._paymentMethodDm.getPaymentMethod();
   }
 
@@ -196,6 +192,18 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   createBranch(body) {
     this._branchesDm.createBranch(body);
+  }
+
+  /**
+   * Create the api post data key - value from body object
+   * @param {Object} body
+   */
+  createEmployee(body) {
+    const data = {};
+    for (const [key, value] of body.entries()) {
+      data[key] = value;
+    }
+    this._employeeDm.createEmployee(data);
   }
 
   render() {

@@ -38,6 +38,13 @@ export class EmployerForm extends LitElement {
        * @default 'false'
        */
       showForm: { type: Boolean },
+
+      /**
+       * Object to contain labels form values
+       * @type {Object}
+       * @default '{}'
+       */
+      formData: { type: Object },
     };
   }
 
@@ -48,6 +55,7 @@ export class EmployerForm extends LitElement {
     this.lastName = '';
     this.middleName = '';
     this.showForm = false;
+    this.formData = {};
   }
 
   /**
@@ -143,7 +151,7 @@ export class EmployerForm extends LitElement {
       <div id="card-sell" class="modal-employer">
         <div class="card-div">
           <h2 class="card-title">Registro de Empleados</h2>
-          <form>
+          <form @submit=${this.submit}>
             <div class="grid-div">
               <div class="col-span-2">
                 <label class="card-label">Nombre Completo:</label>
@@ -191,29 +199,35 @@ export class EmployerForm extends LitElement {
 
               <div class="col-span-1">
                 <label class="card-label">Banco:</label>
-                <input type="text" class="card-input" />
+                <input type="text" name="bank" class="card-input" />
               </div>
 
               <div class="col-span-2">
                 <label class="card-label">Nuemero de Cuenta:</label>
-                <input type="number" step="1" class="card-input" />
+                <input type="number" step="1" name="accountNumber" class="card-input" />
               </div>
 
               <div class="col-span-2">
                 <label class="card-label">Puesto:</label>
-                <select name="role" class="card-select">
-                  <option>Sales</option>
-                  <option>Manager</option>
-                  <option>Director</option>
+                <select name="position" class="card-select">
+                  <option value="Vendedor">Vendedor</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Director">Director</option>
                 </select>
               </div>
             </div>
 
             <div class="card-buttons">
-              <button class="close-btn" type="button" @click=${() => (this.showForm = false)}>
+              <button
+                class="close-btn"
+                type="button"
+                @click=${() => {
+                  this.showForm = false;
+                }}
+              >
                 Cerrar
               </button>
-              <button class="agree-btn">Agregar</button>
+              <button class="agree-btn" type="submit">Agregar</button>
             </div>
           </form>
         </div>
@@ -221,11 +235,35 @@ export class EmployerForm extends LitElement {
     `;
   }
 
+  /**
+   * Handles the form submission event. Collects
+   * the form data using the FormData
+   *
+   * @param {Event} event - The form submission event.
+   */
+  submit(event) {
+    event.preventDefault();
+    this.formData = new FormData(event.target);
+    this.dispatchEvent(
+      new CustomEvent('request-submit', {
+        detail: this.formData,
+      }),
+    );
+    event.target.reset();
+    this.showForm = false;
+  }
+
   render() {
     return html`
-      <button class="new-form-btn" @click=${() => (this.showForm = !this.showForm)}>
-        Agregar Empleado</button
-      >t ${this.showForm ? this._tplFormModal() : nothing}
+      <button
+        class="new-form-btn"
+        @click=${() => {
+          this.showForm = !this.showForm;
+        }}
+      >
+        Agregar Empleado
+      </button>
+      ${this.showForm ? this._tplFormModal() : nothing}
 
       <grid-table .config=${this.tableConfig}></grid-table>
     `;

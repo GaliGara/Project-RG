@@ -103,6 +103,14 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   /**
+   * Handles the event to bin detail objetc to dm component
+   * @param {Object} detail
+   */
+  handleEmployeeSubmit(detail) {
+    this._salesManagementCrudDm.createEmployee(detail);
+  }
+
+  /**
    * Handles the event to get sales branch chart report from api.
    * @param {String} date
    * @private
@@ -150,6 +158,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       ${this.crudEmployeeIsVisible
         ? html`
             <feature-sales-management-crud-employee
+              @submit-employee-event="${e => this.handleEmployeeSubmit(e.detail)}"
               .data="${this.dataEmployee}"
             ></feature-sales-management-crud-employee>
           `
