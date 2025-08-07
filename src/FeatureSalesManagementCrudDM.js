@@ -228,7 +228,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @branch-report-api-dm-fetch=${e => this._setDataSalesBranchCardReport(e.detail)}
       >
       </report-api-dm>
-      <h1>hola dm</h1>
     `;
   }
 }

@@ -74,6 +74,14 @@ export class KeysarChart extends LitElement {
     this.chart = new Chart(ctx, {
       type: this.chartType,
       data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: 8 },
+        plugins: { legend: { position: 'top' } },
+        scales:
+          this.chartType === 'bar' ? { y: { beginAtZero: true, ticks: { precision: 0 } } } : {},
+      },
     });
   }
 
@@ -103,7 +111,11 @@ export class KeysarChart extends LitElement {
   }
 
   render() {
-    return html` <canvas></canvas> `;
+    return html`
+      <div class="bg-white rounded-2xl shadow-2xl p-4 mb-3 w-full max-w-3xl h-100 md:h-96">
+        <canvas class="w-full h-full block"></canvas>
+      </div>
+    `;
   }
 }
 customElements.define('keysar-chart', KeysarChart);

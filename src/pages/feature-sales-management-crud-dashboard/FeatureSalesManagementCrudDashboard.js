@@ -53,18 +53,20 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
    */
   _tplCards() {
     return html`
-      <summary-card
-        title-card="VENTAS DEL DÍA"
-        .dataBranch="${this.data?.card?.day}"
-      ></summary-card>
-      <summary-card
-        title-card="VENTAS DEL MES"
-        .dataBranch="${this.data?.card?.month}"
-      ></summary-card>
-      <summary-card
-        title-card="VENTAS DEL AÑO"
-        .dataBranch="${this.data?.card?.year}"
-      ></summary-card>
+      <div class="flex flex-wrap justify-center gap-x-30">
+        <summary-card
+          title-card="VENTAS DEL DÍA"
+          .dataBranch="${this.data?.card?.day}"
+        ></summary-card>
+        <summary-card
+          title-card="VENTAS DEL MES"
+          .dataBranch="${this.data?.card?.month}"
+        ></summary-card>
+        <summary-card
+          title-card="VENTAS DEL AÑO"
+          .dataBranch="${this.data?.card?.year}"
+        ></summary-card>
+      </div>
     `;
   }
 
@@ -75,20 +77,22 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
    */
   _tplCharts() {
     return html`
-      <keysar-chart
-        .labels="${this.data?.chart?.labels}"
-        .sales="${this.data?.chart?.sales}"
-        .dataBarChart="${this.data?.chart?.dataBarChart}"
-        .colors="${this.data?.chart?.colors}"
-        .chartType="${'pie'}"
-      ></keysar-chart>
-      <keysar-chart
-        .labels="${this.data?.chart?.labels}"
-        .sales="${this.data?.chart?.sales}"
-        .dataBarChart="${this.data?.chart?.dataBarChart}"
-        .colors="${this.data?.chart?.colors}"
-        .chartType="${'bar'}"
-      ></keysar-chart>
+      <div class="flex flex-wrap justify-center gap-x-30">
+        <keysar-chart
+          .labels="${this.data?.chart?.labels}"
+          .sales="${this.data?.chart?.sales}"
+          .dataBarChart="${this.data?.chart?.dataBarChart}"
+          .colors="${this.data?.chart?.colors}"
+          .chartType="${'bar'}"
+        ></keysar-chart>
+        <keysar-chart
+          .labels="${this.data?.chart?.labels}"
+          .sales="${this.data?.chart?.sales}"
+          .dataBarChart="${this.data?.chart?.dataBarChart}"
+          .colors="${this.data?.chart?.colors}"
+          .chartType="${'pie'}"
+        ></keysar-chart>
+      </div>
     `;
   }
 
@@ -99,15 +103,17 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
    */
   _tplSelect() {
     return html`
-      <input
-        type="date"
-        name="dateDashboardReport"
-        id="dateDashboardReport"
-        .value=${this._date}
-        @change=${e => {
-          this._sendDate(e);
-        }}
-      />
+      <div class="flex flex-col items-center gap-2 mt-3 mb-3">
+        <p class="text-sm font-semibold text-gray-700">SELECCIONA FECHA PARA MOSTRAR DATOS</p>
+        <input
+          type="date"
+          name="dateDashboardReport"
+          id="dateDashboardReport"
+          .value=${this._date}
+          @change=${e => this._sendDate(e)}
+          class="border border-gray-300 rounded-lg px-3 py-1.5 shadow-xl text-gray-700"
+        />
+      </div>
     `;
   }
 
@@ -115,7 +121,7 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
     return html`
       ${this._tplSelect()}
       ${Object.keys(this.data || {}).length
-        ? html`${this._tplCards()}${this._tplCharts()}`
+        ? html` <div class="flex flex-col gap-6">${this._tplCards()} ${this._tplCharts()}</div> `
         : nothing}
     `;
   }
