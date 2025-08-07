@@ -6,7 +6,7 @@ export class KeysarChart extends LitElement {
     return {
       /**
        * Set of colors for the chart.
-       * @type Array
+       * @type {Array}
        * @default []
        */
       colors: {
@@ -14,7 +14,7 @@ export class KeysarChart extends LitElement {
       },
       /**
        * Type of chart to display.
-       * @type String
+       * @type {String}
        * @default ''
        */
       chartType: {
@@ -22,7 +22,7 @@ export class KeysarChart extends LitElement {
       },
       /**
        * Data for the bar chart.
-       * @type Array
+       * @type {Array}
        * @default []
        */
       dataBarChart: {
@@ -30,7 +30,7 @@ export class KeysarChart extends LitElement {
       },
       /**
        * Set of labels for the pie chart.
-       * @type Array
+       * @type {Array}
        * @default []
        */
       labels: {
@@ -38,7 +38,7 @@ export class KeysarChart extends LitElement {
       },
       /**
        * Set of sales data for the pie chart.
-       * @type Array
+       * @type {Array}
        * @default []
        */
       sales: {
@@ -60,8 +60,15 @@ export class KeysarChart extends LitElement {
     return this;
   }
 
-  firstUpdated() {
-    const ctx = this.querySelector('#myChart').getContext('2d');
+  updated() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const canvas = this.querySelector('canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
     const chartData = this._formatChartData(this.chartType);
 
     this.chart = new Chart(ctx, {
@@ -96,7 +103,7 @@ export class KeysarChart extends LitElement {
   }
 
   render() {
-    return html` <canvas id="myChart"></canvas> `;
+    return html` <canvas></canvas> `;
   }
 }
 customElements.define('keysar-chart', KeysarChart);

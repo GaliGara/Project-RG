@@ -34,7 +34,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       dataPaymentMethod: { type: Array },
       /**
        * Data for dashboard page.
-       * @type Array
+       * @type {Array}
        * @default []
        */
       _dashboardData: {
@@ -104,11 +104,12 @@ export class FeatureSalesManagementCrud extends LitElement {
 
   /**
    * Handles the event to get sales branch chart report from api.
+   * @param {String} date
    * @private
    */
-  _handleGetSalesBranch() {
+  _handleGetSalesBranch(date) {
     this._salesManagementCrudDm.getSalesBranchChartReport();
-    this._salesManagementCrudDm.getSalesBranchReport();
+    this._salesManagementCrudDm.getSalesBranchReport(date);
   }
 
   /**
@@ -134,7 +135,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         @crud-employee-visible=${this.handleGetEmployee}
         @crud-branches-visible=${this.handleGetBranches}
         @crud-payment-method-visible=${this.handleGetPaymentMethod}
-        @set-dashboard-visible=${this._handleGetSalesBranch}
+        @set-dashboard-visible=${() => {
+          this._crudDashboardIsVisible = true;
+        }}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -163,6 +166,8 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-dashboard
               .data="${this._dashboardData}"
+              @feature-sales-management-crud-dashboard-date="${e =>
+                this._handleGetSalesBranch(e.detail)}"
             ></feature-sales-management-crud-dashboard>
           `
         : nothing}
@@ -187,10 +192,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-data-payment-method="${e => {
           this.dataPaymentMethod = e.detail;
         }}"
-        @feature-sales-management-crud-dm-set-data-branch-chart="${e => {
-          this._setDashboardConfig(e.detail);
-        }}"
-        @feature-sales-management-crud-dm-set-data-branch-card="${e => {
+        @feature-sales-management-crud-dm-set-dashboard-data="${e => {
           this._setDashboardConfig(e.detail);
         }}"
       >

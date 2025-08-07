@@ -31,13 +31,15 @@ export class ReportApiDm extends LitElement {
   }
 
   /**
-   * Fetch sales branch card report data from the endpoint.
+   * Fetch sales branch card report data from dynamic date for day, month and year the endpoint.
+   * @param {String} date
+   * @param {String} period
    * @public
    */
-  async getSalesBranchReport() {
+  async getSalesBranchReport(date, period) {
     try {
       const res = await fetch(
-        'https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch?date=2025-07',
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch?date=${date}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -46,14 +48,20 @@ export class ReportApiDm extends LitElement {
 
       if (!res.ok) {
         const error = await res.json();
-        this.dispatchEvent(new CustomEvent('branch-report-api-dm-fetch-error', { detail: error }));
+        this.dispatchEvent(
+          new CustomEvent('branch-report-api-dm-fetch-error', { detail: { error, period } }),
+        );
         return;
       }
 
       const data = await res.json();
-      this.dispatchEvent(new CustomEvent('branch-report-api-dm-fetch', { detail: data }));
+      this.dispatchEvent(
+        new CustomEvent('branch-report-api-dm-fetch', { detail: { data, period } }),
+      );
     } catch (error) {
-      this.dispatchEvent(new CustomEvent('branch-report-api-dm-error', { detail: error }));
+      this.dispatchEvent(
+        new CustomEvent('branch-report-api-dm-error', { detail: { error, period } }),
+      );
     }
   }
 }

@@ -15,7 +15,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataPaymentMethod: { type: Array },
       /**
        * Set of data for dashboard charts and cards.
-       * @type Object
+       * @type {Object}
        * @default {}
        * @private
        */
@@ -83,11 +83,18 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
-   * Dispatch request to get sales branch card report.
+   * Dispatch request to get sales branch card report from a date of day, month and year.
+   * @param {String} date
    * @public
    */
-  getSalesBranchReport() {
-    this._reportApiDm.getSalesBranchReport();
+  getSalesBranchReport(date) {
+    const formatDates = {
+      month: date.slice(0, 7),
+      year: date.slice(0, 4),
+    };
+    this._reportApiDm.getSalesBranchReport(date, 'day');
+    this._reportApiDm.getSalesBranchReport(formatDates.month, 'month');
+    this._reportApiDm.getSalesBranchReport(formatDates.year, 'year');
   }
 
   _setDataSalesBranch(e) {
@@ -129,7 +136,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   /**
    * Format and set data for the sales branch chart report.
    * @param {Array} data
-   * @event 'feature-sales-management-crud-dm-set-data-branch-chart'
    * @private
    */
   _setDataSalesBranchChartReport(data) {
@@ -153,26 +159,39 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       },
     };
 
-    this.dispatchEvent(
-      new CustomEvent('feature-sales-management-crud-dm-set-data-branch-chart', {
-        detail: this._dataSalesBranchReport,
-      }),
-    );
+    this._setDashboardData();
   }
 
   /**
    * Set data for the sales branch card report.
-   * @param {Array} data
-   * @event 'feature-sales-management-crud-dm-set-data-branch-card'
+   * @param {Array} detail
    * @private
    */
-  _setDataSalesBranchCardReport(data) {
-    this._dataSalesBranchReport = { ...this._dataSalesBranchReport, card: data };
-    this.dispatchEvent(
-      new CustomEvent('feature-sales-management-crud-dm-set-data-branch-card', {
-        detail: this._dataSalesBranchReport,
-      }),
-    );
+  _setDataSalesBranchCardReport(detail) {
+    const { period, data } = detail;
+    this._dataSalesBranchReport = {
+      ...this._dataSalesBranchReport,
+      card: {
+        ...(this._dataSalesBranchReport.card || {}),
+        [period]: data,
+      },
+    };
+    this._setDashboardData();
+  }
+
+  /**
+   * Sincronize data of cards and. charts.
+   * @event 'feature-sales-management-crud-dm-set-dashboard-data'
+   * @private
+   */
+  _setDashboardData() {
+    if (this._dataSalesBranchReport.chart && this._dataSalesBranchReport.card) {
+      this.dispatchEvent(
+        new CustomEvent('feature-sales-management-crud-dm-set-dashboard-data', {
+          detail: this._dataSalesBranchReport,
+        }),
+      );
+    }
   }
 
   createBranch(body) {
