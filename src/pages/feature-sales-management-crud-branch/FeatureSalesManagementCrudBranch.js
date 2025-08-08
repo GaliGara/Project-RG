@@ -17,6 +17,10 @@ export class FeatureSalesManagementCrudBranch extends LitElement {
     return this;
   }
 
+  /**
+   * Set Object data on CustomEvent
+   * @param {Object} data
+   */
   submitPage(data) {
     this.dispatchEvent(new CustomEvent('submit-event', { detail: data }));
   }

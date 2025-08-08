@@ -190,10 +190,6 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     }
   }
 
-  createBranch(body) {
-    this._branchesDm.createBranch(body);
-  }
-
   /**
    * Create the api post data key - value from body object
    * @param {Object} body
@@ -204,6 +200,14 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       data[key] = value;
     }
     this._employeeDm.createEmployee(data);
+  }
+
+  createBranch(body) {
+    this._branchesDm.createBranch(body);
+  }
+
+  createPaymentMethod(body) {
+    this._paymentMethodDm.createPaymentMethod(body);
   }
 
   render() {

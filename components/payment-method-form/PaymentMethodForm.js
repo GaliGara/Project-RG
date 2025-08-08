@@ -1,15 +1,15 @@
 import { LitElement, html, nothing } from 'lit';
 import '../grid-table/GridTable.js';
 
-export class BranchForm extends LitElement {
+export class PaymentMethodForm extends LitElement {
   static get properties() {
     return {
       /**
-       * List of branches
+       * Payment Method
        * @type {String}
        * @default ''
        */
-      branchName: { type: String },
+      paymentMethod: { type: String },
 
       /**
        * Object of table config
@@ -29,7 +29,7 @@ export class BranchForm extends LitElement {
 
   constructor() {
     super();
-    this.branchName = '';
+    this.paymentMethod = '';
     this.configBranch = {};
     this.showForm = false;
   }
@@ -48,11 +48,11 @@ export class BranchForm extends LitElement {
    */
   get tableConfig() {
     return {
-      columns: ['ID', 'Sucursal', 'Acciones'],
+      columns: ['ID', 'Tipo de Pago', 'Acciones'],
       data: [
-        ['1', 'Mitika', 'btn'],
-        ['2', 'Delta', 'btn'],
-        ['3', 'Zona', 'btn'],
+        ['1', 'Efectivo', 'btn'],
+        ['2', 'Tarjeta', 'btn'],
+        ['3', 'Transferencia', 'btn'],
       ],
       search: true,
       pagination: { limit: 3 },
@@ -60,25 +60,25 @@ export class BranchForm extends LitElement {
   }
 
   /**
-   * Renders the modal form to register a new branch.
+   * Renders the modal form to register a new payment method.
    * @returns {import('lit-html').TemplateResult}
    */
-  _tplBranchFormModal() {
+  _tplPaymentMethodFormModal() {
     return html`
       <div class="modal-branch">
         <div class="card-div">
-          <h2 class="card-title">Registrar Sucursal</h2>
-          <form id="branch-form" @submit=${this.submit}>
+          <h2 class="card-title">Agregar Forma de Pago:</h2>
+          <form id="branch-form" @submit="${this.submit}">
             <div class="grid-div">
               <div class="grid-cols-2">
-                <label class="card-label">Nombre de Sucursal:</label>
+                <label class="card-label">Nombre del Tipo de Pago:</label>
                 <input
                   class="card-input"
                   type="text"
                   name="branch"
-                  .value=${this.branchName}
+                  .value=${this.paymentMethod}
                   @input=${e => {
-                    this.branchName = e.target.value;
+                    this.paymentMethod = e.target.value;
                   }}
                 />
               </div>
@@ -111,7 +111,9 @@ export class BranchForm extends LitElement {
     event.preventDefault();
     this.dispatchEvent(
       new CustomEvent('request-submit', {
-        detail: { branchName: this.branchName },
+        detail: { paymentMethodName: this.paymentMethod },
+        bubbles: true,
+        composed: true,
       }),
     );
     event.target.reset();
@@ -126,14 +128,14 @@ export class BranchForm extends LitElement {
           this.showForm = !this.showForm;
         }}
       >
-        Agregar Sucursal
+        Agregar
       </button>
 
-      ${this.showForm ? this._tplBranchFormModal() : nothing}
+      ${this.showForm ? this._tplPaymentMethodFormModal() : nothing}
 
       <grid-table .config=${this.tableConfig}></grid-table>
     `;
   }
 }
 
-customElements.define('branch-form', BranchForm);
+customElements.define('payment-method-form', PaymentMethodForm);

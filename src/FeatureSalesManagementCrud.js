@@ -73,6 +73,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudSalesIsVisible = true;
     this.crudEmployeeIsVisible = false;
     this.crudBranchesIsVisible = false;
+    this.crudPaymentMethodIsVisible = false;
     this._salesManagementCrudDm.getSalesBranch();
   }
 
@@ -80,6 +81,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudEmployeeIsVisible = true;
     this.crudSalesIsVisible = false;
     this.crudBranchesIsVisible = false;
+    this.crudPaymentMethodIsVisible = false;
     this._salesManagementCrudDm.getEmployee();
   }
 
@@ -87,18 +89,23 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudBranchesIsVisible = true;
     this.crudEmployeeIsVisible = false;
     this.crudSalesIsVisible = false;
+    this.crudPaymentMethodIsVisible = false;
     this._salesManagementCrudDm.getBranches();
   }
 
   handleGetPaymentMethod() {
-    this.crudPaymentMethodIsVisible = true;
+        this.crudPaymentMethodIsVisible = true;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;
     this.crudSalesIsVisible = false;
     this._salesManagementCrudDm.getPaymentMethod();
   }
 
-  handleSummit(detail) {
+  /**
+   * Handles the event to bin detail objetc to dm component
+   * @param {Object} detail
+   */
+  handleBranchSubmit(detail) {
     this._salesManagementCrudDm.createBranch(detail);
   }
 
@@ -108,6 +115,14 @@ export class FeatureSalesManagementCrud extends LitElement {
    */
   handleEmployeeSubmit(detail) {
     this._salesManagementCrudDm.createEmployee(detail);
+  }
+
+  /**
+   * Handles the event to bin detail objetc to dm component
+   * @param {Object} detail
+   */
+  handlePaymentMethodSubmit(detail) {
+    this._salesManagementCrudDm.createPaymentMethod(detail);
   }
 
   /**
@@ -166,7 +181,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       ${this.crudBranchesIsVisible
         ? html`
             <feature-sales-management-crud-branch
-              @submit-event="${e => this.handleSummit(e.detail)}"
+              @submit-event="${e => this.handleBranchSubmit(e.detail)}"
               .data="${this.dataBranches}"
             ></feature-sales-management-crud-branch>
           `
@@ -184,6 +199,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-payment-method
               .data="${this.dataPaymentMethod}"
+              @submit-payment-method-event="${e => this.handlePaymentMethodSubmit(e.detail)}"
             ></feature-sales-management-crud-payment-method>
           `
         : nothing}

@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import '../../../components/seller-form/SellerForm.js';
+import '../../../components/payment-method-form/PaymentMethodForm.js';
 import '../../../components/grid-table/GridTable.js';
 
 export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
@@ -18,12 +18,18 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
     return this;
   }
 
-  render() {
-    console.log('data', this.data);
+  /**
+   * Set Object data on CustomEvent
+   * @param {Object} data
+   */
+  submitPage(data) {
+    this.dispatchEvent(new CustomEvent('submit-payment-method-event', { detail: data }));
+  }
 
+  render() {
     return html`
       <h1>hola desde payment method page</h1>
-      <seller-form></seller-form>
+      <payment-method-form @request-submit="${(e) => this.submitPage(e.detail)}"></payment-method-form>
     `;
   }
 }
