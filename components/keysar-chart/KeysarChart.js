@@ -19,6 +19,7 @@ export class KeysarChart extends LitElement {
        */
       chartType: {
         type: String,
+        attribute: 'chart-type',
       },
       /**
        * Data for the bar chart.
@@ -43,6 +44,15 @@ export class KeysarChart extends LitElement {
        */
       sales: {
         type: Array,
+      },
+      /**
+       * Title chart to display.
+       * @type {String}
+       * @default ''
+       */
+      titleChart: {
+        type: String,
+        attribute: 'title-chart',
       },
     };
   }
@@ -113,6 +123,7 @@ export class KeysarChart extends LitElement {
   render() {
     return html`
       <div class="bg-white rounded-2xl shadow-2xl p-4 mb-3 w-full max-w-3xl h-100 md:h-96">
+        <h2 class="text-xl font-bold">${this.titleChart}</h2>
         <canvas class="w-full h-full block"></canvas>
       </div>
     `;

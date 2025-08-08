@@ -64,5 +64,40 @@ export class ReportApiDm extends LitElement {
       );
     }
   }
+
+  /**
+   * Fetch total sales branch card report data from dynamic date for day, month and year.
+   * @param {String} date
+   * @param {String} period
+   * @public
+   */
+  async getSalesBranchTotalReport(date, period) {
+    try {
+      const res = await fetch(
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch/total?date=${date}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        this.dispatchEvent(
+          new CustomEvent('branch-total-api-dm-fetch-error', { detail: { error, period } }),
+        );
+        return;
+      }
+
+      const data = await res.json();
+      this.dispatchEvent(
+        new CustomEvent('branch-total-api-dm-fetch', { detail: { data, period } }),
+      );
+    } catch (error) {
+      this.dispatchEvent(
+        new CustomEvent('branch-total-api-dm-error', { detail: { error, period } }),
+      );
+    }
+  }
 }
 customElements.define('report-api-dm', ReportApiDm);

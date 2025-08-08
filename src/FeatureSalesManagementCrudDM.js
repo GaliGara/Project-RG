@@ -84,13 +84,34 @@ export class FeatureSalesManagementCrudDM extends LitElement {
    * @public
    */
   getSalesBranchReport(date) {
-    const formatDates = {
+    const formatDate = FeatureSalesManagementCrudDM._getFormatDate(date);
+    this._reportApiDm.getSalesBranchReport(date, 'day');
+    this._reportApiDm.getSalesBranchReport(formatDate.month, 'month');
+    this._reportApiDm.getSalesBranchReport(formatDate.year, 'year');
+  }
+
+  /**
+   * Dispatch request to get total sales branch.
+   * @param {String} date
+   * @public
+   */
+  getSalesBranchTotal(date) {
+    const formatDate = FeatureSalesManagementCrudDM._getFormatDate(date);
+    this._reportApiDm.getSalesBranchTotalReport(date, 'day');
+    this._reportApiDm.getSalesBranchTotalReport(formatDate.month, 'month');
+    this._reportApiDm.getSalesBranchTotalReport(formatDate.year, 'year');
+  }
+
+  /**
+   * Get formatted date for sales branch report.
+   * @param {String} date
+   * @private
+   */
+  static _getFormatDate(date) {
+    return {
       month: date.slice(0, 7),
       year: date.slice(0, 4),
     };
-    this._reportApiDm.getSalesBranchReport(date, 'day');
-    this._reportApiDm.getSalesBranchReport(formatDates.month, 'month');
-    this._reportApiDm.getSalesBranchReport(formatDates.year, 'year');
   }
 
   _setDataSalesBranch(e) {
@@ -175,13 +196,35 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._setDashboardData();
   }
 
+  _setDataSalesBranchTotalReport(detail) {
+    const { period, data } = detail;
+    this._dataSalesBranchReport = {
+      ...this._dataSalesBranchReport,
+      card: {
+        ...(this._dataSalesBranchReport?.card ?? {}),
+        total: {
+          ...(this._dataSalesBranchReport?.card?.total ?? {}),
+          [period]: data,
+        },
+      },
+    };
+
+    this._setDashboardData();
+  }
+
   /**
-   * Sincronize data of cards and. charts.
+   * Sincronize data of cards and charts.
    * @event 'feature-sales-management-crud-dm-set-dashboard-data'
    * @private
    */
   _setDashboardData() {
-    if (this._dataSalesBranchReport.chart && this._dataSalesBranchReport.card) {
+    if (
+      this._dataSalesBranchReport?.chart &&
+      this._dataSalesBranchReport?.card &&
+      ['day', 'month', 'year'].every(prop => this._dataSalesBranchReport.card[prop]) &&
+      this._dataSalesBranchReport.card.total &&
+      ['day', 'month', 'year'].every(prop => this._dataSalesBranchReport.card.total[prop])
+    ) {
       this.dispatchEvent(
         new CustomEvent('feature-sales-management-crud-dm-set-dashboard-data', {
           detail: this._dataSalesBranchReport,
@@ -238,6 +281,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       <report-api-dm
         @branch-chart-report-api-dm-fetch=${e => this._setDataSalesBranchChartReport(e.detail)}
         @branch-report-api-dm-fetch=${e => this._setDataSalesBranchCardReport(e.detail)}
+        @branch-total-api-dm-fetch=${e => this._setDataSalesBranchTotalReport(e.detail)}
       >
       </report-api-dm>
     `;

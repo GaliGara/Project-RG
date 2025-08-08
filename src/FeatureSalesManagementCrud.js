@@ -133,6 +133,7 @@ export class FeatureSalesManagementCrud extends LitElement {
   _handleGetSalesBranch(date) {
     this._salesManagementCrudDm.getSalesBranchChartReport();
     this._salesManagementCrudDm.getSalesBranchReport(date);
+    this._salesManagementCrudDm.getSalesBranchTotal(date);
   }
 
   /**
@@ -142,6 +143,7 @@ export class FeatureSalesManagementCrud extends LitElement {
    */
   _setDashboardConfig(detail) {
     this._dashboardData = detail;
+    console.log("🚀 ~ FeatureSalesManagementCrud ~ _setDashboardConfig ~ this._dashboardData:", this._dashboardData)
     this.crudPaymentMethodIsVisible = false;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;
