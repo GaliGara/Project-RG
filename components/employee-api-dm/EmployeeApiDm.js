@@ -6,6 +6,7 @@ export class EmployeeApiDm extends LitElement {
   }
 
   async getEmployee() {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/employees');
 
@@ -21,6 +22,8 @@ export class EmployeeApiDm extends LitElement {
       this.dispatchEvent(new CustomEvent('employee-api-dm-fetch', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('employee-api-dm-error', { detail: error }));
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 

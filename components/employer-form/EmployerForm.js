@@ -439,7 +439,6 @@ export class EmployerForm extends LitElement {
   }
 
   render() {
-    console.log(this.dataTable);
     return html`
       <button
         class="new-form-btn"

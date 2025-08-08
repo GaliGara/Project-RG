@@ -142,7 +142,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this.dataEmployee,
       columns: columnsEmployee,
       search: true,
-      pagination: { limit: 3 },
+      pagination: { limit: 10 },
     };
     console.log(this.dataEmployee);
     this.dispatchEvent(
@@ -273,28 +273,33 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._paymentMethodDm.createPaymentMethod(body);
   }
 
+  static _catchError(detail) {
+    console.error('Error:', detail);
+  }
+
   render() {
     return html`
       <sales-api-dm
-        @sales-api-dm-error=${e => console.log('error', e.detail)}
-        @sales-api-dm-fetch-error=${e => console.log('error', e.detail)}
+        @sales-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
+        @sales-api-dm-fetch-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
         @sales-api-dm-fetch=${e => this._setDataSalesBranch(e)}
       ></sales-api-dm>
       <employee-api-dm
-        @employee-api-dm-error=${e => console.log('error', e.detail)}
-        @employee-api-dm-fetch-error=${e => console.log('error', e.detail)}
+        @employee-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
+        @employee-api-dm-fetch-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
         @employee-api-dm-fetch=${e => this._setDataEmployee(e)}
       >
       </employee-api-dm>
       <branches-api-dm
-        @branches-api-dm-error=${e => console.log('error', e.detail)}
-        @branches-api-dm-fetch-error=${e => console.log('error', e.detail)}
+        @branches-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
+        @branches-api-dm-fetch-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
         @branches-api-dm-fetch=${e => this._setDataBranches(e)}
       >
       </branches-api-dm>
       <payment-method-api-dm
-        @payment-method-api-dm-error=${e => console.log('error', e.detail)}
-        @payment-method-api-dm-fetch-error=${e => console.log('error', e.detail)}
+        @payment-method-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
+        @payment-method-api-dm-fetch-error=${e =>
+          FeatureSalesManagementCrudDM._catchError(e.detail)}
         @payment-method-api-dm-fetch=${e => this._setDataPaymentMethod(e)}
       >
       </payment-method-api-dm>
