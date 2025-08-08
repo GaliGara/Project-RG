@@ -4,8 +4,14 @@ export class ReportApiDm extends LitElement {
   /**
    * Fetch sales branch chart report data from the endpoint.
    * @public
+   * @event 'loading-start'
+   * @event 'loading-end'
+   * @event 'branch-chart-report-api-dm-fetch'
+   * @event 'branch-chart-report-api-dm-fetch-error'
+   * @event 'branch-chart-report-api-dm-error'
    */
   async getSalesBranchChartReport() {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
         'https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch/chart?month=2025-07',
@@ -27,6 +33,8 @@ export class ReportApiDm extends LitElement {
       this.dispatchEvent(new CustomEvent('branch-chart-report-api-dm-fetch', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('branch-chart-report-api-dm-error', { detail: error }));
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 
@@ -35,8 +43,14 @@ export class ReportApiDm extends LitElement {
    * @param {String} date
    * @param {String} period
    * @public
+   * @event 'loading-start'
+   * @event 'loading-end'
+   * @event 'branch-report-api-dm-fetch'
+   * @event 'branch-report-api-dm-fetch-error'
+   * @event 'branch-report-api-dm-error'
    */
   async getSalesBranchReport(date, period) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
         `https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch?date=${date}`,
@@ -62,6 +76,8 @@ export class ReportApiDm extends LitElement {
       this.dispatchEvent(
         new CustomEvent('branch-report-api-dm-error', { detail: { error, period } }),
       );
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 
@@ -70,8 +86,14 @@ export class ReportApiDm extends LitElement {
    * @param {String} date
    * @param {String} period
    * @public
+   * @event 'loading-start'
+   * @event 'loading-end'
+   * @event 'branch-total-api-dm-fetch'
+   * @event 'branch-total-api-dm-fetch-error'
+   * @event 'branch-total-api-dm-error'
    */
   async getSalesBranchTotalReport(date, period) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
         `https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch/total?date=${date}`,
@@ -97,6 +119,8 @@ export class ReportApiDm extends LitElement {
       this.dispatchEvent(
         new CustomEvent('branch-total-api-dm-error', { detail: { error, period } }),
       );
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 }

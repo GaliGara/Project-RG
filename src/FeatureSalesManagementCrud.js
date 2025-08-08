@@ -11,6 +11,7 @@ import './pages/feature-sales-management-crud-branch/FeatureSalesManagementCrudB
 import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagementCrudPaymentMethod.js';
 import './FeatureSalesManagementCrudDM.js';
 import './pages/feature-sales-management-crud-dashboard/FeatureSalesManagementCrudDashboard.js';
+import '../components/loading-spinner/LoadingSpinner.js';
 
 export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
@@ -40,6 +41,15 @@ export class FeatureSalesManagementCrud extends LitElement {
       _dashboardData: {
         type: Array,
       },
+      /**
+       * Loading counter for tracking concurrent requests.
+       * @type {Number}
+       * @default 0
+       * @private
+       */
+      _loadingCount: {
+        type: Number,
+      },
     };
   }
 
@@ -55,6 +65,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.dataBranches = [];
     this.dataPaymentMethod = [];
     this._dashboardData = [];
+    this._loadingCount = 0;
   }
 
   createRenderRoot() {
@@ -94,7 +105,7 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   handleGetPaymentMethod() {
-        this.crudPaymentMethodIsVisible = true;
+    this.crudPaymentMethodIsVisible = true;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;
     this.crudSalesIsVisible = false;
@@ -143,7 +154,6 @@ export class FeatureSalesManagementCrud extends LitElement {
    */
   _setDashboardConfig(detail) {
     this._dashboardData = detail;
-    console.log("🚀 ~ FeatureSalesManagementCrud ~ _setDashboardConfig ~ this._dashboardData:", this._dashboardData)
     this.crudPaymentMethodIsVisible = false;
     this.crudBranchesIsVisible = false;
     this.crudEmployeeIsVisible = false;
@@ -151,10 +161,27 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._crudDashboardIsVisible = true;
   }
 
+  /**
+   * Increments the global loading counter.
+   * @private
+   */
+  _incrementLoading() {
+    this._loadingCount += 1;
+    this.requestUpdate();
+  }
+
+  /**
+   * Decrements the global loading counter.
+   * @private
+   */
+  _decrementLoading() {
+    this._loadingCount = Math.max(0, this._loadingCount - 1);
+    this.requestUpdate();
+  }
+
   render() {
     return html`
-      <sales-api-dm></sales-api-dm>
-
+      <loading-spinner .isLoading=${this._loadingCount > 0}></loading-spinner>
       <nav-bar
         @crud-sales-visible=${this.handleGetSalesBranch}
         @crud-employee-visible=${this.handleGetEmployee}
@@ -222,6 +249,8 @@ export class FeatureSalesManagementCrud extends LitElement {
         @feature-sales-management-crud-dm-set-dashboard-data="${e => {
           this._setDashboardConfig(e.detail);
         }}"
+        @loading-start=${this._incrementLoading}
+        @loading-end=${this._decrementLoading}
       >
       </feature-sales-management-crud-dm>
     `;
