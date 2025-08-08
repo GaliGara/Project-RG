@@ -203,7 +203,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-employee
               @submit-employee-event="${e => this.handleEmployeeSubmit(e.detail)}"
-              .data="${this.dataEmployee}"
+              .dataGridEmployee="${this?.dataEmployee}"
             ></feature-sales-management-crud-employee>
           `
         : nothing}

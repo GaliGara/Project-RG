@@ -17,6 +17,7 @@ export class EmployeeApiDm extends LitElement {
       console.log('succes');
 
       const data = await res.json();
+      console.log('data', data)
       this.dispatchEvent(new CustomEvent('employee-api-dm-fetch', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('employee-api-dm-error', { detail: error }));

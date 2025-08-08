@@ -10,3 +10,15 @@ export const chatColors = [
   'rgba(123, 232, 50, 0.7)',
   'rgba(245, 178, 66, 0.7)',
 ];
+
+export const columnsEmployee = [
+  'ID',
+  'Nombre Completo',
+  'Apellido Paterno',
+  'Apellido Materno',
+  'Nombre',
+  'Banco',
+  'Numero de Cuenta',
+  'Puesto',
+  'Actions',
+];

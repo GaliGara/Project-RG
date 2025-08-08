@@ -4,13 +4,13 @@ import '../components/employee-api-dm/EmployeeApiDm.js';
 import '../components/branches-api-dm/BranchesApiDm.js';
 import '../components/payment-method-api-dm/PaymentMethodApiDm.js';
 import '../components/report-api-dm/ReportApiDm.js';
-import { chatColors } from './utils/configPages.js';
+import { chatColors, columnsEmployee } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
     return {
       dataSalesBranch: { type: Array },
-      dataEmployee: { type: Array },
+      dataEmployee: { type: Object },
       dataBranches: { type: Array },
       dataPaymentMethod: { type: Array },
       /**
@@ -28,7 +28,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   constructor() {
     super();
     this.dataSalesBranch = [];
-    this.dataEmployee = [];
+    this.dataEmployee = {};
     this.dataBranches = [];
     this.dataPaymentMethod = [];
     this._dataSalesBranchReport = {};
@@ -125,6 +125,26 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   _setDataEmployee(e) {
     this.dataEmployee = e.detail;
+    this.dataEmployee = {
+      data: this.dataEmployee.map(item => [
+        item.idEmployee,
+        item.fullName,
+        item.firstName,
+        item.lastName,
+        item.middleName,
+        item.bank,
+        item.accountNumber,
+        item.position,
+        item.personalTarget,
+      ]),
+    };
+    this.dataEmployee = {
+      ...this.dataEmployee,
+      columns: columnsEmployee,
+      search: true,
+      pagination: { limit: 3 },
+    };
+    console.log(this.dataEmployee);
     this.dispatchEvent(
       new CustomEvent('set-data-employee', {
         detail: this.dataEmployee,

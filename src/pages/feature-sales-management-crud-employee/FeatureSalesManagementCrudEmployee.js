@@ -1,16 +1,16 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import '../../../components/employer-form/EmployerForm.js';
 
 export class FeatureSalesManagementCrudEmployee extends LitElement {
   static get properties() {
     return {
-      data: { type: Array },
+      dataGridEmployee: { type: Object },
     };
   }
 
   constructor() {
     super();
-    this.data = [];
+    this.dataGridEmployee = {};
   }
 
   createRenderRoot() {
@@ -28,7 +28,14 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
   render() {
     return html`
       <h1>hola desde employee page</h1>
-      <employer-form @request-submit=${e => this.submitPage(e.detail)}></employer-form>
+      ${Object.keys(this.dataGridEmployee || {}).length
+        ? nothing
+        : html`
+            <employer-form
+              .dataTable="${this?.dataGridEmployee}"
+              @request-submit=${e => this.submitPage(e.detail)}
+            ></employer-form>
+          `}
     `;
   }
 }
