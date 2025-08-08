@@ -29,13 +29,13 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
     return html`
       <h1>hola desde employee page</h1>
       ${Object.keys(this.dataGridEmployee || {}).length
-        ? nothing
-        : html`
+        ? html`
             <employer-form
               .dataTable="${this?.dataGridEmployee}"
               @request-submit=${e => this.submitPage(e.detail)}
             ></employer-form>
-          `}
+          `
+        : nothing}
     `;
   }
 }
