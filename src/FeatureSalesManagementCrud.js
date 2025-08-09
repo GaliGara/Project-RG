@@ -32,7 +32,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
-      dataPaymentMethod: { type: Array },
+      dataPaymentMethod: { type: Object },
       /**
        * Data for dashboard page.
        * @type {Array}
@@ -63,7 +63,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
-    this.dataPaymentMethod = [];
+    this.dataPaymentMethod = {};
     this._dashboardData = [];
     this._loadingCount = 0;
   }
@@ -227,7 +227,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       ${this.crudPaymentMethodIsVisible
         ? html`
             <feature-sales-management-crud-payment-method
-              .data="${this.dataPaymentMethod}"
+              .dataGridPaymentMethod="${this.dataPaymentMethod}"
               @submit-payment-method-event="${e => this.handlePaymentMethodSubmit(e.detail)}"
             ></feature-sales-management-crud-payment-method>
           `

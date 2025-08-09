@@ -34,14 +34,12 @@ export class BranchesApiDm extends LitElement {
       if (!res.ok) {
         const error = await res.json();
         this.dispatchEvent(new CustomEvent('branches-api-dm-fetch-error', { detail: error }));
-        return; 
+        return;
       }
       const data = await res.json();
       this.dispatchEvent(new CustomEvent('branches-api-dm-fetch', { detail: data }));
-    
     } catch (error) {
       this.dispatchEvent(new CustomEvent('branches-api-dm-error', { detail: error }));
-   
     } finally {
       this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }

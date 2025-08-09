@@ -1,17 +1,17 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import '../../../components/payment-method-form/PaymentMethodForm.js';
 import '../../../components/grid-table/GridTable.js';
 
 export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
   static get properties() {
     return {
-      data: { type: Array },
+      dataGridPaymentMethod: { type: Object },
     };
   }
 
   constructor() {
     super();
-    this.data = [];
+    this.dataGridPaymentMethod = {};
   }
 
   createRenderRoot() {
@@ -28,8 +28,12 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
 
   render() {
     return html`
-      <h1>hola desde payment method page</h1>
-      <payment-method-form @request-submit="${(e) => this.submitPage(e.detail)}"></payment-method-form>
+      ${Object.keys(this.dataGridPaymentMethod || {}).length
+        ? html` <payment-method-form
+            .tableConfig="${this.dataGridPaymentMethod}"
+            @request-submit="${e => this.submitPage(e.detail)}"
+          ></payment-method-form>`
+        : nothing}
     `;
   }
 }

@@ -30,7 +30,7 @@ export class PaymentMethodForm extends LitElement {
   constructor() {
     super();
     this.paymentMethod = '';
-    this.configBranch = {};
+    this.tableConfig = {};
     this.showForm = false;
   }
 
@@ -40,23 +40,6 @@ export class PaymentMethodForm extends LitElement {
    */
   createRenderRoot() {
     return this;
-  }
-
-  /**
-   * Provides the config object for the grid-table.
-   * @returns {Object}
-   */
-  get tableConfig() {
-    return {
-      columns: ['ID', 'Tipo de Pago', 'Acciones'],
-      data: [
-        ['1', 'Efectivo', 'btn'],
-        ['2', 'Tarjeta', 'btn'],
-        ['3', 'Transferencia', 'btn'],
-      ],
-      search: true,
-      pagination: { limit: 3 },
-    };
   }
 
   /**
