@@ -25,3 +25,12 @@ export const columnsEmployee = [
 ];
 
 export const columnsBranch = ['ID', 'Sucursal', 'Acciones'];
+
+export const columnsSalesBranch = [
+  'ID',
+  'Sucursal',
+  'Fecha',
+  'Total Ventas',
+  'Notas',
+  'Acciones',
+];

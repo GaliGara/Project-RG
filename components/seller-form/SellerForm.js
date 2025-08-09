@@ -9,7 +9,7 @@ export class SellerForm extends LitElement {
        * @type {Object}
        * @default '{}'
        */
-      tableConfig: { type: Object },
+      salesTableConfig: { type: Object },
 
       /**
        * Boolean to show form
@@ -22,7 +22,7 @@ export class SellerForm extends LitElement {
 
   constructor() {
     super();
-    this.tableConfig = {};
+    this.salesTableConfig = {};
     this.showForm = false;
   }
 
@@ -34,31 +34,6 @@ export class SellerForm extends LitElement {
     return this;
   }
 
-  /**
-   * Provides the config object for the grid-table.
-   * @returns {Object}
-   */
-  get salesTableConfig() {
-    return {
-      columns: [
-        'ID',
-        'Fecha',
-        'Sucursal',
-        'Vendedor',
-        'Tipo de Pago',
-        'Notas',
-        'Total Ventas',
-        'Acciones',
-      ],
-      data: [
-        ['1', '25-02-25', 'Mitika', 'Enrique', 'Transferencia', 'Notas', '$100', 'btn'],
-        ['1', '31-11-25', 'Delta', 'Emanuel', 'Efectivo', 'Notas2', '$200', 'btn'],
-        ['1', '19-06-25', 'Opatra', 'Brandon', 'Deposito', 'Notas3', '$300', 'btn'],
-      ],
-      search: true,
-      pagination: { limit: 3 },
-    };
-  }
 
   /**
    * Renders the modal form for adding a new sale.
@@ -132,7 +107,7 @@ export class SellerForm extends LitElement {
 
             <!-- Action Buttons -->
             <div class="card-buttons">
-              <button type="button" class="close-btn" @click=${() => (this.showForm = false)}>
+              <button type="button" class="close-btn" @click=${() => {this.showForm = false}}>
                 Cerrar
               </button>
               <button class="agree-btn">Agregar</button>
@@ -145,7 +120,7 @@ export class SellerForm extends LitElement {
 
   render() {
     return html`
-      <button class="new-form-btn" @click=${() => (this.showForm = !this.showForm)}>
+      <button class="new-form-btn" @click=${() => {this.showForm = !this.showForm}}>
         Agregar Venta
       </button>
 

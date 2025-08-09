@@ -4,12 +4,12 @@ import '../components/employee-api-dm/EmployeeApiDm.js';
 import '../components/branches-api-dm/BranchesApiDm.js';
 import '../components/payment-method-api-dm/PaymentMethodApiDm.js';
 import '../components/report-api-dm/ReportApiDm.js';
-import { chatColors, columnsBranch, columnsEmployee } from './utils/configPages.js';
+import { chatColors, columnsBranch, columnsEmployee, columnsSalesBranch } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
     return {
-      dataSalesBranch: { type: Array },
+      dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
       dataPaymentMethod: { type: Array },
@@ -27,7 +27,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   constructor() {
     super();
-    this.dataSalesBranch = [];
+    this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = [];
@@ -116,6 +116,21 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   _setDataSalesBranch(e) {
     this.dataSalesBranch = e.detail;
+    this.dataSalesBranch = {
+      data: this.dataSalesBranch.map(item => [
+        item.idSalesBranch,
+        item.branchName,
+        item.dateSalesBranch,
+        item.salesBranchTotal,
+        item.notes,
+      ]),
+    };
+    this.dataSalesBranch = {
+      ...this.dataSalesBranch,
+      columns: columnsSalesBranch,
+      search: true,
+      pagination: {limit: 9},
+    };
     this.dispatchEvent(
       new CustomEvent('set-data-sales-branch', {
         detail: this.dataSalesBranch,

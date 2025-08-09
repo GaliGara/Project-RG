@@ -1,17 +1,17 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import '../../../components/seller-form/SellerForm.js';
 import '../../../components/grid-table/GridTable.js';
 
 export class FeatureSalesManagementCrudSales extends LitElement {
   static get properties() {
     return {
-      data: { type: Array },
+      dataGridSales: { type: Object },
     };
   }
 
   constructor() {
     super();
-    this.data = [];
+    this.dataGridSales = {};
   }
 
   createRenderRoot() {
@@ -19,11 +19,10 @@ export class FeatureSalesManagementCrudSales extends LitElement {
   }
 
   render() {
-    console.log('data', this.data);
-
     return html`
-      <h1>hola desde sales page</h1>
-      <seller-form></seller-form>
+      ${Object.keys(this.dataGridSales || {}).length
+        ? html` <seller-form .salesTableConfig="${this.dataGridSales}"></seller-form>`
+        : nothing}
     `;
   }
 }

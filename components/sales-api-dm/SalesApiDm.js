@@ -17,25 +17,22 @@ export class SalesApiDm extends LitElement {
   }
 
   async getSalesBranch() {
-    console.log('🚀 ~ SalesApiDm ~ getSalesBranch ~ getSalesBranch:');
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch');
-
       if (!res.ok) {
-        console.log('if');
-
         const error = await res.json();
         this.dispatchEvent(new CustomEvent('sales-api-dm-fetch-error', { detail: error }));
         return;
       }
-      console.log('succes');
-
       const data = await res.json();
       this.dispatchEvent(new CustomEvent('sales-api-dm-fetch', { detail: data }));
-    } catch (error) {
-      console.log('error');
 
+    } catch (error) {
       this.dispatchEvent(new CustomEvent('sales-api-dm-error', { detail: error }));
+
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 

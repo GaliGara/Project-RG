@@ -29,7 +29,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       _crudDashboardIsVisible: {
         type: Boolean,
       },
-      dataSalesBranch: { type: Array },
+      dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
       dataPaymentMethod: { type: Array },
@@ -60,7 +60,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudBranchesIsVisible = false;
     this.crudPaymentMethodIsVisible = false;
     this._crudDashboardIsVisible = false;
-    this.dataSalesBranch = [];
+    this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = [];
@@ -195,7 +195,7 @@ export class FeatureSalesManagementCrud extends LitElement {
       ${this.crudSalesIsVisible
         ? html`
             <feature-sales-management-crud-sales
-              .data="${this.dataSalesBranch}"
+              .dataGridSales="${this?.dataSalesBranch}"
             ></feature-sales-management-crud-sales>
           `
         : nothing}
