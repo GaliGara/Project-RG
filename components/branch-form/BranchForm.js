@@ -30,7 +30,7 @@ export class BranchForm extends LitElement {
   constructor() {
     super();
     this.branchName = '';
-    this.configBranch = {};
+    this.tableConfig = {};
     this.showForm = false;
   }
 
@@ -42,22 +42,6 @@ export class BranchForm extends LitElement {
     return this;
   }
 
-  /**
-   * Provides the config object for the grid-table.
-   * @returns {Object}
-   */
-  get tableConfig() {
-    return {
-      columns: ['ID', 'Sucursal', 'Acciones'],
-      data: [
-        ['1', 'Mitika', 'btn'],
-        ['2', 'Delta', 'btn'],
-        ['3', 'Zona', 'btn'],
-      ],
-      search: true,
-      pagination: { limit: 3 },
-    };
-  }
 
   /**
    * Renders the modal form to register a new branch.

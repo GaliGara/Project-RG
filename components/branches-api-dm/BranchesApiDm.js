@@ -7,13 +7,13 @@ export class BranchesApiDm extends LitElement {
 
   async createBranch(body) {
     try {
-    const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/branches', {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/branches', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (!res.ok) {
         const error = await res.json();
@@ -21,7 +21,6 @@ export class BranchesApiDm extends LitElement {
         return;
       }
       const data = await res.json();
-      console.log('POST FINISH')
       this.dispatchEvent(new CustomEvent('branches-api-dm-post', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('branches-api-dm-post-error', { detail: error }));
@@ -29,25 +28,22 @@ export class BranchesApiDm extends LitElement {
   }
 
   async getBranches() {
-    console.log('🚀 ~ SalesApiDm ~ getSalesBranch ~ getSalesBranch:');
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/branches');
-
       if (!res.ok) {
-        console.log('if');
-
         const error = await res.json();
         this.dispatchEvent(new CustomEvent('branches-api-dm-fetch-error', { detail: error }));
-        return;
+        return; 
       }
-      console.log('succes');
-
       const data = await res.json();
       this.dispatchEvent(new CustomEvent('branches-api-dm-fetch', { detail: data }));
+    
     } catch (error) {
-      console.log('error');
-
       this.dispatchEvent(new CustomEvent('branches-api-dm-error', { detail: error }));
+   
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 }

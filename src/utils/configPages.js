@@ -20,5 +20,8 @@ export const columnsEmployee = [
   'Banco',
   'Numero de Cuenta',
   'Puesto',
+  'Personal Target',
   'Actions',
 ];
+
+export const columnsBranch = ['ID', 'Sucursal', 'Acciones'];

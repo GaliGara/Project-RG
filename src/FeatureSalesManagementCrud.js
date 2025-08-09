@@ -30,8 +30,8 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Boolean,
       },
       dataSalesBranch: { type: Array },
-      dataEmployee: { type: Array },
-      dataBranches: { type: Array },
+      dataEmployee: { type: Object },
+      dataBranches: { type: Object },
       dataPaymentMethod: { type: Array },
       /**
        * Data for dashboard page.
@@ -61,8 +61,8 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudPaymentMethodIsVisible = false;
     this._crudDashboardIsVisible = false;
     this.dataSalesBranch = [];
-    this.dataEmployee = [];
-    this.dataBranches = [];
+    this.dataEmployee = {};
+    this.dataBranches = {};
     this.dataPaymentMethod = [];
     this._dashboardData = [];
     this._loadingCount = 0;
@@ -211,7 +211,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-branch
               @submit-event="${e => this.handleBranchSubmit(e.detail)}"
-              .data="${this.dataBranches}"
+              .dataGridBranch="${this.dataBranches}"
             ></feature-sales-management-crud-branch>
           `
         : nothing}

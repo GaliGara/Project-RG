@@ -15,10 +15,7 @@ export class EmployeeApiDm extends LitElement {
         this.dispatchEvent(new CustomEvent('employee-api-dm-fetch-error', { detail: error }));
         return;
       }
-      console.log('succes');
-
       const data = await res.json();
-      console.log('data', data)
       this.dispatchEvent(new CustomEvent('employee-api-dm-fetch', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('employee-api-dm-error', { detail: error }));
@@ -43,7 +40,6 @@ export class EmployeeApiDm extends LitElement {
         return;
       }
       const data = await res.json();
-      console.log('POST FINISH');
       this.dispatchEvent(new CustomEvent('employee-api-dm-post', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('employee-api-dm-post-error', { detail: error }));

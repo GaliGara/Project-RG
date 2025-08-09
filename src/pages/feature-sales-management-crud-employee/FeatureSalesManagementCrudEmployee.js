@@ -27,7 +27,6 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
 
   render() {
     return html`
-      <h1>hola desde employee page</h1>
       ${Object.keys(this.dataGridEmployee || {}).length
         ? html`
             <employer-form

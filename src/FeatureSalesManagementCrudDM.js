@@ -4,14 +4,14 @@ import '../components/employee-api-dm/EmployeeApiDm.js';
 import '../components/branches-api-dm/BranchesApiDm.js';
 import '../components/payment-method-api-dm/PaymentMethodApiDm.js';
 import '../components/report-api-dm/ReportApiDm.js';
-import { chatColors, columnsEmployee } from './utils/configPages.js';
+import { chatColors, columnsBranch, columnsEmployee } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
   static get properties() {
     return {
       dataSalesBranch: { type: Array },
       dataEmployee: { type: Object },
-      dataBranches: { type: Array },
+      dataBranches: { type: Object },
       dataPaymentMethod: { type: Array },
       /**
        * Set of data for dashboard charts and cards.
@@ -29,7 +29,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     super();
     this.dataSalesBranch = [];
     this.dataEmployee = {};
-    this.dataBranches = [];
+    this.dataBranches = {};
     this.dataPaymentMethod = [];
     this._dataSalesBranchReport = {};
   }
@@ -142,9 +142,8 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this.dataEmployee,
       columns: columnsEmployee,
       search: true,
-      pagination: { limit: 10 },
+      pagination: { limit: 9 },
     };
-    console.log(this.dataEmployee);
     this.dispatchEvent(
       new CustomEvent('set-data-employee', {
         detail: this.dataEmployee,
@@ -154,6 +153,18 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   _setDataBranches(e) {
     this.dataBranches = e.detail;
+    this.dataBranches = {
+      data: this.dataBranches.map(item => [
+        item.idBranch,
+        item.branchName,
+      ]),
+    };
+    this.dataBranches = {
+     ...this.dataBranches,
+     columns:columnsBranch,
+     search: true,
+     pagination: {limit: 6},
+    };
     this.dispatchEvent(
       new CustomEvent('set-data-branches', {
         detail: this.dataBranches,

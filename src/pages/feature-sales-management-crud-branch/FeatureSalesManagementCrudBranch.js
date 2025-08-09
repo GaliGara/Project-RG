@@ -1,16 +1,16 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import '../../../components/branch-form/BranchForm.js';
 
 export class FeatureSalesManagementCrudBranch extends LitElement {
   static get properties() {
     return {
-      data: { type: Array },
+      dataGridBranch: { type: Object },
     };
   }
 
   constructor() {
     super();
-    this.data = [];
+    this.dataGridBranch = {};
   }
 
   createRenderRoot() {
@@ -27,8 +27,12 @@ export class FeatureSalesManagementCrudBranch extends LitElement {
 
   render() {
     return html`
-      <h1>hola desde branch page</h1>
-      <branch-form @request-submit=${e => this.submitPage(e.detail)}></branch-form>
+      ${Object.keys(this.dataGridBranch || {}).length
+        ? html`<branch-form
+            .tableConfig="${this.dataGridBranch}"
+            @request-submit=${e => this.submitPage(e.detail)}
+          ></branch-form>`
+        : nothing}
     `;
   }
 }
