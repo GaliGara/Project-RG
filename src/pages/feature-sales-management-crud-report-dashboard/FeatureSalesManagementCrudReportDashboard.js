@@ -2,7 +2,7 @@ import { LitElement, html, nothing } from 'lit';
 import '../../../components/keysar-chart/KeysarChart.js';
 import '../../../components/summary-card/SummaryCard.js';
 
-export class FeatureSalesManagementCrudDashboard extends LitElement {
+export class FeatureSalesManagementCrudReportDashboard extends LitElement {
   static get properties() {
     return {
       /**
@@ -42,7 +42,9 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
   _sendDate(e) {
     this._date = e.target.value;
     this.dispatchEvent(
-      new CustomEvent('feature-sales-management-crud-dashboard-date', { detail: this._date }),
+      new CustomEvent('feature-sales-management-crud-report-dashboard-date', {
+        detail: this._date,
+      }),
     );
   }
 
@@ -132,6 +134,6 @@ export class FeatureSalesManagementCrudDashboard extends LitElement {
   }
 }
 customElements.define(
-  'feature-sales-management-crud-dashboard',
-  FeatureSalesManagementCrudDashboard,
+  'feature-sales-management-crud-report-dashboard',
+  FeatureSalesManagementCrudReportDashboard,
 );

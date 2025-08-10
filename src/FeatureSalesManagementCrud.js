@@ -10,7 +10,7 @@ import './pages/feature-sales-management-crud-employee/FeatureSalesManagementCru
 import './pages/feature-sales-management-crud-branch/FeatureSalesManagementCrudBranch.js';
 import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagementCrudPaymentMethod.js';
 import './FeatureSalesManagementCrudDM.js';
-import './pages/feature-sales-management-crud-dashboard/FeatureSalesManagementCrudDashboard.js';
+import './pages/feature-sales-management-crud-report-dashboard/FeatureSalesManagementCrudReportDashboard.js';
 import '../components/loading-spinner/LoadingSpinner.js';
 
 export class FeatureSalesManagementCrud extends LitElement {
@@ -217,11 +217,11 @@ export class FeatureSalesManagementCrud extends LitElement {
         : nothing}
       ${this._crudDashboardIsVisible
         ? html`
-            <feature-sales-management-crud-dashboard
+            <feature-sales-management-crud-report-dashboard
               .data="${this._dashboardData}"
-              @feature-sales-management-crud-dashboard-date="${e =>
+              @feature-sales-management-crud-report-dashboard-date="${e =>
                 this._handleGetSalesBranch(e.detail)}"
-            ></feature-sales-management-crud-dashboard>
+            ></feature-sales-management-crud-report-dashboard>
           `
         : nothing}
       ${this.crudPaymentMethodIsVisible
