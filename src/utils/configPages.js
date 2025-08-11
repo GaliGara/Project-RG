@@ -64,3 +64,15 @@ export const columnsSalesSeller = [
   'TO GO',
   'PERCENTAGE',
 ];
+
+export const columnsPaymentMethodReport = [
+  'branch',
+  'EFECTIVO',
+  'TARJETA',
+  'NETPAY LINK',
+  'TRANSFERENCIA',
+  'NEW METHOD',
+  'PRUEBA POST',
+  'POSTZZZ',
+  'TOTAL',
+];

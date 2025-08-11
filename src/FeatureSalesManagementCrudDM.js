@@ -12,6 +12,7 @@ import {
   columnsSalesBranch,
   columnTotalSales,
   columnsSalesSeller,
+  columnsPaymentMethodReport,
 } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
@@ -21,6 +22,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
       dataPaymentMethod: { type: Object },
+      /**
+       * Set of data for payment method report.
+       * @type {Array}
+       * @default []
+       * @private
+       */
+      _dataPaymentMethodReport: {
+        type: Array,
+      },
       /**
        * Set of data for employee report.
        * @type {Array}
@@ -57,6 +67,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = {};
+    this._dataPaymentMethodReport = [];
     this._dataEmployeeReport = [];
     this._dataTotalSalesReport = {};
     this._dataSalesBranchReport = {};
@@ -128,6 +139,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._reportApiDm.getSalesBranchTotalReport(date, 'day');
     this._reportApiDm.getSalesBranchTotalReport(formatDate.month, 'month');
     this._reportApiDm.getSalesBranchTotalReport(formatDate.year, 'year');
+  }
+
+  /**
+   * Dispatch request to get payment method report.
+   * @param {String} date
+   * @public
+   */
+  getPaymentMethodReport(startDate, endDate) {
+    this._reportApiDm.getPaymentMethodReport(startDate, endDate);
   }
 
   /**
@@ -411,6 +431,40 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Set data for payment method report.
+   * @param {Array} data
+   * @event 'feature-sales-management-crud-dm-set-data-payment-method-report'
+   * @private
+   */
+  _setDataPaymentMethodReport(data) {
+    this._dataPaymentMethodReport = data;
+    this._dataPaymentMethodReport = {
+      data: this._dataPaymentMethodReport.map(item => [
+        item.branch,
+        item.EFECTIVO,
+        item.TARJETA,
+        item['NETPAY LINK'],
+        item.TRANSFERENCIA,
+        item['NEW METHOD'],
+        item['PRUEBA POST'],
+        item.POSTZZZ,
+        item.TOTAL,
+      ]),
+    };
+    this._dataPaymentMethodReport = {
+      ...this._dataPaymentMethodReport,
+      columns: columnsPaymentMethodReport,
+      search: true,
+      pagination: { limit: 9 },
+    };
+    this.dispatchEvent(
+      new CustomEvent('feature-sales-management-crud-dm-set-data-payment-method-report', {
+        detail: this._dataPaymentMethodReport,
+      }),
+    );
+  }
+
+  /**
    * Create the api post data key - value from body object
    * @param {Object} body
    */
@@ -467,6 +521,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @branch-total-sales-report-api-dm-fetch=${e =>
           this._setDataBranchTotalSalesReport(e.detail)}
         @employee-report-api-dm-fetch=${e => this._setDataEmployeeReport(e.detail)}
+        @payment-method-report-api-dm-fetch=${e => this._setDataPaymentMethodReport(e.detail)}
       >
       </report-api-dm>
     `;

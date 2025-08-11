@@ -12,6 +12,7 @@ import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagem
 import './pages/feature-sales-management-crud-report-dashboard/FeatureSalesManagementCrudReportDashboard.js';
 import './pages/feature-sales-management-crud-report-total-sales/FeatureSalesManagementCrudReportTotalSales.js';
 import './pages/feature-sales-management-crud-report-sales-seller/FeatureSalesManagementCrudReportSalesSeller.js';
+import './pages/feature-sales-management-crud-report-payment-method/FeatureSalesManagementCrudReportPaymentMethod.js';
 import './FeatureSalesManagementCrud.css';
 import './FeatureSalesManagementCrudDM.js';
 
@@ -49,6 +50,15 @@ export class FeatureSalesManagementCrud extends LitElement {
       _crudSalesSellerIsVisible: {
         type: Boolean,
       },
+      /**
+       * Show payment method report page.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _crudPaymentMethodReportIsVisible: {
+        type: Boolean,
+      },
       dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
@@ -78,6 +88,14 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Array,
       },
       /**
+       * Data for payment method report page.
+       * @type {Array}
+       * @default []
+       */
+      _dataPaymentMethodReport: {
+        type: Array,
+      },
+      /**
        * Loading counter for tracking concurrent requests.
        * @type {Number}
        * @default 0
@@ -98,6 +116,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._crudDashboardIsVisible = false;
     this._crudTotalSalesIsVisible = false;
     this._crudSalesSellerIsVisible = false;
+    this._crudPaymentMethodReportIsVisible = false;
     this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
@@ -105,6 +124,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._dashboardData = [];
     this._totalSalesData = {};
     this._dataEmployeeReport = [];
+    this._dataPaymentMethodReport = [];
     this._loadingCount = 0;
   }
 
@@ -174,6 +194,16 @@ export class FeatureSalesManagementCrud extends LitElement {
    */
   handlePaymentMethodSubmit(detail) {
     this._salesManagementCrudDm.createPaymentMethod(detail);
+  }
+
+  /**
+   * Handles the event to get payment method report.
+   * @param {String} data
+   * @private
+   */
+  _handleGetPaymentMethodReport(data) {
+    const { startDate, endDate } = data;
+    this._salesManagementCrudDm.getPaymentMethodReport(startDate, endDate);
   }
 
   /**
@@ -256,6 +286,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-sales-seller-visible=${() => {
           this._crudSalesSellerIsVisible = true;
         }}
+        @set-payment-method-report-visible=${() => {
+          this._crudPaymentMethodReportIsVisible = true;
+        }}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -279,6 +312,15 @@ export class FeatureSalesManagementCrud extends LitElement {
               @submit-event="${e => this.handleBranchSubmit(e.detail)}"
               .dataGridBranch="${this.dataBranches}"
             ></feature-sales-management-crud-branch>
+          `
+        : nothing}
+      ${this._crudPaymentMethodReportIsVisible
+        ? html`
+            <feature-sales-management-crud-report-payment-method
+              .paymentReportData="${this._dataPaymentMethodReport}"
+              @input-date-between-data="${e => this._handleGetPaymentMethodReport(e.detail)}"
+            >
+            </feature-sales-management-crud-report-payment-method>
           `
         : nothing}
       ${this._crudSalesSellerIsVisible
@@ -327,6 +369,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         }}"
         @set-data-payment-method="${e => {
           this.dataPaymentMethod = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-data-payment-method-report="${e => {
+          this._dataPaymentMethodReport = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-employee-report="${e => {
           this._dataEmployeeReport = e.detail;
