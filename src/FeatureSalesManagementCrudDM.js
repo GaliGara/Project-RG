@@ -11,6 +11,7 @@ import {
   columnsPaymentMethod,
   columnsSalesBranch,
   columnTotalSales,
+  columnsSalesSeller,
 } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
@@ -20,6 +21,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
       dataPaymentMethod: { type: Object },
+      /**
+       * Set of data for employee report.
+       * @type {Array}
+       * @default []
+       * @private
+       */
+      _dataEmployeeReport: {
+        type: Array,
+      },
       /**
        * Set of data for total general sales report.
        * @type {Object}
@@ -47,6 +57,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = {};
+    this._dataEmployeeReport = [];
     this._dataTotalSalesReport = {};
     this._dataSalesBranchReport = {};
   }
@@ -117,6 +128,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._reportApiDm.getSalesBranchTotalReport(date, 'day');
     this._reportApiDm.getSalesBranchTotalReport(formatDate.month, 'month');
     this._reportApiDm.getSalesBranchTotalReport(formatDate.year, 'year');
+  }
+
+  /**
+   * Dispatch request to get sales employee report.
+   * @param {String} date
+   * @public
+   */
+  getEmployeeReport(startDate, endDate) {
+    this._reportApiDm.getEmployeeReport(startDate, endDate);
   }
 
   /**
@@ -313,6 +333,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   /**
    * Set data for total general sales report.
+   * @param {Array} data
    * @event 'feature-sales-management-crud-dm-set-data-total-sales'
    * @private
    */
@@ -344,6 +365,47 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dispatchEvent(
       new CustomEvent('feature-sales-management-crud-dm-set-data-total-sales', {
         detail: this._dataTotalSalesReport,
+      }),
+    );
+  }
+
+  /**
+   * Set data for employee report.
+   * @param {Array} data
+   * @event 'feature-sales-management-crud-dm-set-data-employee-report'
+   * @private
+   */
+  _setDataEmployeeReport(data) {
+    this._dataEmployeeReport = data;
+    this._dataEmployeeReport = {
+      data: this._dataEmployeeReport.map(item => [
+        item.EMPLOYEE,
+        item.GALERIAS_INSURGENTES,
+        item.OPATRA,
+        item.MITIKAH,
+        item.DELTA,
+        item.MITIKAH_2,
+        item.MIYANA,
+        item.MASARYK,
+        item.NEW_BRANCH,
+        item.PRUEBA_POST,
+        item.POST,
+        item.POSTZZZ,
+        item.TOTAL,
+        item.MONTHLY_TARGET,
+        item.TO_GO,
+        item.PERCENTAGE,
+      ]),
+    };
+    this._dataEmployeeReport = {
+      ...this._dataEmployeeReport,
+      columns: columnsSalesSeller,
+      search: true,
+      pagination: { limit: 9 },
+    };
+    this.dispatchEvent(
+      new CustomEvent('feature-sales-management-crud-dm-set-data-employee-report', {
+        detail: this._dataEmployeeReport,
       }),
     );
   }
@@ -404,6 +466,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @branch-total-api-dm-fetch=${e => this._setDataSalesBranchTotalReport(e.detail)}
         @branch-total-sales-report-api-dm-fetch=${e =>
           this._setDataBranchTotalSalesReport(e.detail)}
+        @employee-report-api-dm-fetch=${e => this._setDataEmployeeReport(e.detail)}
       >
       </report-api-dm>
     `;

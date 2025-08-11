@@ -45,3 +45,22 @@ export const columnTotalSales = [
   'POSTZZZ',
   'TOTAL',
 ];
+
+export const columnsSalesSeller = [
+  'EMPLOYEE',
+  'GALERIAS INSURGENTES',
+  'OPATRA',
+  'MITIKAH',
+  'DELTA',
+  'MITIKAH 2',
+  'MIYANA',
+  'MASARYK',
+  'NEW BRANCH',
+  'PRUEBA POST',
+  'POST',
+  'POSTZZZ',
+  'TOTAL',
+  'MONTHLY TARGET',
+  'TO GO',
+  'PERCENTAGE',
+];

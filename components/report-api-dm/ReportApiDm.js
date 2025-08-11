@@ -166,5 +166,44 @@ export class ReportApiDm extends LitElement {
       this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
+
+  /**
+   * Fetch employee report data between start and end dates.
+   * @param {String} startDate
+   * @param {String} endDate
+   * @public
+   * @event 'loading-start'
+   * @event 'loading-end'
+   * @event 'employee-report-api-dm-fetch'
+   * @event 'employee-report-api-dm-fetch-error'
+   * @event 'employee-report-api-dm-error'
+   */
+  async getEmployeeReport(startDate, endDate) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+    try {
+      const res = await fetch(
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/employees?startDate=${startDate}&endDate=${endDate}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        this.dispatchEvent(
+          new CustomEvent('employee-report-api-dm-fetch-error', { detail: error }),
+        );
+        return;
+      }
+
+      const data = await res.json();
+      this.dispatchEvent(new CustomEvent('employee-report-api-dm-fetch', { detail: data }));
+    } catch (error) {
+      this.dispatchEvent(new CustomEvent('employee-report-api-dm-error', { detail: error }));
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+    }
+  }
 }
 customElements.define('report-api-dm', ReportApiDm);

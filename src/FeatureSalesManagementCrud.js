@@ -11,6 +11,7 @@ import './pages/feature-sales-management-crud-branch/FeatureSalesManagementCrudB
 import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagementCrudPaymentMethod.js';
 import './pages/feature-sales-management-crud-report-dashboard/FeatureSalesManagementCrudReportDashboard.js';
 import './pages/feature-sales-management-crud-report-total-sales/FeatureSalesManagementCrudReportTotalSales.js';
+import './pages/feature-sales-management-crud-report-sales-seller/FeatureSalesManagementCrudReportSalesSeller.js';
 import './FeatureSalesManagementCrud.css';
 import './FeatureSalesManagementCrudDM.js';
 
@@ -39,6 +40,15 @@ export class FeatureSalesManagementCrud extends LitElement {
       _crudTotalSalesIsVisible: {
         type: Boolean,
       },
+      /**
+       * Show sales by seller page.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _crudSalesSellerIsVisible: {
+        type: Boolean,
+      },
       dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
@@ -60,6 +70,14 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Object,
       },
       /**
+       * Data for sales seller page.
+       * @type {Array}
+       * @default []
+       */
+      _dataEmployeeReport: {
+        type: Array,
+      },
+      /**
        * Loading counter for tracking concurrent requests.
        * @type {Number}
        * @default 0
@@ -79,12 +97,14 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudPaymentMethodIsVisible = false;
     this._crudDashboardIsVisible = false;
     this._crudTotalSalesIsVisible = false;
+    this._crudSalesSellerIsVisible = false;
     this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = {};
     this._dashboardData = [];
     this._totalSalesData = {};
+    this._dataEmployeeReport = [];
     this._loadingCount = 0;
   }
 
@@ -157,6 +177,16 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   /**
+   * Handles the event to get sales seller report.
+   * @param {String} data
+   * @private
+   */
+  _handleGetSalesSeller(data) {
+    const { startDate, endDate } = data;
+    this._salesManagementCrudDm.getEmployeeReport(startDate, endDate);
+  }
+
+  /**
    * Handles the event to get total sales report.
    * @param {String} date
    * @private
@@ -223,6 +253,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-total-sales-visible=${() => {
           this._crudTotalSalesIsVisible = true;
         }}
+        @set-sales-seller-visible=${() => {
+          this._crudSalesSellerIsVisible = true;
+        }}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -246,6 +279,16 @@ export class FeatureSalesManagementCrud extends LitElement {
               @submit-event="${e => this.handleBranchSubmit(e.detail)}"
               .dataGridBranch="${this.dataBranches}"
             ></feature-sales-management-crud-branch>
+          `
+        : nothing}
+      ${this._crudSalesSellerIsVisible
+        ? html`
+            <feature-sales-management-crud-report-sales-seller
+              .salesSellerData="${this._dataEmployeeReport}"
+              @feature-sales-management-crud-report-sales-seller-date-range="${e =>
+                this._handleGetSalesSeller(e.detail)}"
+            >
+            </feature-sales-management-crud-report-sales-seller>
           `
         : nothing}
       ${this._crudTotalSalesIsVisible
@@ -288,11 +331,14 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-data-payment-method="${e => {
           this.dataPaymentMethod = e.detail;
         }}"
-        @feature-sales-management-crud-dm-set-dashboard-data="${e => {
-          this._setDashboardConfig(e.detail);
+        @feature-sales-management-crud-dm-set-data-employee-report="${e => {
+          this._dataEmployeeReport = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-total-sales="${e => {
           this._totalSalesData = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-dashboard-data="${e => {
+          this._setDashboardConfig(e.detail);
         }}"
         @loading-start=${this._incrementLoading}
         @loading-end=${this._decrementLoading}

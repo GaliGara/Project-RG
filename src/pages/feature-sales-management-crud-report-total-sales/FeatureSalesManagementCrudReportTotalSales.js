@@ -17,13 +17,17 @@ export class FeatureSalesManagementCrudReportTotalSales extends LitElement {
     return this;
   }
 
+  /**
+   * Get element from the shadow DOM or light DOM.
+   * @param {String} selector
+   * @private
+   */
   _getElement(selector) {
     return this.renderRoot?.querySelector(selector) ?? this.querySelector(selector);
   }
 
   /**
    * Dispatch selected date.
-   * @param {e}
    * @private
    */
   _sendDate() {

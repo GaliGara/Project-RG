@@ -72,6 +72,16 @@ export class NavBar extends LitElement {
   }
 
   /**
+   * Handles the sales seller visibility event.
+   * @private
+   * @event set-sales-seller-visible
+   */
+  _handleSalesSeller() {
+    this.toggleMenu();
+    this.dispatchEvent(new CustomEvent('set-sales-seller-visible'));
+  }
+
+  /**
    * Handles the total sales visibility event.
    * @private
    * @event set-total-sales-visible
@@ -119,6 +129,7 @@ export class NavBar extends LitElement {
         <button class="menu-buttons" @click=${this.handlePaymentMethod}>Metodos de Pago</button>
         <div class="border-b border-y-sky-500"></div>
         <p class="text-gray-400 italic text-sm uppercase font-bold">reportes</p>
+        <button class="menu-buttons" @click=${this._handleSalesSeller}>Ventas por vendedor</button>
         <button class="menu-buttons" @click=${this._handleTotalSales}>Total general Ventas</button>
         <button class="menu-buttons" @click=${this._handleDashboard}>Dashboard</button>
         <div class="border-b border-y-sky-500"></div>
