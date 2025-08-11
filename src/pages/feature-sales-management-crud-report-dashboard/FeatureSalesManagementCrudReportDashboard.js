@@ -35,20 +35,6 @@ export class FeatureSalesManagementCrudReportDashboard extends LitElement {
   }
 
   /**
-   * Dispatch selected date.
-   * @param {e}
-   * @private
-   */
-  _sendDate(e) {
-    this._date = e.target.value;
-    this.dispatchEvent(
-      new CustomEvent('feature-sales-management-crud-report-dashboard-date', {
-        detail: this._date,
-      }),
-    );
-  }
-
-  /**
    * Template for the summary cards.
    * @returns {TemplateResult}
    * @private
@@ -104,29 +90,17 @@ export class FeatureSalesManagementCrudReportDashboard extends LitElement {
   }
 
   /**
-   * Template for input select.
+   * Template for input date.
    * @returns {TemplateResult}
    * @private
    */
-  _tplSelect() {
-    return html`
-      <div class="flex flex-col items-center gap-2 mt-3 mb-3">
-        <p class="text-sm font-semibold text-gray-700">SELECCIONA FECHA PARA MOSTRAR DATOS</p>
-        <input
-          type="date"
-          name="dateDashboardReport"
-          id="dateDashboardReport"
-          .value=${this._date}
-          @change=${e => this._sendDate(e)}
-          class="border border-gray-300 rounded-lg px-3 py-1.5 shadow-xl text-gray-700"
-        />
-      </div>
-    `;
+  static _tplInputDate() {
+    return html`<input-date type-date="unique"></input-date>`;
   }
 
   render() {
     return html`
-      ${this._tplSelect()}
+      ${FeatureSalesManagementCrudReportDashboard._tplInputDate()}
       ${Object.keys(this.data || {}).length
         ? html` <div class="flex flex-col gap-6">${this._tplCards()} ${this._tplCharts()}</div> `
         : nothing}

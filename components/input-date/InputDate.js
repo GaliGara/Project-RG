@@ -41,6 +41,8 @@ export class InputDate extends LitElement {
       if (startDate && endDate) {
         this.dispatchEvent(
           new CustomEvent('input-date-between-data', {
+            bubbles: true,
+            composed: true,
             detail: { startDate, endDate },
           }),
         );
@@ -50,7 +52,9 @@ export class InputDate extends LitElement {
       if (startDate) {
         this.dispatchEvent(
           new CustomEvent('input-date-unique-data', {
-            detail: { startDate },
+            bubbles: true,
+            composed: true,
+            detail: startDate,
           }),
         );
       }
@@ -72,7 +76,7 @@ export class InputDate extends LitElement {
       <div class="flex justify-center items-center gap-2 mt-3 mb-3">
         <div class="flex flex-col">
           <label for="startDateDashboardReport" class="mb-1 text-xs font-medium text-gray-600">
-            ${this.typeDate === 'between' ? 'Fecha inicial' : 'Fecha'}
+            ${this.typeDate === 'between' ? 'Fecha inicial' : ''}
           </label>
           <input
             type="date"

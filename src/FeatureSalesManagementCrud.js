@@ -295,7 +295,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-report-total-sales
               .totalSalesData="${this._totalSalesData}"
-              @feature-sales-management-crud-report-dashboard-date="${e =>
+              @feature-sales-management-crud-report-total-sales-date="${e =>
                 this._handleGetBranchReport(e.detail)}"
             ></feature-sales-management-crud-report-total-sales>
           `
@@ -304,8 +304,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-report-dashboard
               .data="${this._dashboardData}"
-              @feature-sales-management-crud-report-dashboard-date="${e =>
-                this._handleGetSalesBranch(e.detail)}"
+              @input-date-unique-data="${e => this._handleGetSalesBranch(e.detail)}"
             ></feature-sales-management-crud-report-dashboard>
           `
         : nothing}
