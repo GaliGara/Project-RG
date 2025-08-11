@@ -207,7 +207,7 @@ export class ReportApiDm extends LitElement {
   }
 
   /**
-   * Fetch employee report data between start and end dates.
+   * Fetch payment method report data between start and end dates.
    * @public
    * @param {String} startDate
    * @param {String} endDate
@@ -240,6 +240,51 @@ export class ReportApiDm extends LitElement {
       this.dispatchEvent(new CustomEvent('payment-method-report-api-dm-fetch', { detail: data }));
     } catch (error) {
       this.dispatchEvent(new CustomEvent('payment-method-report-api-dm-error', { detail: error }));
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+    }
+  }
+
+  /**
+   * Fetch payment method report daily data between start and end dates.
+   * @public
+   * @param {String} idPaymentMethod
+   * @param {String} year
+   * @param {String} month
+   * @event loading-start
+   * @event loading-end
+   * @event payment-method-report-daily-api-dm-fetch
+   * @event payment-method-report-daily-api-dm-fetch-error
+   * @event payment-method-report-daily-api-dm-error
+   */
+  async getPaymentMethodDailyReport(idPaymentMethod = '1', year = '2025', month = '07') {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+    try {
+      const res = await fetch(
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/payment-methods/daily?idPaymentMethod=${idPaymentMethod}&year=${year}&month=${month}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        this.dispatchEvent(
+          new CustomEvent('payment-method-report-daily-api-dm-fetch-error', { detail: error }),
+        );
+        return;
+      }
+
+      const data = await res.json();
+      console.log("🚀 ~ ReportApiDm ~ getPaymentMethodDailyReport ~ data:", data)
+      this.dispatchEvent(
+        new CustomEvent('payment-method-report-daily-api-dm-fetch', { detail: data }),
+      );
+    } catch (error) {
+      this.dispatchEvent(
+        new CustomEvent('payment-method-report-daily-api-dm-error', { detail: error }),
+      );
     } finally {
       this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }

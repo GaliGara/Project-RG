@@ -82,6 +82,16 @@ export class NavBar extends LitElement {
   }
 
   /**
+   * Handles the payment method report daily visibility event.
+   * @private
+   * @event set-payment-method-report-daily-visible
+   */
+  _handlePaymentMethodReportDaily() {
+    this.toggleMenu();
+    this.dispatchEvent(new CustomEvent('set-payment-method-report-daily-visible'));
+  }
+
+  /**
    * Handles the sales seller visibility event.
    * @private
    * @event set-sales-seller-visible
@@ -141,6 +151,9 @@ export class NavBar extends LitElement {
         <p class="text-gray-400 italic text-sm uppercase font-bold">reportes</p>
         <button class="menu-buttons" @click=${this._handlePaymentMethodReport}>
           Detalle método de pago
+        </button>
+        <button class="menu-buttons" @click=${this._handlePaymentMethodReportDaily}>
+          Método de pago por día
         </button>
         <button class="menu-buttons" @click=${this._handleSalesSeller}>Ventas por vendedor</button>
         <button class="menu-buttons" @click=${this._handleTotalSales}>Total general Ventas</button>

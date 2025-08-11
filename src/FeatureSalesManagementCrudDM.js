@@ -13,6 +13,7 @@ import {
   columnTotalSales,
   columnsSalesSeller,
   columnsPaymentMethodReport,
+  columnsPaymentMethodReportDaily,
 } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
@@ -29,6 +30,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
        * @private
        */
       _dataPaymentMethodReport: {
+        type: Array,
+      },
+      _dataPaymentMethodDailyReport: {
         type: Array,
       },
       /**
@@ -68,6 +72,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataBranches = {};
     this.dataPaymentMethod = {};
     this._dataPaymentMethodReport = [];
+    this._dataPaymentMethodDailyReport = [];
     this._dataEmployeeReport = [];
     this._dataTotalSalesReport = {};
     this._dataSalesBranchReport = {};
@@ -148,6 +153,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
    */
   getPaymentMethodReport(startDate, endDate) {
     this._reportApiDm.getPaymentMethodReport(startDate, endDate);
+  }
+
+  /**
+   * Dispatch request to get payment method report daily.
+   * @param {String} date
+   * @public
+   */
+  getPaymentMethodDailyReport(startDate, endDate) {
+    this._reportApiDm.getPaymentMethodDailyReport();
   }
 
   /**
@@ -465,6 +479,44 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Set data for payment method report daily.
+   * @param {Array} data
+   * @event 'feature-sales-management-crud-dm-set-data-payment-method-report'
+   * @private
+   */
+  _setDataPaymentMethodDailyReport(data) {
+    this._dataPaymentMethodDailyReport = data;
+    this._dataPaymentMethodDailyReport = {
+      data: this._dataPaymentMethodDailyReport.map(item => [
+        item.DATE,
+        item.MITIKAH,
+        item.DELTA,
+        item.GALERIAS_INSURGENTES,
+        item.OPATRA,
+        item.MIYANA,
+        item.MASARYK,
+        item.MITIKAH_2,
+        item.NEW_BRANCH,
+        item.PRUEBA_POST,
+        item.POST,
+        item.POSTZZZ,
+        item.TOTAL,
+      ]),
+    };
+    this._dataPaymentMethodDailyReport = {
+      ...this._dataPaymentMethodDailyReport,
+      columns: columnsPaymentMethodReportDaily,
+      search: true,
+      pagination: { limit: 9 },
+    };
+    this.dispatchEvent(
+      new CustomEvent('feature-sales-management-crud-dm-set-data-payment-method-report-daily', {
+        detail: this._dataPaymentMethodDailyReport,
+      }),
+    );
+  }
+
+  /**
    * Create the api post data key - value from body object
    * @param {Object} body
    */
@@ -522,6 +574,8 @@ export class FeatureSalesManagementCrudDM extends LitElement {
           this._setDataBranchTotalSalesReport(e.detail)}
         @employee-report-api-dm-fetch=${e => this._setDataEmployeeReport(e.detail)}
         @payment-method-report-api-dm-fetch=${e => this._setDataPaymentMethodReport(e.detail)}
+        @payment-method-report-daily-api-dm-fetch=${e =>
+          this._setDataPaymentMethodDailyReport(e.detail)}
       >
       </report-api-dm>
     `;

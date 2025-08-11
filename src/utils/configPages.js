@@ -76,3 +76,19 @@ export const columnsPaymentMethodReport = [
   'POSTZZZ',
   'TOTAL',
 ];
+
+export const columnsPaymentMethodReportDaily = [
+  'DATE',
+  'MITIKAH',
+  'DELTA',
+  'GALERIAS_INSURGENTES',
+  'OPATRA',
+  'MIYANA',
+  'MASARYK',
+  'MITIKAH_2',
+  'NEW_BRANCH',
+  'PRUEBA_POST',
+  'POST',
+  'POSTZZZ',
+  'TOTAL',
+];

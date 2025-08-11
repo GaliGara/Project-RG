@@ -13,6 +13,7 @@ import './pages/feature-sales-management-crud-report-dashboard/FeatureSalesManag
 import './pages/feature-sales-management-crud-report-total-sales/FeatureSalesManagementCrudReportTotalSales.js';
 import './pages/feature-sales-management-crud-report-sales-seller/FeatureSalesManagementCrudReportSalesSeller.js';
 import './pages/feature-sales-management-crud-report-payment-method/FeatureSalesManagementCrudReportPaymentMethod.js';
+import './pages/feature-sales-management-crud-report-daily-payment-method/FeatureSalesManagementCrudReportDailyPaymentMethod.js';
 import './FeatureSalesManagementCrud.css';
 import './FeatureSalesManagementCrudDM.js';
 
@@ -59,6 +60,15 @@ export class FeatureSalesManagementCrud extends LitElement {
       _crudPaymentMethodReportIsVisible: {
         type: Boolean,
       },
+      /**
+       * Show payment method report daily page.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _crudPaymentMethodReportDailyIsVisible: {
+        type: Boolean,
+      },
       dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
@@ -96,6 +106,14 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Array,
       },
       /**
+       * Data for payment method report daily page.
+       * @type {Array}
+       * @default []
+       */
+      _dataPaymentMethodDailyReport: {
+        type: Array,
+      },
+      /**
        * Loading counter for tracking concurrent requests.
        * @type {Number}
        * @default 0
@@ -125,6 +143,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._totalSalesData = {};
     this._dataEmployeeReport = [];
     this._dataPaymentMethodReport = [];
+    this._dataPaymentMethodReportDaily = [];
     this._loadingCount = 0;
   }
 
@@ -204,6 +223,16 @@ export class FeatureSalesManagementCrud extends LitElement {
   _handleGetPaymentMethodReport(data) {
     const { startDate, endDate } = data;
     this._salesManagementCrudDm.getPaymentMethodReport(startDate, endDate);
+  }
+
+  /**
+   * Handles the event to get payment method report daily.
+   * @param {String} data
+   * @private
+   */
+  _handleGetPaymentMethodReportDaily(data) {
+    const { startDate, endDate } = data;
+    this._salesManagementCrudDm.getPaymentMethodDailyReport(startDate, endDate);
   }
 
   /**
@@ -289,6 +318,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-payment-method-report-visible=${() => {
           this._crudPaymentMethodReportIsVisible = true;
         }}
+        @set-payment-method-report-daily-visible=${() => {
+          this._crudPaymentMethodReportDailyIsVisible = true;
+        }}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -321,6 +353,15 @@ export class FeatureSalesManagementCrud extends LitElement {
               @input-date-between-data="${e => this._handleGetPaymentMethodReport(e.detail)}"
             >
             </feature-sales-management-crud-report-payment-method>
+          `
+        : nothing}
+      ${this._crudPaymentMethodReportDailyIsVisible
+        ? html`
+            <feature-sales-management-crud-report-daily-payment-method
+              .paymentReportDailyData="${this._dataPaymentMethodReportDaily}"
+              @input-date-unique-data="${e => this._handleGetPaymentMethodReportDaily(e.detail)}"
+            >
+            </feature-sales-management-crud-report-daily-payment-method>
           `
         : nothing}
       ${this._crudSalesSellerIsVisible
@@ -372,6 +413,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         }}"
         @feature-sales-management-crud-dm-set-data-payment-method-report="${e => {
           this._dataPaymentMethodReport = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-data-payment-method-report-daily="${e => {
+          this._dataPaymentMethodReportDaily = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-employee-report="${e => {
           this._dataEmployeeReport = e.detail;
