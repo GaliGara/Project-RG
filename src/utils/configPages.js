@@ -29,3 +29,19 @@ export const columnsBranch = ['ID', 'Sucursal', 'Acciones'];
 export const columnsSalesBranch = ['ID', 'Sucursal', 'Fecha', 'Total Ventas', 'Notas', 'Acciones'];
 
 export const columnsPaymentMethod = ['ID', 'Tipo de Pago', 'Acciones'];
+
+export const columnTotalSales = [
+  'FECHA',
+  'GALERIAS INSURGENTES',
+  'OPATRA',
+  'MITIKAH',
+  'DELTA',
+  'MITIKAH 2',
+  'MIYANA',
+  'MASARYK',
+  'NEW_BRANCH',
+  'PRUEBA POST',
+  'POST',
+  'POSTZZZ',
+  'TOTAL',
+];

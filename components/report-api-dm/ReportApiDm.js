@@ -123,5 +123,48 @@ export class ReportApiDm extends LitElement {
       this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
+
+  /**
+   * Fetch total sales branch card report data between start and end dates.
+   * @param {String} startDate
+   * @param {String} endDate
+   * @public
+   * @event 'loading-start'
+   * @event 'loading-end'
+   * @event 'branch-total-sales-report-api-dm-fetch'
+   * @event 'branch-total-sales-report-api-dm-fetch-error'
+   * @event 'branch-total-sales-report-api-dm-error'
+   */
+  async getBranchReport(startDate, endDate) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+    try {
+      const res = await fetch(
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/branches?startDate=${startDate}&endDate=${endDate}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        this.dispatchEvent(
+          new CustomEvent('branch-total-sales-report-api-dm-fetch-error', { detail: error }),
+        );
+        return;
+      }
+
+      const data = await res.json();
+      this.dispatchEvent(
+        new CustomEvent('branch-total-sales-report-api-dm-fetch', { detail: data }),
+      );
+    } catch (error) {
+      this.dispatchEvent(
+        new CustomEvent('branch-total-sales-report-api-dm-error', { detail: error }),
+      );
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+    }
+  }
 }
 customElements.define('report-api-dm', ReportApiDm);

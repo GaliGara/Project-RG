@@ -72,6 +72,16 @@ export class NavBar extends LitElement {
   }
 
   /**
+   * Handles the total sales visibility event.
+   * @private
+   * @event set-total-sales-visible
+   */
+  _handleTotalSales() {
+    this.toggleMenu();
+    this.dispatchEvent(new CustomEvent('set-total-sales-visible'));
+  }
+
+  /**
    * Handles the dashboard visibility event.
    * @private
    * @event set-dashboard-visible
@@ -90,12 +100,7 @@ export class NavBar extends LitElement {
         <h1 class="nav-title">KEYSAR COSMETICS</h1>
       </header>
 
-      <nav
-        class=${`
-          nav-animation
-          ${this.menuOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}
-      >
+      <nav class=${`nav-animation ${this.menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <button
           class="close-menu-btn"
           @click=${() => {
@@ -106,11 +111,17 @@ export class NavBar extends LitElement {
           &times;
         </button>
 
+        <div class="border-b border-y-sky-500"></div>
+        <p class="text-gray-400 italic text-sm uppercase font-bold">formularios</p>
         <button class="menu-buttons" @click=${this.handleNavigation}>Ventas</button>
         <button class="menu-buttons" @click=${this.handleEmployee}>Empleados</button>
         <button class="menu-buttons" @click=${this.handleBranches}>Sucursales</button>
         <button class="menu-buttons" @click=${this.handlePaymentMethod}>Metodos de Pago</button>
+        <div class="border-b border-y-sky-500"></div>
+        <p class="text-gray-400 italic text-sm uppercase font-bold">reportes</p>
+        <button class="menu-buttons" @click=${this._handleTotalSales}>Total general Ventas</button>
         <button class="menu-buttons" @click=${this._handleDashboard}>Dashboard</button>
+        <div class="border-b border-y-sky-500"></div>
       </nav>
     `;
   }

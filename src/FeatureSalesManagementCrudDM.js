@@ -10,6 +10,7 @@ import {
   columnsEmployee,
   columnsPaymentMethod,
   columnsSalesBranch,
+  columnTotalSales,
 } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
@@ -19,6 +20,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
       dataPaymentMethod: { type: Object },
+      /**
+       * Set of data for total general sales report.
+       * @type {Object}
+       * @default {}
+       * @private
+       */
+      _dataTotalSalesReport: {
+        type: Object,
+      },
       /**
        * Set of data for dashboard charts and cards.
        * @type {Object}
@@ -37,6 +47,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = {};
+    this._dataTotalSalesReport = {};
     this._dataSalesBranchReport = {};
   }
 
@@ -106,6 +117,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._reportApiDm.getSalesBranchTotalReport(date, 'day');
     this._reportApiDm.getSalesBranchTotalReport(formatDate.month, 'month');
     this._reportApiDm.getSalesBranchTotalReport(formatDate.year, 'year');
+  }
+
+  /**
+   * Dispatch request to get total general sales branch.
+   * @param {String} date
+   * @public
+   */
+  getBranchReport(startDate, endDate) {
+    this._reportApiDm.getBranchReport(startDate, endDate);
   }
 
   /**
@@ -292,6 +312,43 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Set data for total general sales report.
+   * @event 'feature-sales-management-crud-dm-set-data-total-sales'
+   * @private
+   */
+  _setDataBranchTotalSalesReport(data) {
+    this._dataTotalSalesReport = data;
+    this._dataTotalSalesReport = {
+      data: this._dataTotalSalesReport.map(item => [
+        item.DATE,
+        item.GALERIAS_INSURGENTES,
+        item.OPATRA,
+        item.MITIKAH,
+        item.DELTA,
+        item.MITIKAH_2,
+        item.MIYANA,
+        item.MASARYK,
+        item.NEW_BRANCH,
+        item.PRUEBA_POST,
+        item.POST,
+        item.POSTZZZ,
+        item.TOTAL,
+      ]),
+    };
+    this._dataTotalSalesReport = {
+      ...this._dataTotalSalesReport,
+      columns: columnTotalSales,
+      search: true,
+      pagination: { limit: 9 },
+    };
+    this.dispatchEvent(
+      new CustomEvent('feature-sales-management-crud-dm-set-data-total-sales', {
+        detail: this._dataTotalSalesReport,
+      }),
+    );
+  }
+
+  /**
    * Create the api post data key - value from body object
    * @param {Object} body
    */
@@ -345,6 +402,8 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @branch-chart-report-api-dm-fetch=${e => this._setDataSalesBranchChartReport(e.detail)}
         @branch-report-api-dm-fetch=${e => this._setDataSalesBranchCardReport(e.detail)}
         @branch-total-api-dm-fetch=${e => this._setDataSalesBranchTotalReport(e.detail)}
+        @branch-total-sales-report-api-dm-fetch=${e =>
+          this._setDataBranchTotalSalesReport(e.detail)}
       >
       </report-api-dm>
     `;

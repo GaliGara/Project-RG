@@ -4,14 +4,15 @@ import '../components/employer-form/EmployerForm.js';
 import '../components/branch-form/BranchForm.js';
 import '../components/nav-bar/NavBar.js';
 import '../components/sales-api-dm/SalesApiDm.js';
-import './FeatureSalesManagementCrud.css';
+import '../components/loading-spinner/LoadingSpinner.js';
 import './pages/feature-sales-management-crud-sales/FeatureSalesManagementCrudSales.js';
 import './pages/feature-sales-management-crud-employee/FeatureSalesManagementCrudEmployee.js';
 import './pages/feature-sales-management-crud-branch/FeatureSalesManagementCrudBranch.js';
 import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagementCrudPaymentMethod.js';
-import './FeatureSalesManagementCrudDM.js';
 import './pages/feature-sales-management-crud-report-dashboard/FeatureSalesManagementCrudReportDashboard.js';
-import '../components/loading-spinner/LoadingSpinner.js';
+import './pages/feature-sales-management-crud-report-total-sales/FeatureSalesManagementCrudReportTotalSales.js';
+import './FeatureSalesManagementCrud.css';
+import './FeatureSalesManagementCrudDM.js';
 
 export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
@@ -29,6 +30,15 @@ export class FeatureSalesManagementCrud extends LitElement {
       _crudDashboardIsVisible: {
         type: Boolean,
       },
+      /**
+       * Show total general sales page.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _crudTotalSalesIsVisible: {
+        type: Boolean,
+      },
       dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
@@ -40,6 +50,14 @@ export class FeatureSalesManagementCrud extends LitElement {
        */
       _dashboardData: {
         type: Array,
+      },
+      /**
+       * Data for total general sales page.
+       * @type {Object}
+       * @default {}
+       */
+      _totalSalesData: {
+        type: Object,
       },
       /**
        * Loading counter for tracking concurrent requests.
@@ -60,11 +78,13 @@ export class FeatureSalesManagementCrud extends LitElement {
     this.crudBranchesIsVisible = false;
     this.crudPaymentMethodIsVisible = false;
     this._crudDashboardIsVisible = false;
+    this._crudTotalSalesIsVisible = false;
     this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
     this.dataPaymentMethod = {};
     this._dashboardData = [];
+    this._totalSalesData = {};
     this._loadingCount = 0;
   }
 
@@ -137,6 +157,16 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   /**
+   * Handles the event to get total sales report.
+   * @param {String} date
+   * @private
+   */
+  _handleGetBranchReport(data) {
+    const { startDate, endDate } = data;
+    this._salesManagementCrudDm.getBranchReport(startDate, endDate);
+  }
+
+  /**
    * Handles the event to get sales branch chart report from api.
    * @param {String} date
    * @private
@@ -190,6 +220,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-dashboard-visible=${() => {
           this._crudDashboardIsVisible = true;
         }}
+        @set-total-sales-visible=${() => {
+          this._crudTotalSalesIsVisible = true;
+        }}
       ></nav-bar>
 
       ${this.crudSalesIsVisible
@@ -213,6 +246,15 @@ export class FeatureSalesManagementCrud extends LitElement {
               @submit-event="${e => this.handleBranchSubmit(e.detail)}"
               .dataGridBranch="${this.dataBranches}"
             ></feature-sales-management-crud-branch>
+          `
+        : nothing}
+      ${this._crudTotalSalesIsVisible
+        ? html`
+            <feature-sales-management-crud-report-total-sales
+              .totalSalesData="${this._totalSalesData}"
+              @feature-sales-management-crud-report-dashboard-date="${e =>
+                this._handleGetBranchReport(e.detail)}"
+            ></feature-sales-management-crud-report-total-sales>
           `
         : nothing}
       ${this._crudDashboardIsVisible
@@ -248,6 +290,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         }}"
         @feature-sales-management-crud-dm-set-dashboard-data="${e => {
           this._setDashboardConfig(e.detail);
+        }}"
+        @feature-sales-management-crud-dm-set-data-total-sales="${e => {
+          this._totalSalesData = e.detail;
         }}"
         @loading-start=${this._incrementLoading}
         @loading-end=${this._decrementLoading}
