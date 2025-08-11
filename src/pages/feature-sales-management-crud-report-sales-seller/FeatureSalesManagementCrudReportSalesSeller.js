@@ -19,20 +19,6 @@ export class FeatureSalesManagementCrudReportSalesSeller extends LitElement {
   }
 
   /**
-   * Dispatch request to get sales seller report.
-   * @param {Object} data
-   * @private
-   */
-  _sendDate(data) {
-    const { startDate, endDate } = data;
-    this.dispatchEvent(
-      new CustomEvent('feature-sales-management-crud-report-sales-seller-date-range', {
-        detail: { startDate, endDate },
-      }),
-    );
-  }
-
-  /**
    * Template for grid table.
    * @returns {TemplateResult}
    * @private
@@ -41,21 +27,9 @@ export class FeatureSalesManagementCrudReportSalesSeller extends LitElement {
     return html` <grid-table .config=${this.salesSellerData}></grid-table> `;
   }
 
-  /**
-   * Template for input date.
-   * @returns {TemplateResult}
-   * @private
-   */
-  _tplInputDate() {
-    return html`<input-date
-      type-date="between"
-      @input-date-between-data="${e => this._sendDate(e.detail)}"
-    ></input-date>`;
-  }
-
   render() {
     return html`
-      ${this._tplInputDate()}
+      <input-date type-date="between"></input-date>
       ${Object.keys(this.salesSellerData || {}).length ? this._tplGridTable() : nothing}
     `;
   }

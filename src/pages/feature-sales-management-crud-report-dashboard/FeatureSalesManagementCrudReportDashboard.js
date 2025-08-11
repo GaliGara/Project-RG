@@ -89,18 +89,9 @@ export class FeatureSalesManagementCrudReportDashboard extends LitElement {
     `;
   }
 
-  /**
-   * Template for input date.
-   * @returns {TemplateResult}
-   * @private
-   */
-  static _tplInputDate() {
-    return html`<input-date type-date="unique"></input-date>`;
-  }
-
   render() {
     return html`
-      ${FeatureSalesManagementCrudReportDashboard._tplInputDate()}
+      <input-date type-date="unique"></input-date>
       ${Object.keys(this.data || {}).length
         ? html` <div class="flex flex-col gap-6">${this._tplCards()} ${this._tplCharts()}</div> `
         : nothing}

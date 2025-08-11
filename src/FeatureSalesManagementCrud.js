@@ -285,8 +285,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-report-sales-seller
               .salesSellerData="${this._dataEmployeeReport}"
-              @feature-sales-management-crud-report-sales-seller-date-range="${e =>
-                this._handleGetSalesSeller(e.detail)}"
+              @input-date-between-data="${e => this._handleGetSalesSeller(e.detail)}"
             >
             </feature-sales-management-crud-report-sales-seller>
           `
@@ -295,8 +294,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-report-total-sales
               .totalSalesData="${this._totalSalesData}"
-              @feature-sales-management-crud-report-total-sales-date="${e =>
-                this._handleGetBranchReport(e.detail)}"
+              @input-date-between-data="${e => this._handleGetBranchReport(e.detail)}"
             ></feature-sales-management-crud-report-total-sales>
           `
         : nothing}
