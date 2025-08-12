@@ -5,7 +5,14 @@ import '../../../components/grid-table/GridTable.js';
 export class FeatureSalesManagementCrudReportSalesSeller extends LitElement {
   static get properties() {
     return {
-      salesSellerData: { type: Array },
+      /**
+       * Data for the sales seller report.
+       * @type {Array}
+       * @default []
+       */
+      salesSellerData: {
+        type: Array,
+      },
     };
   }
 
@@ -27,9 +34,25 @@ export class FeatureSalesManagementCrudReportSalesSeller extends LitElement {
     return html` <grid-table .config=${this.salesSellerData}></grid-table> `;
   }
 
+  /**
+   * Template for date picker.
+   * @returns {TemplateResult}
+   * @private
+   */
+  static _tplDate() {
+    return html`
+      <div class="flex flex-col items-center gap-2 mt-3 mb-3">
+        <p class="text-sm text-center font-semibold text-gray-700 uppercase">
+          Selecciona un rango de fechas para mostrar datos
+        </p>
+        <input-date type-date="between"></input-date>
+      </div>
+    `;
+  }
+
   render() {
     return html`
-      <input-date type-date="between"></input-date>
+      ${FeatureSalesManagementCrudReportSalesSeller._tplDate()}
       ${Object.keys(this.salesSellerData || {}).length ? this._tplGridTable() : nothing}
     `;
   }

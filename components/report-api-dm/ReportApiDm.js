@@ -257,7 +257,7 @@ export class ReportApiDm extends LitElement {
    * @event payment-method-report-daily-api-dm-fetch-error
    * @event payment-method-report-daily-api-dm-error
    */
-  async getPaymentMethodDailyReport(idPaymentMethod = '1', year = '2025', month = '07') {
+  async getPaymentMethodDailyReport(idPaymentMethod, year, month) {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
@@ -277,7 +277,6 @@ export class ReportApiDm extends LitElement {
       }
 
       const data = await res.json();
-      console.log("🚀 ~ ReportApiDm ~ getPaymentMethodDailyReport ~ data:", data)
       this.dispatchEvent(
         new CustomEvent('payment-method-report-daily-api-dm-fetch', { detail: data }),
       );

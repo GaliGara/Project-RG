@@ -89,9 +89,25 @@ export class FeatureSalesManagementCrudReportDashboard extends LitElement {
     `;
   }
 
+  /**
+   * Template for the date picker.
+   * @returns {TemplateResult}
+   * @private
+   */
+  static _tplDate() {
+    return html`
+      <div class="flex flex-col items-center gap-2 mt-3 mb-3">
+        <p class="text-sm text-center font-semibold text-gray-700 uppercase">
+          Selecciona fecha para mostrar datos
+        </p>
+        <input-date type-date="unique"></input-date>
+      </div>
+    `;
+  }
+
   render() {
     return html`
-      <input-date type-date="unique"></input-date>
+      ${FeatureSalesManagementCrudReportDashboard._tplDate()}
       ${Object.keys(this.data || {}).length
         ? html` <div class="flex flex-col gap-6">${this._tplCards()} ${this._tplCharts()}</div> `
         : nothing}

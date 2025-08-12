@@ -68,12 +68,7 @@ export class InputDate extends LitElement {
    */
   _tplDate() {
     return html`
-      <p class="text-sm text-center font-semibold text-gray-700 uppercase">
-        ${this.typeDate === 'between'
-          ? 'Selecciona un rango de fecha para mostrar datos'
-          : 'Selecciona fecha para mostrar datos'}
-      </p>
-      <div class="flex justify-center items-center gap-2 mt-3 mb-3">
+      <div class="flex ${this.typeDate === 'between' ? 'flex-row gap-4' : 'flex-col'}">
         <div class="flex flex-col">
           <label for="startDateDashboardReport" class="mb-1 text-xs font-medium text-gray-600">
             ${this.typeDate === 'between' ? 'Fecha inicial' : ''}

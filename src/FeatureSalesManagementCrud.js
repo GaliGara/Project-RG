@@ -106,6 +106,14 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Array,
       },
       /**
+       * Data for payment method select options.
+       * @type {Array}
+       * @default []
+       */
+      _dataPaymentMethodSelect: {
+        type: Array,
+      },
+      /**
        * Data for payment method report daily page.
        * @type {Array}
        * @default []
@@ -143,6 +151,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._totalSalesData = {};
     this._dataEmployeeReport = [];
     this._dataPaymentMethodReport = [];
+    this._dataPaymentMethodSelect = [];
     this._dataPaymentMethodReportDaily = [];
     this._loadingCount = 0;
   }
@@ -226,13 +235,29 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   /**
+   * Handles the event to get payment method select options.
+   * @private
+   */
+  _handleGetPaymentMethodSelect() {
+    this._salesManagementCrudDm.getPaymentMethodSelect();
+  }
+
+  /**
    * Handles the event to get payment method report daily.
    * @param {String} data
    * @private
    */
   _handleGetPaymentMethodReportDaily(data) {
-    const { startDate, endDate } = data;
-    this._salesManagementCrudDm.getPaymentMethodDailyReport(startDate, endDate);
+    this._salesManagementCrudDm.getPaymentMethodDatesDailyReport(data);
+  }
+
+  /**
+   * Handles the event to get payment method select options.
+   * @param {String} id
+   * @private
+   */
+  _handleRequestPaymentMethodSelect(id) {
+    this._salesManagementCrudDm.getPaymentMethodSelectDailyReport(id);
   }
 
   /**
@@ -359,7 +384,10 @@ export class FeatureSalesManagementCrud extends LitElement {
         ? html`
             <feature-sales-management-crud-report-daily-payment-method
               .paymentReportDailyData="${this._dataPaymentMethodReportDaily}"
+              .inputSelectData=${this._dataPaymentMethodSelect}
+              @input-select-request-data="${this._handleGetPaymentMethodSelect}"
               @input-date-unique-data="${e => this._handleGetPaymentMethodReportDaily(e.detail)}"
+              @input-select-changed="${e => this._handleRequestPaymentMethodSelect(e.detail)}"
             >
             </feature-sales-management-crud-report-daily-payment-method>
           `
@@ -413,6 +441,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         }}"
         @feature-sales-management-crud-dm-set-data-payment-method-report="${e => {
           this._dataPaymentMethodReport = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-data-payment-method-select="${e => {
+          this._dataPaymentMethodSelect = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-payment-method-report-daily="${e => {
           this._dataPaymentMethodReportDaily = e.detail;

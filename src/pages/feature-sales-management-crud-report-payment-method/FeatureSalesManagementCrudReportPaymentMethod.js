@@ -5,7 +5,14 @@ import '../../../components/grid-table/GridTable.js';
 export class FeatureSalesManagementCrudReportPaymentMethod extends LitElement {
   static get properties() {
     return {
-      paymentReportData: { type: Array },
+      /**
+       * Data for the payment report.
+       * @type {Array}
+       * @default []
+       */
+      paymentReportData: {
+        type: Array,
+      },
     };
   }
 
@@ -27,9 +34,25 @@ export class FeatureSalesManagementCrudReportPaymentMethod extends LitElement {
     return html` <grid-table .config=${this.paymentReportData}></grid-table> `;
   }
 
+  /**
+   * Template for the date picker.
+   * @returns {TemplateResult}
+   * @private
+   */
+  static _tplDate() {
+    return html`
+      <div class="flex flex-col items-center gap-2 mt-3 mb-3">
+        <p class="text-sm text-center font-semibold text-gray-700 uppercase">
+          Selecciona un rango de fechas para mostrar datos
+        </p>
+        <input-date type-date="between"></input-date>
+      </div>
+    `;
+  }
+
   render() {
     return html`
-      <input-date type-date="between"></input-date>
+      ${FeatureSalesManagementCrudReportPaymentMethod._tplDate()}
       ${Object.keys(this.paymentReportData || {}).length ? this._tplGridTable() : nothing}
     `;
   }

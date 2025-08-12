@@ -62,6 +62,33 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       _dataSalesBranchReport: {
         type: Object,
       },
+      /**
+       * Indicates if the payment method select options requested.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _isRequestSelect: {
+        type: Boolean,
+      },
+      /**
+       * ID of the selected payment method.
+       * @type {String}
+       * @default ''
+       * @private
+       */
+      _idPaymentMethodSelected: {
+        type: String,
+      },
+      /**
+       * Set date for payment method report daily.
+       * @type {Object}
+       * @default {}
+       * @private
+       */
+      _datePaymentMethod: {
+        type: Object,
+      },
     };
   }
 
@@ -76,6 +103,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._dataEmployeeReport = [];
     this._dataTotalSalesReport = {};
     this._dataSalesBranchReport = {};
+    this._isRequestSelect = false;
+    this._idPaymentMethodSelected = '';
+    this._datePaymentMethod = {};
   }
 
   get _salesDm() {
@@ -111,6 +141,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   getPaymentMethod() {
+    this._paymentMethodDm.getPaymentMethod();
+  }
+
+  /**
+   * Handles the event to get payment method select options.
+   * @public
+   */
+  getPaymentMethodSelect() {
+    this._isRequestSelect = true;
     this._paymentMethodDm.getPaymentMethod();
   }
 
@@ -156,12 +195,41 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
-   * Dispatch request to get payment method report daily.
+   * Handles the event to get payment method report daily.
    * @param {String} date
    * @public
    */
-  getPaymentMethodDailyReport(startDate, endDate) {
-    this._reportApiDm.getPaymentMethodDailyReport();
+  getPaymentMethodDatesDailyReport(date) {
+    this._datePaymentMethod = FeatureSalesManagementCrudDM._getFormatDate(date);
+    this._getPaymentMethodDailyReport();
+  }
+
+  /**
+   * Handles the event to get payment method select options.
+   * @param {String} id
+   * @public
+   */
+  getPaymentMethodSelectDailyReport(id) {
+    this._idPaymentMethodSelected = id;
+    this._getPaymentMethodDailyReport();
+  }
+
+  /**
+   * Handles the event to get payment method daily report.
+   * @private
+   */
+  _getPaymentMethodDailyReport() {
+    if (this._idPaymentMethodSelected && Object.keys(this._datePaymentMethod).length) {
+      this._reportApiDm.getPaymentMethodDailyReport(
+        this._idPaymentMethodSelected,
+        this._datePaymentMethod.year,
+        this._datePaymentMethod.onlyMonth,
+      );
+    }
+  }
+
+  getEmployeesSellers() {
+    this._employeeDm.getEmployeesSellers();
   }
 
   /**
@@ -191,6 +259,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     return {
       month: date.slice(0, 7),
       year: date.slice(0, 4),
+      onlyMonth: date.slice(5, 7),
     };
   }
 
@@ -266,6 +335,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   _setDataPaymentMethod(e) {
     this.dataPaymentMethod = e.detail;
+
+    if (this._isRequestSelect) {
+      this.dispatchEvent(
+        new CustomEvent('feature-sales-management-crud-dm-set-data-payment-method-select', {
+          detail: this.dataPaymentMethod,
+        }),
+      );
+    }
+
     this.dataPaymentMethod = {
       data: this.dataPaymentMethod.map(item => [item.idPaymentMethod, item.paymentMethodName]),
     };
