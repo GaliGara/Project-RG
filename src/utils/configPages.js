@@ -95,71 +95,87 @@ export const columnTotalSales = [
 export const columnsSalesSeller = [
   {
     name: 'EMPLOYEE',
+    width: '200px',
   },
   {
     name: 'GALERIAS INSURGENTES',
+    width: '200px',
     formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
   },
   {
     name: 'OPATRA',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
   },
   {
     name: 'MITIKAH',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
   },
   {
     name: 'DELTA',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
   },
   {
     name: 'MITIKAH 2',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
   },
   {
     name: 'MIYANA',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
   },
   {
     name: 'MASARYK',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
   },
   {
     name: 'NEW BRANCH',
+    width: '200px',
     formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
   },
   {
     name: 'PRUEBA POST',
+    width: '200px',
     formatter: (_, row) => _formatMoney(row?.cells?.[9]?.data),
   },
   {
     name: 'POST',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[10]?.data),
   },
   {
     name: 'POSTZZZ',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[11]?.data),
   },
   {
     name: 'TOTAL',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[12]?.data),
   },
   {
     name: 'META MENSUAL',
+    width: '200px',
     formatter: (_, row) => _formatMoney(row?.cells?.[13]?.data),
   },
   {
     name: 'POR LLEGAR',
+    width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[14]?.data),
   },
   {
     name: 'PORCENTAJE',
+    width: '175px',
   },
 ];
 
 export const columnsPaymentMethodReport = [
   {
-    name: 'branch',
+    name: 'sucursal',
     formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
   },
   {
@@ -198,7 +214,7 @@ export const columnsPaymentMethodReport = [
 
 export const columnsPaymentMethodReportDaily = [
   {
-    name: 'DATE',
+    name: 'fecha',
   },
   {
     name: 'MITIKAH',
