@@ -1,5 +1,4 @@
 import { LitElement, html, nothing } from 'lit';
-import '../grid-table/GridTable.js';
 
 export class BranchForm extends LitElement {
   static get properties() {
@@ -10,13 +9,6 @@ export class BranchForm extends LitElement {
        * @default ''
        */
       branchName: { type: String },
-
-      /**
-       * Object of table config
-       * @type {Object}
-       * @default '{}'
-       */
-      tableConfig: { type: Object },
 
       /**
        * Boolean to show form
@@ -30,7 +22,6 @@ export class BranchForm extends LitElement {
   constructor() {
     super();
     this.branchName = '';
-    this.tableConfig = {};
     this.showForm = false;
   }
 
@@ -41,7 +32,6 @@ export class BranchForm extends LitElement {
   createRenderRoot() {
     return this;
   }
-
 
   /**
    * Renders the modal form to register a new branch.
@@ -114,8 +104,6 @@ export class BranchForm extends LitElement {
       </button>
 
       ${this.showForm ? this._tplBranchFormModal() : nothing}
-
-      <grid-table .config=${this.tableConfig}></grid-table>
     `;
   }
 }
