@@ -91,3 +91,23 @@ export const columnsPaymentMethodReportDaily = [
   'POSTZZZ',
   'TOTAL',
 ];
+
+export const tableConfig = {
+  className: {
+    thead: '!bg-black !text-white',
+    th: '!bg-black !text-white !uppercase',
+  },
+  language: {
+    search: {
+      placeholder: 'Buscar',
+    },
+    pagination: {
+      to: '-',
+      of: 'de',
+      previous: 'Anterior',
+      next: 'Siguiente',
+      showing: 'Mostrando',
+      results: () => 'Registros',
+    },
+  },
+};

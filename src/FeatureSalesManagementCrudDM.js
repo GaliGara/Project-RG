@@ -14,6 +14,7 @@ import {
   columnsSalesSeller,
   columnsPaymentMethodReport,
   columnsPaymentMethodReportDaily,
+  tableConfig,
 } from './utils/configPages.js';
 
 export class FeatureSalesManagementCrudDM extends LitElement {
@@ -492,7 +493,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this._dataTotalSalesReport,
       columns: columnTotalSales,
       search: true,
-      pagination: { limit: 9 },
+      pagination: { limit: 10 },
+      className: tableConfig.className,
+      language: tableConfig.language,
     };
     this.dispatchEvent(
       new CustomEvent('feature-sales-management-crud-dm-set-data-total-sales', {
@@ -533,7 +536,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this._dataEmployeeReport,
       columns: columnsSalesSeller,
       search: true,
-      pagination: { limit: 9 },
+      pagination: { limit: 10 },
+      className: tableConfig.className,
+      language: tableConfig.language,
     };
     this.dispatchEvent(
       new CustomEvent('feature-sales-management-crud-dm-set-data-employee-report', {
@@ -575,7 +580,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       data: rows,
       columns: columnsDaily,
       search: true,
-      pagination: { limit: 9 },
+      pagination: { limit: 10 },
+      className: tableConfig.className,
+      language: tableConfig.language,
     };
 
     this.dispatchEvent(
@@ -610,7 +617,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this._dataPaymentMethodReport,
       columns: columnsPaymentMethodReport,
       search: true,
-      pagination: { limit: 9 },
+      pagination: { limit: 10 },
+      className: tableConfig.className,
+      language: tableConfig.language,
     };
     this.dispatchEvent(
       new CustomEvent('feature-sales-management-crud-dm-set-data-payment-method-report', {
@@ -648,7 +657,9 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this._dataPaymentMethodDailyReport,
       columns: columnsPaymentMethodReportDaily,
       search: true,
-      pagination: { limit: 9 },
+      pagination: { limit: 10 },
+      className: tableConfig.className,
+      language: tableConfig.language,
     };
     this.dispatchEvent(
       new CustomEvent('feature-sales-management-crud-dm-set-data-payment-method-report-daily', {
