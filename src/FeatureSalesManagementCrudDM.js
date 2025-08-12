@@ -554,6 +554,12 @@ export class FeatureSalesManagementCrudDM extends LitElement {
    * @private
    */
   _setDataEmployeeDailyReport(data) {
+    const _formatMoney = value =>
+      `$${Number(value || 0).toLocaleString('es-MX', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
+
     const dateKeyRegex = /^\d{2}\/\d{2}\/\d{2}$/;
     const allDateKeys = Array.from(
       new Set(data.flatMap(obj => Object.keys(obj).filter(k => dateKeyRegex.test(k)))),
@@ -568,12 +574,21 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     };
     allDateKeys.sort(sortByDate);
 
-    const columnsDaily = ['EMPLOYEE', ...allDateKeys, 'TOTAL'];
+    const columnsDailyNames = ['EMPLOYEE', ...allDateKeys, 'TOTAL'];
+    const columnsDaily = columnsDailyNames.map((name, idx) => {
+      if (idx === 0) return { name: 'EMPLOYEE', width: '150px' };
+      return {
+        name,
+        width: '150px',
+        formatter: cell => _formatMoney(cell),
+        sort: { compare: (a, b) => Number(a || 0) - Number(b || 0) },
+      };
+    });
 
     const rows = data.map(item => [
       item.EMPLOYEE ?? '',
-      ...allDateKeys.map(k => item[k] ?? 0),
-      item.TOTAL ?? 0,
+      ...allDateKeys.map(k => Number(item[k] ?? 0)),
+      Number(item.TOTAL ?? 0),
     ]);
 
     this._dataEmployeeReportDaily = {

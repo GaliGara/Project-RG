@@ -1,3 +1,9 @@
+const _formatMoney = value =>
+  `$${Number(value || 0).toLocaleString('es-MX', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+
 export const chatColors = [
   'rgba(255, 99, 132, 0.7)',
   'rgba(54, 162, 235, 0.7)',
@@ -20,7 +26,10 @@ export const columnsEmployee = [
   'Banco',
   'Numero de Cuenta',
   'Puesto',
-  'Personal Target',
+  {
+    name: 'Meta Individual',
+    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
+  },
 ];
 
 export const columnsBranch = ['ID', 'Sucursal'];
@@ -30,66 +39,215 @@ export const columnsSalesBranch = ['ID', 'Sucursal', 'Fecha', 'Total Ventas', 'N
 export const columnsPaymentMethod = ['ID', 'Tipo de Pago'];
 
 export const columnTotalSales = [
-  'FECHA',
-  'GALERIAS INSURGENTES',
-  'OPATRA',
-  'MITIKAH',
-  'DELTA',
-  'MITIKAH 2',
-  'MIYANA',
-  'MASARYK',
-  'NEW_BRANCH',
-  'PRUEBA POST',
-  'POST',
-  'POSTZZZ',
-  'TOTAL',
+  {
+    name: 'FECHA',
+  },
+  {
+    name: 'GALERIAS INSURGENTES',
+    formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
+  },
+  {
+    name: 'OPATRA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
+  },
+  {
+    name: 'MITIKAH',
+    formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
+  },
+  {
+    name: 'DELTA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
+  },
+  {
+    name: 'MITIKAH 2',
+    formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
+  },
+  {
+    name: 'MIYANA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
+  },
+  {
+    name: 'MASARYK',
+    formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
+  },
+  {
+    name: 'NEW_BRANCH',
+    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
+  },
+  {
+    name: 'PRUEBA POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[9]?.data),
+  },
+  {
+    name: 'POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[10]?.data),
+  },
+  {
+    name: 'POSTZZZ',
+    formatter: (_, row) => _formatMoney(row?.cells?.[11]?.data),
+  },
+  {
+    name: 'TOTAL',
+    formatter: (_, row) => _formatMoney(row?.cells?.[12]?.data),
+  },
 ];
 
 export const columnsSalesSeller = [
-  'EMPLOYEE',
-  'GALERIAS INSURGENTES',
-  'OPATRA',
-  'MITIKAH',
-  'DELTA',
-  'MITIKAH 2',
-  'MIYANA',
-  'MASARYK',
-  'NEW BRANCH',
-  'PRUEBA POST',
-  'POST',
-  'POSTZZZ',
-  'TOTAL',
-  'MONTHLY TARGET',
-  'TO GO',
-  'PERCENTAGE',
+  {
+    name: 'EMPLOYEE',
+  },
+  {
+    name: 'GALERIAS INSURGENTES',
+    formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
+  },
+  {
+    name: 'OPATRA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
+  },
+  {
+    name: 'MITIKAH',
+    formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
+  },
+  {
+    name: 'DELTA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
+  },
+  {
+    name: 'MITIKAH 2',
+    formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
+  },
+  {
+    name: 'MIYANA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
+  },
+  {
+    name: 'MASARYK',
+    formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
+  },
+  {
+    name: 'NEW BRANCH',
+    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
+  },
+  {
+    name: 'PRUEBA POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[9]?.data),
+  },
+  {
+    name: 'POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[10]?.data),
+  },
+  {
+    name: 'POSTZZZ',
+    formatter: (_, row) => _formatMoney(row?.cells?.[11]?.data),
+  },
+  {
+    name: 'TOTAL',
+    formatter: (_, row) => _formatMoney(row?.cells?.[12]?.data),
+  },
+  {
+    name: 'META MENSUAL',
+    formatter: (_, row) => _formatMoney(row?.cells?.[13]?.data),
+  },
+  {
+    name: 'POR LLEGAR',
+    formatter: (_, row) => _formatMoney(row?.cells?.[14]?.data),
+  },
+  {
+    name: 'PORCENTAJE',
+  },
 ];
 
 export const columnsPaymentMethodReport = [
-  'branch',
-  'EFECTIVO',
-  'TARJETA',
-  'NETPAY LINK',
-  'TRANSFERENCIA',
-  'NEW METHOD',
-  'PRUEBA POST',
-  'POSTZZZ',
-  'TOTAL',
+  {
+    name: 'branch',
+    formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
+  },
+  {
+    name: 'EFECTIVO',
+    formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
+  },
+  {
+    name: 'TARJETA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
+  },
+  {
+    name: 'NETPAY LINK',
+    formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
+  },
+  {
+    name: 'TRANSFERENCIA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
+  },
+  {
+    name: 'NEW METHOD',
+    formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
+  },
+  {
+    name: 'PRUEBA POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
+  },
+  {
+    name: 'POSTZZZ',
+    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
+  },
+  {
+    name: 'TOTAL',
+    formatter: (_, row) => _formatMoney(row?.cells?.[9]?.data),
+  },
 ];
 
 export const columnsPaymentMethodReportDaily = [
-  'DATE',
-  'MITIKAH',
-  'DELTA',
-  'GALERIAS_INSURGENTES',
-  'OPATRA',
-  'MIYANA',
-  'MASARYK',
-  'MITIKAH_2',
-  'NEW_BRANCH',
-  'PRUEBA_POST',
-  'POST',
-  'POSTZZZ',
-  'TOTAL',
+  {
+    name: 'DATE',
+  },
+  {
+    name: 'MITIKAH',
+    formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
+  },
+  {
+    name: 'DELTA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
+  },
+  {
+    name: 'GALERIAS_INSURGENTES',
+    formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
+  },
+  {
+    name: 'OPATRA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
+  },
+  {
+    name: 'MIYANA',
+    formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
+  },
+  {
+    name: 'MASARYK',
+    formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
+  },
+  {
+    name: 'MITIKAH_2',
+    formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
+  },
+  {
+    name: 'NEW_BRANCH',
+    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
+  },
+  {
+    name: 'PRUEBA_POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[9]?.data),
+  },
+  {
+    name: 'POST',
+    formatter: (_, row) => _formatMoney(row?.cells?.[10]?.data),
+  },
+  {
+    name: 'POSTZZZ',
+    formatter: (_, row) => _formatMoney(row?.cells?.[11]?.data),
+  },
+  {
+    name: 'TOTAL',
+    formatter: (_, row) => _formatMoney(row?.cells?.[12]?.data),
+  },
 ];
 
 export const tableConfig = {
