@@ -12,6 +12,7 @@ import './pages/feature-sales-management-crud-payment-method/FeatureSalesManagem
 import './pages/feature-sales-management-crud-report-dashboard/FeatureSalesManagementCrudReportDashboard.js';
 import './pages/feature-sales-management-crud-report-total-sales/FeatureSalesManagementCrudReportTotalSales.js';
 import './pages/feature-sales-management-crud-report-sales-seller/FeatureSalesManagementCrudReportSalesSeller.js';
+import './pages/feature-sales-management-crud-report-daily-sales-seller/FeatureSalesManagementCrudReportDailySalesSeller.js';
 import './pages/feature-sales-management-crud-report-payment-method/FeatureSalesManagementCrudReportPaymentMethod.js';
 import './pages/feature-sales-management-crud-report-daily-payment-method/FeatureSalesManagementCrudReportDailyPaymentMethod.js';
 import './FeatureSalesManagementCrud.css';
@@ -49,6 +50,15 @@ export class FeatureSalesManagementCrud extends LitElement {
        * @private
        */
       _crudSalesSellerIsVisible: {
+        type: Boolean,
+      },
+      /**
+       * Show sales by seller daily page.
+       * @type {Boolean}
+       * @default false
+       * @private
+       */
+      _crudSalesSellerDailyIsVisible: {
         type: Boolean,
       },
       /**
@@ -98,6 +108,14 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Array,
       },
       /**
+       * Data for employee report daily page.
+       * @type {Array}
+       * @default []
+       */
+      _dataEmployeeReportDaily: {
+        type: Array,
+      },
+      /**
        * Data for payment method report page.
        * @type {Array}
        * @default []
@@ -142,6 +160,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._crudDashboardIsVisible = false;
     this._crudTotalSalesIsVisible = false;
     this._crudSalesSellerIsVisible = false;
+    this._crudSalesSellerDailyIsVisible = false;
     this._crudPaymentMethodReportIsVisible = false;
     this.dataSalesBranch = {};
     this.dataEmployee = {};
@@ -150,6 +169,7 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._dashboardData = [];
     this._totalSalesData = {};
     this._dataEmployeeReport = [];
+    this._dataEmployeeReportDaily = [];
     this._dataPaymentMethodReport = [];
     this._dataPaymentMethodSelect = [];
     this._dataPaymentMethodReportDaily = [];
@@ -271,6 +291,15 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   /**
+   * Handles the event to get sales seller daily report.
+   * @param {String} data
+   * @private
+   */
+  _handleGetSalesSellerDaily(date) {
+    this._salesManagementCrudDm.getEmployeeDailyReport(date);
+  }
+
+  /**
    * Handles the event to get total sales report.
    * @param {String} date
    * @private
@@ -340,6 +369,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         @set-sales-seller-visible=${() => {
           this._crudSalesSellerIsVisible = true;
         }}
+        @sales-seller-report-daily-visible=${() => {
+          this._crudSalesSellerDailyIsVisible = true;
+        }}
         @set-payment-method-report-visible=${() => {
           this._crudPaymentMethodReportIsVisible = true;
         }}
@@ -401,6 +433,15 @@ export class FeatureSalesManagementCrud extends LitElement {
             </feature-sales-management-crud-report-sales-seller>
           `
         : nothing}
+      ${this._crudSalesSellerDailyIsVisible
+        ? html`
+            <feature-sales-management-crud-report-daily-sales-seller
+              @input-date-unique-data="${e => this._handleGetSalesSellerDaily(e.detail)}"
+              .dailySalesSellerData="${this._dataEmployeeReportDaily}"
+            >
+            </feature-sales-management-crud-report-daily-sales-seller>
+          `
+        : nothing}
       ${this._crudTotalSalesIsVisible
         ? html`
             <feature-sales-management-crud-report-total-sales
@@ -450,6 +491,9 @@ export class FeatureSalesManagementCrud extends LitElement {
         }}"
         @feature-sales-management-crud-dm-set-data-employee-report="${e => {
           this._dataEmployeeReport = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-data-employee-report-daily="${e => {
+          this._dataEmployeeReportDaily = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-total-sales="${e => {
           this._totalSalesData = e.detail;

@@ -45,6 +45,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         type: Array,
       },
       /**
+       * Set of data for employee report daily.
+       * @type {Array}
+       * @default []
+       * @private
+       */
+      _dataEmployeeReportDaily: {
+        type: Array,
+      },
+      /**
        * Set of data for total general sales report.
        * @type {Object}
        * @default {}
@@ -101,6 +110,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._dataPaymentMethodReport = [];
     this._dataPaymentMethodDailyReport = [];
     this._dataEmployeeReport = [];
+    this._dataEmployeeReportDaily = [];
     this._dataTotalSalesReport = {};
     this._dataSalesBranchReport = {};
     this._isRequestSelect = false;
@@ -239,6 +249,16 @@ export class FeatureSalesManagementCrudDM extends LitElement {
    */
   getEmployeeReport(startDate, endDate) {
     this._reportApiDm.getEmployeeReport(startDate, endDate);
+  }
+
+  /**
+   * Dispatch request to get employee report daily.
+   * @param {String} date
+   * @public
+   */
+  getEmployeeDailyReport(date) {
+    const formatedDate = FeatureSalesManagementCrudDM._getFormatDate(date);
+    this._reportApiDm.getEmployeeDailyReport(formatedDate.year, formatedDate.onlyMonth);
   }
 
   /**
@@ -523,6 +543,49 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Set data for employee report daily.
+   * @param {Array} data
+   * @event 'feature-sales-management-crud-dm-set-data-employee-report-daily'
+   * @private
+   */
+  _setDataEmployeeDailyReport(data) {
+    const dateKeyRegex = /^\d{2}\/\d{2}\/\d{2}$/;
+    const allDateKeys = Array.from(
+      new Set(data.flatMap(obj => Object.keys(obj).filter(k => dateKeyRegex.test(k)))),
+    );
+
+    const sortByDate = (a, b) => {
+      const [da, ma, ya] = a.split('/').map(n => parseInt(n, 10));
+      const [db, mb, yb] = b.split('/').map(n => parseInt(n, 10));
+      const A = new Date(2000 + ya, ma - 1, da);
+      const B = new Date(2000 + yb, mb - 1, db);
+      return A - B;
+    };
+    allDateKeys.sort(sortByDate);
+
+    const columnsDaily = ['EMPLOYEE', ...allDateKeys, 'TOTAL'];
+
+    const rows = data.map(item => [
+      item.EMPLOYEE ?? '',
+      ...allDateKeys.map(k => item[k] ?? 0),
+      item.TOTAL ?? 0,
+    ]);
+
+    this._dataEmployeeReportDaily = {
+      data: rows,
+      columns: columnsDaily,
+      search: true,
+      pagination: { limit: 9 },
+    };
+
+    this.dispatchEvent(
+      new CustomEvent('feature-sales-management-crud-dm-set-data-employee-report-daily', {
+        detail: this._dataEmployeeReportDaily,
+      }),
+    );
+  }
+
+  /**
    * Set data for payment method report.
    * @param {Array} data
    * @event 'feature-sales-management-crud-dm-set-data-payment-method-report'
@@ -651,6 +714,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @branch-total-sales-report-api-dm-fetch=${e =>
           this._setDataBranchTotalSalesReport(e.detail)}
         @employee-report-api-dm-fetch=${e => this._setDataEmployeeReport(e.detail)}
+        @employee-report-daily-api-dm-fetch=${e => this._setDataEmployeeDailyReport(e.detail)}
         @payment-method-report-api-dm-fetch=${e => this._setDataPaymentMethodReport(e.detail)}
         @payment-method-report-daily-api-dm-fetch=${e =>
           this._setDataPaymentMethodDailyReport(e.detail)}

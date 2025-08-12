@@ -102,6 +102,16 @@ export class NavBar extends LitElement {
   }
 
   /**
+   * Handles the sales seller daily visibility event.
+   * @private
+   * @event sales-seller-report-daily-visible
+   */
+  _handleSalesSellerDaily() {
+    this.toggleMenu();
+    this.dispatchEvent(new CustomEvent('sales-seller-report-daily-visible'));
+  }
+
+  /**
    * Handles the total sales visibility event.
    * @private
    * @event set-total-sales-visible
@@ -156,6 +166,9 @@ export class NavBar extends LitElement {
           Método de pago por día
         </button>
         <button class="menu-buttons" @click=${this._handleSalesSeller}>Ventas por vendedor</button>
+        <button class="menu-buttons" @click=${this._handleSalesSellerDaily}>
+          Ventas vendedor por día
+        </button>
         <button class="menu-buttons" @click=${this._handleTotalSales}>Total general Ventas</button>
         <button class="menu-buttons" @click=${this._handleDashboard}>Dashboard</button>
         <div class="border-b border-y-sky-500"></div>
