@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from 'lit';
-import '../grid-table/GridTable.js';
+
 
 export class EmployerForm extends LitElement {
   static get properties() {
@@ -46,7 +46,6 @@ export class EmployerForm extends LitElement {
        */
       formData: { type: Object },
 
-      dataTable: { type: Object },
     };
   }
 
@@ -58,7 +57,6 @@ export class EmployerForm extends LitElement {
     this.middleName = '';
     this.showForm = false;
     this.formData = {};
-    this.dataTable = {};
   }
 
   /**
@@ -200,28 +198,6 @@ export class EmployerForm extends LitElement {
     this.showForm = false;
   }
 
-  static _actionButtons = row => {
-    const id = row?.cells?.[0]?.data; // asumiendo que "ID" es la 1a columna
-    return `
-    <div class="flex items-center gap-2">
-      <button class="px-2 py-1 rounded-md border text-xs hover:bg-gray-50" data-action="view" data-id="${id}">View</button>
-      <button class="px-2 py-1 rounded-md border text-xs hover:bg-gray-50" data-action="edit" data-id="${id}">Edit</button>
-      <button class="px-2 py-1 rounded-md border text-xs hover:bg-red-50 text-red-600 border-red-200" data-action="delete" data-id="${id}">Delete</button>
-    </div>
-    `;
-  };
-
-  static _onGridAction(e) {
-    const { action, id } = e.detail;
-    // Aquí conectas con tu lógica (abrir modal, navegar, etc.)
-    if (action === 'view') {
-      console.log('Ver perfil de', id);
-    } else if (action === 'delete') {
-      console.log('Eliminar empleado', id);
-    } else if (action === 'edit') {
-      console.log('Editar empleado', id);
-    }
-  }
 
   render() {
     return html`
@@ -235,12 +211,6 @@ export class EmployerForm extends LitElement {
       </button>
       ${this.showForm ? this._tplFormModal() : nothing}
 
-      <grid-table
-        .config=${this?.dataTable}
-        enable-actions
-        .actionBuilder=${EmployerForm._actionButtons}
-        @grid-action=${EmployerForm._onGridAction}
-      ></grid-table>
     `;
   }
 }
