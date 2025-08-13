@@ -1,5 +1,4 @@
 import { LitElement, html, nothing } from 'lit';
-import '../grid-table/GridTable.js';
 
 export class PaymentMethodForm extends LitElement {
   static get properties() {
@@ -10,13 +9,6 @@ export class PaymentMethodForm extends LitElement {
        * @default ''
        */
       paymentMethod: { type: String },
-
-      /**
-       * Object of table config
-       * @type {Object}
-       * @default '{}'
-       */
-      tableConfig: { type: Object },
 
       /**
        * Boolean to show form
@@ -30,7 +22,6 @@ export class PaymentMethodForm extends LitElement {
   constructor() {
     super();
     this.paymentMethod = '';
-    this.tableConfig = {};
     this.showForm = false;
   }
 
@@ -116,7 +107,6 @@ export class PaymentMethodForm extends LitElement {
 
       ${this.showForm ? this._tplPaymentMethodFormModal() : nothing}
 
-      <grid-table .config=${this.tableConfig}></grid-table>
     `;
   }
 }
