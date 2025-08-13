@@ -4,6 +4,7 @@ import '../components/employee-api-dm/EmployeeApiDm.js';
 import '../components/branches-api-dm/BranchesApiDm.js';
 import '../components/payment-method-api-dm/PaymentMethodApiDm.js';
 import '../components/report-api-dm/ReportApiDm.js';
+import { html as ghtml } from 'gridjs';
 import {
   chatColors,
   columnsBranch,
@@ -532,9 +533,47 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         item.PERCENTAGE,
       ]),
     };
+
+    const percentageFormatter = cell => {
+      const raw = Number(cell ?? 0);
+      const display = Number.isFinite(raw) ? raw : 0;
+
+      const clamped = Math.max(0, Math.min(100, display));
+
+      const colorRanges = [
+        { max: 50, bgColor: 'bg-red-700', textColor: 'text-black' },
+        { max: 80, bgColor: 'bg-yellow-600', textColor: 'text-white' },
+        { max: 101, bgColor: 'bg-green-700', textColor: 'text-white' },
+      ];
+      const { bgColor, textColor } = colorRanges.find(r => clamped < r.max) ?? {
+        bgColor: 'bg-green-700',
+        textColor: 'text-white',
+      };
+
+      const displayTxt = (() => {
+        const s = display % 1 === 0 ? String(display) : display.toFixed(2);
+        return s.replace(/\.0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1');
+      })();
+
+      return ghtml(`
+        <div class="relative w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+          <div class="${bgColor} h-4 rounded-full" style="width:${clamped}%"></div>
+          <span class="${textColor} absolute inset-0 flex items-center justify-center text-xs font-bold">
+            ${displayTxt}%
+          </span>
+        </div>
+      `);
+    };
+
+    const columnPercentage = {
+      name: 'porcentaje',
+      width: '175px',
+      formatter: percentageFormatter,
+    };
+
     this._dataEmployeeReport = {
       ...this._dataEmployeeReport,
-      columns: columnsSalesSeller,
+      columns: [...columnsSalesSeller, columnPercentage],
       search: true,
       pagination: { limit: 10 },
       className: tableConfig.className,
@@ -580,7 +619,13 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       return {
         name,
         width: '150px',
-        formatter: cell => _formatMoney(cell),
+        formatter: cell => {
+          const value = Number(cell || 0);
+          const formatted = _formatMoney(value);
+          return ghtml(
+            `<span class="${value === 0 ? 'text-red-600 font-bold' : 'font-bold'}">${formatted}</span>`,
+          );
+        },
         sort: { compare: (a, b) => Number(a || 0) - Number(b || 0) },
       };
     });

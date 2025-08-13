@@ -167,10 +167,6 @@ export const columnsSalesSeller = [
     width: '150px',
     formatter: (_, row) => _formatMoney(row?.cells?.[14]?.data),
   },
-  {
-    name: 'PORCENTAJE',
-    width: '175px',
-  },
 ];
 
 export const columnsPaymentMethodReport = [
