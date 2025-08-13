@@ -1,4 +1,5 @@
-import { LitElement, html, nothing } from 'lit';
+import { LitElement, html } from 'lit';
+import { Router } from '@lit-labs/router';
 import '../components/seller-form/SellerForm.js';
 import '../components/employer-form/EmployerForm.js';
 import '../components/branch-form/BranchForm.js';
@@ -21,64 +22,6 @@ import './FeatureSalesManagementCrudDM.js';
 export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
     return {
-      crudSalesIsVisible: { type: Boolean },
-      crudEmployeeIsVisible: { type: Boolean },
-      crudBranchesIsVisible: { type: Boolean },
-      crudPaymentMethodIsVisible: { type: Boolean },
-      /**
-       * Show dashboard page.
-       * @type {Boolean}
-       * @default false
-       * @private
-       */
-      _crudDashboardIsVisible: {
-        type: Boolean,
-      },
-      /**
-       * Show total general sales page.
-       * @type {Boolean}
-       * @default false
-       * @private
-       */
-      _crudTotalSalesIsVisible: {
-        type: Boolean,
-      },
-      /**
-       * Show sales by seller page.
-       * @type {Boolean}
-       * @default false
-       * @private
-       */
-      _crudSalesSellerIsVisible: {
-        type: Boolean,
-      },
-      /**
-       * Show sales by seller daily page.
-       * @type {Boolean}
-       * @default false
-       * @private
-       */
-      _crudSalesSellerDailyIsVisible: {
-        type: Boolean,
-      },
-      /**
-       * Show payment method report page.
-       * @type {Boolean}
-       * @default false
-       * @private
-       */
-      _crudPaymentMethodReportIsVisible: {
-        type: Boolean,
-      },
-      /**
-       * Show payment method report daily page.
-       * @type {Boolean}
-       * @default false
-       * @private
-       */
-      _crudPaymentMethodReportDailyIsVisible: {
-        type: Boolean,
-      },
       dataSalesBranch: { type: Object },
       dataEmployee: { type: Object },
       dataBranches: { type: Object },
@@ -153,15 +96,7 @@ export class FeatureSalesManagementCrud extends LitElement {
 
   constructor() {
     super();
-    this.crudSalesIsVisible = false;
-    this.crudEmployeeIsVisible = false;
-    this.crudBranchesIsVisible = false;
-    this.crudPaymentMethodIsVisible = false;
-    this._crudDashboardIsVisible = false;
-    this._crudTotalSalesIsVisible = false;
-    this._crudSalesSellerIsVisible = false;
-    this._crudSalesSellerDailyIsVisible = false;
-    this._crudPaymentMethodReportIsVisible = false;
+    this._user = null; // { role: 'admin' }; // o un objeto con roles cuando haya login
     this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
@@ -174,6 +109,140 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._dataPaymentMethodSelect = [];
     this._dataPaymentMethodReportDaily = [];
     this._loadingCount = 0;
+
+    this._router = new Router(this, [
+      { path: '/', render: () => html`<p class="p-4">PAGINA INICIAL</p>` },
+      {
+        path: '/login',
+        // cuando se habilite el login y el control de acceso
+        // render: this._authorize(aqui iría todo el arrayfunction con el html)
+        render: () => html`
+          <div class="p-4">
+            <p class="mb-2">Login placeholder</p>
+            <button
+              class="menu-buttons"
+              @click=${() => {
+                this._user = { role: 'admin' };
+                this._router.goto('/');
+              }}
+            >
+              Iniciar sesión
+            </button>
+          </div>
+        `,
+      },
+      {
+        path: '/formularios/ventas',
+        render: () => {
+          this._ensureFetched('ventas', dm => dm.getSalesBranch());
+          return html`
+            <feature-sales-management-crud-sales
+              .dataGridSales="${this?.dataSalesBranch}"
+            ></feature-sales-management-crud-sales>
+          `;
+        },
+      },
+      {
+        path: '/formularios/empleados',
+        render: () => {
+          this._ensureFetched('empleados', dm => dm.getEmployee());
+          return html`
+            <feature-sales-management-crud-employee
+              @submit-employee-event="${e => this.handleEmployeeSubmit(e.detail)}"
+              .dataGridEmployee="${this?.dataEmployee}"
+            ></feature-sales-management-crud-employee>
+          `;
+        },
+      },
+      {
+        path: '/formularios/sucursales',
+        render: () => {
+          this._ensureFetched('sucursales', dm => dm.getBranches());
+          return html`
+            <feature-sales-management-crud-branch
+              @submit-event="${e => this.handleBranchSubmit(e.detail)}"
+              .dataGridBranch="${this.dataBranches}"
+            ></feature-sales-management-crud-branch>
+          `;
+        },
+      },
+      {
+        path: '/formularios/metodos-pago',
+        render: () => {
+          this._ensureFetched('metodos-pago', dm => dm.getPaymentMethod());
+          return html`
+            <feature-sales-management-crud-payment-method
+              .dataGridPaymentMethod="${this.dataPaymentMethod}"
+              @submit-payment-method-event="${e => this.handlePaymentMethodSubmit(e.detail)}"
+            ></feature-sales-management-crud-payment-method>
+          `;
+        },
+      },
+      {
+        path: '/reportes/metodo-pago',
+        render: () => html`
+          <feature-sales-management-crud-report-payment-method
+            .paymentReportData=${this._dataPaymentMethodReport}
+            @input-date-between-data=${e => this._handleGetPaymentMethodReport(e.detail)}
+          ></feature-sales-management-crud-report-payment-method>
+        `,
+      },
+      {
+        path: '/reportes/metodo-pago-diario',
+        render: () => html`
+          <feature-sales-management-crud-report-daily-payment-method
+            .paymentReportDailyData="${this._dataPaymentMethodReportDaily}"
+            .inputSelectData=${this._dataPaymentMethodSelect}
+            @input-select-request-data="${this._handleGetPaymentMethodSelect}"
+            @input-date-unique-data="${e => this._handleGetPaymentMethodReportDaily(e.detail)}"
+            @input-select-changed="${e => this._handleRequestPaymentMethodSelect(e.detail)}"
+          >
+          </feature-sales-management-crud-report-daily-payment-method>
+        `,
+      },
+      {
+        path: '/reportes/ventas-vendedor',
+        render: () => html`
+          <feature-sales-management-crud-report-sales-seller
+            .salesSellerData="${this._dataEmployeeReport}"
+            @input-date-between-data="${e => this._handleGetSalesSeller(e.detail)}"
+          >
+          </feature-sales-management-crud-report-sales-seller>
+        `,
+      },
+      {
+        path: '/reportes/ventas-vendedor-diario',
+        render: () => html`
+          <feature-sales-management-crud-report-daily-sales-seller
+            @input-date-unique-data="${e => this._handleGetSalesSellerDaily(e.detail)}"
+            .dailySalesSellerData="${this._dataEmployeeReportDaily}"
+          >
+          </feature-sales-management-crud-report-daily-sales-seller>
+        `,
+      },
+      {
+        path: '/reportes/total-general-ventas',
+        render: () => html`
+          <feature-sales-management-crud-report-total-sales
+            .totalSalesData="${this._totalSalesData}"
+            @input-date-between-data="${e => this._handleGetBranchReport(e.detail)}"
+          ></feature-sales-management-crud-report-total-sales>
+        `,
+      },
+      {
+        path: '/reportes/dashboard',
+        render: () => html`
+          <feature-sales-management-crud-report-dashboard
+            .data="${this._dashboardData}"
+            @input-date-unique-data="${e => this._handleGetSalesBranch(e.detail)}"
+          ></feature-sales-management-crud-report-dashboard>
+        `,
+      },
+      {
+        path: '(.*)',
+        render: () => html`<p class="p-4 text-red-600 uppercase">Página No encontrada</p>`,
+      },
+    ]);
   }
 
   createRenderRoot() {
@@ -188,36 +257,45 @@ export class FeatureSalesManagementCrud extends LitElement {
     return this._getElement('feature-sales-management-crud-dm');
   }
 
-  handleGetSalesBranch() {
-    this.crudSalesIsVisible = true;
-    this.crudEmployeeIsVisible = false;
-    this.crudBranchesIsVisible = false;
-    this.crudPaymentMethodIsVisible = false;
-    this._salesManagementCrudDm.getSalesBranch();
+  _prefetched = new Set();
+
+  // pendiente de documentar
+  async _callDM(cb) {
+    await Promise.all([
+      customElements.whenDefined('feature-sales-management-crud-dm'),
+      this.updateComplete,
+    ]);
+    const dm = this._salesManagementCrudDm;
+    if (!dm) return;
+    cb(dm);
   }
 
-  handleGetEmployee() {
-    this.crudEmployeeIsVisible = true;
-    this.crudSalesIsVisible = false;
-    this.crudBranchesIsVisible = false;
-    this.crudPaymentMethodIsVisible = false;
-    this._salesManagementCrudDm.getEmployee();
+  // pendiente de documentar
+  _ensureFetched(key, cb) {
+    if (this._prefetched.has(key)) return;
+    this._prefetched.add(key);
+    this._callDM(cb);
   }
 
-  handleGetBranches() {
-    this.crudBranchesIsVisible = true;
-    this.crudEmployeeIsVisible = false;
-    this.crudSalesIsVisible = false;
-    this.crudPaymentMethodIsVisible = false;
-    this._salesManagementCrudDm.getBranches();
+  // Guard simple (mejorar esto cuando haya login real/JWT)
+  _isAuthenticated() {
+    return !!this._user;
   }
 
-  handleGetPaymentMethod() {
-    this.crudPaymentMethodIsVisible = true;
-    this.crudBranchesIsVisible = false;
-    this.crudEmployeeIsVisible = false;
-    this.crudSalesIsVisible = false;
-    this._salesManagementCrudDm.getPaymentMethod();
+  // pendiente de documentar
+  _authorize(renderFn) {
+    if (!this._isAuthenticated()) {
+      queueMicrotask(() => this._router.goto('/login'));
+      return html``;
+    }
+    return renderFn();
+  }
+
+  // pendiente de documentar
+  _logout() {
+    this._user = null;
+    this._prefetched.clear();
+    this._router.goto('/login');
   }
 
   /**
@@ -327,11 +405,6 @@ export class FeatureSalesManagementCrud extends LitElement {
    */
   _setDashboardConfig(detail) {
     this._dashboardData = detail;
-    this.crudPaymentMethodIsVisible = false;
-    this.crudBranchesIsVisible = false;
-    this.crudEmployeeIsVisible = false;
-    this.crudSalesIsVisible = false;
-    this._crudDashboardIsVisible = true;
   }
 
   /**
@@ -354,118 +427,9 @@ export class FeatureSalesManagementCrud extends LitElement {
 
   render() {
     return html`
-      <loading-spinner .isLoading=${this._loadingCount > 0}></loading-spinner>
-      <nav-bar
-        @crud-sales-visible=${this.handleGetSalesBranch}
-        @crud-employee-visible=${this.handleGetEmployee}
-        @crud-branches-visible=${this.handleGetBranches}
-        @crud-payment-method-visible=${this.handleGetPaymentMethod}
-        @set-dashboard-visible=${() => {
-          this._crudDashboardIsVisible = true;
-        }}
-        @set-total-sales-visible=${() => {
-          this._crudTotalSalesIsVisible = true;
-        }}
-        @set-sales-seller-visible=${() => {
-          this._crudSalesSellerIsVisible = true;
-        }}
-        @sales-seller-report-daily-visible=${() => {
-          this._crudSalesSellerDailyIsVisible = true;
-        }}
-        @set-payment-method-report-visible=${() => {
-          this._crudPaymentMethodReportIsVisible = true;
-        }}
-        @set-payment-method-report-daily-visible=${() => {
-          this._crudPaymentMethodReportDailyIsVisible = true;
-        }}
-      ></nav-bar>
+      <nav-bar></nav-bar>
 
-      ${this.crudSalesIsVisible
-        ? html`
-            <feature-sales-management-crud-sales
-              .dataGridSales="${this?.dataSalesBranch}"
-            ></feature-sales-management-crud-sales>
-          `
-        : nothing}
-      ${this.crudEmployeeIsVisible
-        ? html`
-            <feature-sales-management-crud-employee
-              @submit-employee-event="${e => this.handleEmployeeSubmit(e.detail)}"
-              .dataGridEmployee="${this?.dataEmployee}"
-            ></feature-sales-management-crud-employee>
-          `
-        : nothing}
-      ${this.crudBranchesIsVisible
-        ? html`
-            <feature-sales-management-crud-branch
-              @submit-event="${e => this.handleBranchSubmit(e.detail)}"
-              .dataGridBranch="${this.dataBranches}"
-            ></feature-sales-management-crud-branch>
-          `
-        : nothing}
-      ${this._crudPaymentMethodReportIsVisible
-        ? html`
-            <feature-sales-management-crud-report-payment-method
-              .paymentReportData="${this._dataPaymentMethodReport}"
-              @input-date-between-data="${e => this._handleGetPaymentMethodReport(e.detail)}"
-            >
-            </feature-sales-management-crud-report-payment-method>
-          `
-        : nothing}
-      ${this._crudPaymentMethodReportDailyIsVisible
-        ? html`
-            <feature-sales-management-crud-report-daily-payment-method
-              .paymentReportDailyData="${this._dataPaymentMethodReportDaily}"
-              .inputSelectData=${this._dataPaymentMethodSelect}
-              @input-select-request-data="${this._handleGetPaymentMethodSelect}"
-              @input-date-unique-data="${e => this._handleGetPaymentMethodReportDaily(e.detail)}"
-              @input-select-changed="${e => this._handleRequestPaymentMethodSelect(e.detail)}"
-            >
-            </feature-sales-management-crud-report-daily-payment-method>
-          `
-        : nothing}
-      ${this._crudSalesSellerIsVisible
-        ? html`
-            <feature-sales-management-crud-report-sales-seller
-              .salesSellerData="${this._dataEmployeeReport}"
-              @input-date-between-data="${e => this._handleGetSalesSeller(e.detail)}"
-            >
-            </feature-sales-management-crud-report-sales-seller>
-          `
-        : nothing}
-      ${this._crudSalesSellerDailyIsVisible
-        ? html`
-            <feature-sales-management-crud-report-daily-sales-seller
-              @input-date-unique-data="${e => this._handleGetSalesSellerDaily(e.detail)}"
-              .dailySalesSellerData="${this._dataEmployeeReportDaily}"
-            >
-            </feature-sales-management-crud-report-daily-sales-seller>
-          `
-        : nothing}
-      ${this._crudTotalSalesIsVisible
-        ? html`
-            <feature-sales-management-crud-report-total-sales
-              .totalSalesData="${this._totalSalesData}"
-              @input-date-between-data="${e => this._handleGetBranchReport(e.detail)}"
-            ></feature-sales-management-crud-report-total-sales>
-          `
-        : nothing}
-      ${this._crudDashboardIsVisible
-        ? html`
-            <feature-sales-management-crud-report-dashboard
-              .data="${this._dashboardData}"
-              @input-date-unique-data="${e => this._handleGetSalesBranch(e.detail)}"
-            ></feature-sales-management-crud-report-dashboard>
-          `
-        : nothing}
-      ${this.crudPaymentMethodIsVisible
-        ? html`
-            <feature-sales-management-crud-payment-method
-              .dataGridPaymentMethod="${this.dataPaymentMethod}"
-              @submit-payment-method-event="${e => this.handlePaymentMethodSubmit(e.detail)}"
-            ></feature-sales-management-crud-payment-method>
-          `
-        : nothing}
+      ${this._router.outlet()}
 
       <feature-sales-management-crud-dm
         @set-data-sales-branch="${e => {
@@ -505,6 +469,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         @loading-end=${this._decrementLoading}
       >
       </feature-sales-management-crud-dm>
+      <loading-spinner .isLoading=${this._loadingCount > 0}></loading-spinner>
     `;
   }
 }

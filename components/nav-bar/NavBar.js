@@ -10,13 +10,13 @@ export class NavBar extends LitElement {
        * Boolean that indicates if the menu is open
        * @type {Boolean}
        */
-      menuOpen: { type: Boolean },
+      _menuOpen: { type: Boolean },
     };
   }
 
   constructor() {
     super();
-    this.menuOpen = false;
+    this._menuOpen = false;
   }
 
   /**
@@ -29,122 +29,26 @@ export class NavBar extends LitElement {
 
   /**
    * Toggles the sidebar menu open or closed.
-   * @public
-   */
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
-
-  handleNavigation() {
-    this.toggleMenu();
-    this.dispatchEvent(
-      new CustomEvent('crud-sales-visible', {
-        detail: 'hola desde el navbar',
-      }),
-    );
-  }
-
-  handleEmployee() {
-    this.toggleMenu();
-    this.dispatchEvent(
-      new CustomEvent('crud-employee-visible', {
-        detail: 'hola desde el navbar employee',
-      }),
-    );
-  }
-
-  handleBranches() {
-    this.toggleMenu();
-    this.dispatchEvent(
-      new CustomEvent('crud-branches-visible', {
-        detail: 'hola desde el navbar branches',
-      }),
-    );
-  }
-
-  handlePaymentMethod() {
-    this.toggleMenu();
-    this.dispatchEvent(
-      new CustomEvent('crud-payment-method-visible', {
-        detail: 'hola desde el navbar payment method',
-      }),
-    );
-  }
-
-  /**
-   * Handles the payment method report visibility event.
    * @private
-   * @event set-payment-method-report-visible
    */
-  _handlePaymentMethodReport() {
-    this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('set-payment-method-report-visible'));
-  }
-
-  /**
-   * Handles the payment method report daily visibility event.
-   * @private
-   * @event set-payment-method-report-daily-visible
-   */
-  _handlePaymentMethodReportDaily() {
-    this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('set-payment-method-report-daily-visible'));
-  }
-
-  /**
-   * Handles the sales seller visibility event.
-   * @private
-   * @event set-sales-seller-visible
-   */
-  _handleSalesSeller() {
-    this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('set-sales-seller-visible'));
-  }
-
-  /**
-   * Handles the sales seller daily visibility event.
-   * @private
-   * @event sales-seller-report-daily-visible
-   */
-  _handleSalesSellerDaily() {
-    this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('sales-seller-report-daily-visible'));
-  }
-
-  /**
-   * Handles the total sales visibility event.
-   * @private
-   * @event set-total-sales-visible
-   */
-  _handleTotalSales() {
-    this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('set-total-sales-visible'));
-  }
-
-  /**
-   * Handles the dashboard visibility event.
-   * @private
-   * @event set-dashboard-visible
-   */
-  _handleDashboard() {
-    this.toggleMenu();
-    this.dispatchEvent(new CustomEvent('set-dashboard-visible'));
+  _toggleMenu() {
+    this._menuOpen = !this._menuOpen;
   }
 
   render() {
     return html`
-      ${this.menuOpen ? html`<div class="overlay"></div>` : nothing}
+      ${this._menuOpen ? html`<div class="overlay"></div>` : nothing}
 
       <header class="header-nav">
-        <button class="header-btn" @click=${() => this.toggleMenu()}>☰</button>
+        <button class="header-btn" @click=${this._toggleMenu}>☰</button>
         <h1 class="nav-title">KEYSAR COSMETICS</h1>
       </header>
 
-      <nav class=${`nav-animation ${this.menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <nav class=${`nav-animation ${this._menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <button
           class="close-menu-btn"
           @click=${() => {
-            this.menuOpen = false;
+            this._menuOpen = false;
           }}
           aria-label="Cerrar menú"
         >
@@ -153,24 +57,85 @@ export class NavBar extends LitElement {
 
         <div class="border-b border-y-sky-500"></div>
         <p class="text-gray-400 italic text-sm uppercase font-bold">formularios</p>
-        <button class="menu-buttons" @click=${this.handleNavigation}>Ventas</button>
-        <button class="menu-buttons" @click=${this.handleEmployee}>Empleados</button>
-        <button class="menu-buttons" @click=${this.handleBranches}>Sucursales</button>
-        <button class="menu-buttons" @click=${this.handlePaymentMethod}>Metodos de Pago</button>
+        <a
+          href="/"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Inicio
+        </a>
+        <a
+          href="/formularios/ventas"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Ventas
+        </a>
+        <a
+          href="/formularios/empleados"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Empleados
+        </a>
+        <a
+          href="/formularios/sucursales"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Sucursales
+        </a>
+        <a
+          href="/formularios/metodos-pago"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Metodos de Pago
+        </a>
         <div class="border-b border-y-sky-500"></div>
         <p class="text-gray-400 italic text-sm uppercase font-bold">reportes</p>
-        <button class="menu-buttons" @click=${this._handlePaymentMethodReport}>
+        <a
+          href="/reportes/metodo-pago"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
           Detalle método de pago
-        </button>
-        <button class="menu-buttons" @click=${this._handlePaymentMethodReportDaily}>
+        </a>
+        <a
+          href="/reportes/metodo-pago-diario"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
           Método de pago por día
-        </button>
-        <button class="menu-buttons" @click=${this._handleSalesSeller}>Ventas por vendedor</button>
-        <button class="menu-buttons" @click=${this._handleSalesSellerDaily}>
+        </a>
+        <a
+          href="/reportes/ventas-vendedor"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Ventas por vendedor
+        </a>
+        <a
+          href="/reportes/ventas-vendedor-diario"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
           Ventas vendedor por día
-        </button>
-        <button class="menu-buttons" @click=${this._handleTotalSales}>Total general Ventas</button>
-        <button class="menu-buttons" @click=${this._handleDashboard}>Dashboard</button>
+        </a>
+        <a
+          href="/reportes/total-general-ventas"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Total general Ventas
+        </a>
+        <a
+          href="/reportes/dashboard"
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors"
+          @click=${this._toggleMenu}
+        >
+          Dashboard
+        </a>
         <div class="border-b border-y-sky-500"></div>
       </nav>
     `;

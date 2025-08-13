@@ -20,7 +20,3 @@
 .close-menu-btn {
   @apply text-white text-3xl hover:text-gray-400 self-end transition;
 }
-
-.menu-buttons {
-  @apply hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left font-medium tracking-wide transition-colors;
-}
