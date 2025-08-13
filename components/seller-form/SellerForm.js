@@ -1,16 +1,8 @@
 import { LitElement, html, nothing } from 'lit';
-import '../grid-table/GridTable.js';
 
 export class SellerForm extends LitElement {
   static get properties() {
     return {
-      /**
-       * Object of table config
-       * @type {Object}
-       * @default '{}'
-       */
-      salesTableConfig: { type: Object },
-
       /**
        * Boolean to show form
        * @type {Boolean}
@@ -22,7 +14,6 @@ export class SellerForm extends LitElement {
 
   constructor() {
     super();
-    this.salesTableConfig = {};
     this.showForm = false;
   }
 
@@ -33,7 +24,6 @@ export class SellerForm extends LitElement {
   createRenderRoot() {
     return this;
   }
-
 
   /**
    * Renders the modal form for adding a new sale.
@@ -107,7 +97,13 @@ export class SellerForm extends LitElement {
 
             <!-- Action Buttons -->
             <div class="card-buttons">
-              <button type="button" class="close-btn" @click=${() => {this.showForm = false}}>
+              <button
+                type="button"
+                class="close-btn"
+                @click=${() => {
+                  this.showForm = false;
+                }}
+              >
                 Cerrar
               </button>
               <button class="agree-btn">Agregar</button>
@@ -120,13 +116,16 @@ export class SellerForm extends LitElement {
 
   render() {
     return html`
-      <button class="new-form-btn" @click=${() => {this.showForm = !this.showForm}}>
+      <button
+        class="new-form-btn"
+        @click=${() => {
+          this.showForm = !this.showForm;
+        }}
+      >
         Agregar Venta
       </button>
 
       ${this.showForm ? this._tplSaleFormModal() : nothing}
-
-      <grid-table .config=${this.salesTableConfig}></grid-table>
     `;
   }
 }
