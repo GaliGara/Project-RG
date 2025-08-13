@@ -22,10 +22,38 @@ import './FeatureSalesManagementCrudDM.js';
 export class FeatureSalesManagementCrud extends LitElement {
   static get properties() {
     return {
-      dataSalesBranch: { type: Object },
-      dataEmployee: { type: Object },
-      dataBranches: { type: Object },
-      dataPaymentMethod: { type: Object },
+      /**
+       * Data for sales branch page.
+       * @type {Object}
+       * @default {}
+       */
+      dataSalesBranch: {
+        type: Object,
+      },
+      /**
+       * Data for employee page.
+       * @type {Object}
+       * @default {}
+       */
+      dataEmployee: {
+        type: Object,
+      },
+      /**
+       * Data for branch page.
+       * @type {Object}
+       * @default {}
+       */
+      dataBranches: {
+        type: Object,
+      },
+      /**
+       * Data for payment method page.
+       * @type {Object}
+       * @default {}
+       */
+      dataPaymentMethod: {
+        type: Object,
+      },
       /**
        * Data for dashboard page.
        * @type {Array}
@@ -96,7 +124,6 @@ export class FeatureSalesManagementCrud extends LitElement {
 
   constructor() {
     super();
-    this._user = null; // { role: 'admin' }; // o un objeto con roles cuando haya login
     this.dataSalesBranch = {};
     this.dataEmployee = {};
     this.dataBranches = {};
@@ -109,13 +136,35 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._dataPaymentMethodSelect = [];
     this._dataPaymentMethodReportDaily = [];
     this._loadingCount = 0;
+    this._user = null;
+    this._router = new Router(this, this._routes);
+  }
 
-    this._router = new Router(this, [
-      { path: '/', render: () => html`<p class="p-4">PAGINA INICIAL</p>` },
+  createRenderRoot() {
+    return this;
+  }
+
+  _getElement(selector) {
+    return this.renderRoot?.querySelector(selector) ?? this.querySelector(selector);
+  }
+
+  get _salesManagementCrudDm() {
+    return this._getElement('feature-sales-management-crud-dm');
+  }
+
+  /**
+   * Returns the route configuration for the router.
+   * @returns {Array}
+   * @private
+   */
+  get _routes() {
+    return [
+      {
+        path: '/',
+        render: () => html`<p class="p-4 uppercase">pagina inicial</p>`,
+      },
       {
         path: '/login',
-        // cuando se habilite el login y el control de acceso
-        // render: this._authorize(aqui iría todo el arrayfunction con el html)
         render: () => html`
           <div class="p-4">
             <p class="mb-2">Login placeholder</p>
@@ -242,19 +291,7 @@ export class FeatureSalesManagementCrud extends LitElement {
         path: '(.*)',
         render: () => html`<p class="p-4 text-red-600 uppercase">Página No encontrada</p>`,
       },
-    ]);
-  }
-
-  createRenderRoot() {
-    return this;
-  }
-
-  _getElement(selector) {
-    return this.renderRoot?.querySelector(selector) ?? this.querySelector(selector);
-  }
-
-  get _salesManagementCrudDm() {
-    return this._getElement('feature-sales-management-crud-dm');
+    ];
   }
 
   _prefetched = new Set();
