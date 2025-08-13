@@ -172,39 +172,38 @@ export const columnsSalesSeller = [
 export const columnsPaymentMethodReport = [
   {
     name: 'sucursal',
-    formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
   },
   {
     name: 'EFECTIVO',
-    formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[1]?.data),
   },
   {
     name: 'TARJETA',
-    formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[2]?.data),
   },
   {
     name: 'NETPAY LINK',
-    formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[3]?.data),
   },
   {
     name: 'TRANSFERENCIA',
-    formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[4]?.data),
   },
   {
     name: 'NEW METHOD',
-    formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[5]?.data),
   },
   {
     name: 'PRUEBA POST',
-    formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[6]?.data),
   },
   {
     name: 'POSTZZZ',
-    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[7]?.data),
   },
   {
     name: 'TOTAL',
-    formatter: (_, row) => _formatMoney(row?.cells?.[9]?.data),
+    formatter: (_, row) => _formatMoney(row?.cells?.[8]?.data),
   },
 ];
 

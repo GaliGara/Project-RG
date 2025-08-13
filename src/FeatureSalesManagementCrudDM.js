@@ -677,7 +677,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
       ...this._dataPaymentMethodReport,
       columns: columnsPaymentMethodReport,
       search: true,
-      pagination: { limit: 10 },
+      pagination: { limit: 12 },
       className: tableConfig.className,
       language: tableConfig.language,
     };
