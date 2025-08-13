@@ -105,9 +105,13 @@ export class GridTable extends LitElement {
     const action = btn.getAttribute('data-action');
     const id = btn.getAttribute('data-id');
 
+    // Buscar el índice de la fila con ese ID (asumiendo que está en la primera columna)
+    const rowIndex = this.config?.data?.findIndex(row => `${row[0]}` === id);
+    const rowData = this.config?.data?.[rowIndex] ?? null;
+
     this.dispatchEvent(
       new CustomEvent('grid-action', {
-        detail: { action, id },
+        detail: { action, id, rowIndex, rowData },
         bubbles: true,
         composed: true,
       }),

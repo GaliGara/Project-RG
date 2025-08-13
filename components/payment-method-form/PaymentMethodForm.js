@@ -5,10 +5,10 @@ export class PaymentMethodForm extends LitElement {
     return {
       /**
        * Payment Method
-       * @type {String}
+       * @type {Object}
        * @default ''
        */
-      paymentMethod: { type: String },
+      paymentMethod: { type: Object },
 
       /**
        * Boolean to show form
@@ -16,13 +16,15 @@ export class PaymentMethodForm extends LitElement {
        * @default 'false'
        */
       showForm: { type: Boolean },
+      internalValue: { type: String },
     };
   }
 
   constructor() {
     super();
-    this.paymentMethod = '';
+    this.paymentMethod = {};
     this.showForm = false;
+    this.internalValue = '';
   }
 
   /**
@@ -41,7 +43,9 @@ export class PaymentMethodForm extends LitElement {
     return html`
       <div class="modal-branch">
         <div class="card-div">
-          <h2 class="card-title">Agregar Forma de Pago:</h2>
+          <h2 class="card-title">
+            ${this.paymentMethod?.id ? 'Editar Forma de Pago:' : 'Agregar Forma de Pago:'}
+          </h2>
           <form id="branch-form" @submit="${this.submit}">
             <div class="grid-div">
               <div class="grid-cols-2">
@@ -50,9 +54,9 @@ export class PaymentMethodForm extends LitElement {
                   class="card-input"
                   type="text"
                   name="branch"
-                  .value=${this.paymentMethod}
+                  .value=${this.internalValue}
                   @input=${e => {
-                    this.paymentMethod = e.target.value;
+                    this.internalValue = e.target.value;
                   }}
                 />
               </div>
@@ -85,13 +89,29 @@ export class PaymentMethodForm extends LitElement {
     event.preventDefault();
     this.dispatchEvent(
       new CustomEvent('request-submit', {
-        detail: { paymentMethodName: this.paymentMethod },
+        detail: {
+          id: this.paymentMethod?.id ?? null,
+          paymentMethodName: this.internalValue,
+        },
         bubbles: true,
         composed: true,
       }),
     );
     event.target.reset();
     this.showForm = false;
+    this.paymentMethod = {};
+    this.internalValue = '';
+  }
+
+  updated(changedProps) {
+    if (
+      changedProps.has('paymentMethod') &&
+      this.paymentMethod &&
+      Object.keys(this.paymentMethod).length > 0
+    ) {
+      this.showForm = true;
+      this.internalValue = this.paymentMethod.name || '';
+    }
   }
 
   render() {
@@ -99,14 +119,15 @@ export class PaymentMethodForm extends LitElement {
       <button
         class="new-form-btn"
         @click=${() => {
-          this.showForm = !this.showForm;
+          this.showForm = true;
+          this.paymentMethod = {}; // Limpiar datos anteriores
+          this.internalValue = ''; // Limpiar input
         }}
       >
         Agregar
       </button>
 
       ${this.showForm ? this._tplPaymentMethodFormModal() : nothing}
-
     `;
   }
 }

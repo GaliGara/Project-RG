@@ -6,12 +6,14 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
   static get properties() {
     return {
       dataGridPaymentMethod: { type: Object },
+      editPaymentMethod: { type: Object },
     };
   }
 
   constructor() {
     super();
     this.dataGridPaymentMethod = {};
+    this.editPaymentMethod = {};
   }
 
   createRenderRoot() {
@@ -37,15 +39,18 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
     `;
   };
 
-  static _onGridAction(e) {
-    const { action, id } = e.detail;
+  _onGridAction(e) {
+    const { action, id, rowIndex, rowData } = e.detail;
     // Aquí conectas con tu lógica (abrir modal, navegar, etc.)
     if (action === 'view') {
-      console.log('Ver perfil de', id);
+      console.log('Ver perfil de', id, rowIndex, rowData);
     } else if (action === 'delete') {
       console.log('Eliminar empleado', id);
     } else if (action === 'edit') {
-      console.log('Editar empleado', id);
+      this.editPaymentMethod = {
+        id: rowData[0], // ID
+        name: rowData[1], // Tipo de Pago
+      };
     }
   }
 
@@ -62,6 +67,7 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
     return html`
       ${Object.keys(this.dataGridPaymentMethod || {}).length
         ? html` <payment-method-form
+            .paymentMethod=${this.editPaymentMethod}
             @request-submit="${e => this.submitPage(e.detail)}"
           ></payment-method-form>`
         : nothing}
@@ -70,7 +76,7 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
             .config=${this.dataGridPaymentMethod}
             enable-actions
             .actionBuilder=${FeatureSalesManagementCrudPaymentMethod._actionButtons}
-            @grid-action=${FeatureSalesManagementCrudPaymentMethod  ._onGridAction}
+            @grid-action=${this._onGridAction}
           ></grid-table>`
         : nothing}
     `;
