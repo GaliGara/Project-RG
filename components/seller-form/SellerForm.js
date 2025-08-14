@@ -123,6 +123,52 @@ export class SellerForm extends LitElement {
   }
 
   /**
+   * Convert a number to cents.
+   * @private
+   * @param {Number} n
+   * @returns {Number}
+   */
+  static _toCents(n) {
+    return Math.round(Number(n || 0) * 100);
+  }
+
+  /**
+   * Total cents of seller rows
+   * @private
+   * @returns {Number}
+   */
+  get _totalSellerCents() {
+    return this.sellerRows.reduce((s, r) => s + SellerForm._toCents(r.amount), 0);
+  }
+
+  /**
+   * Total cents of payment rows
+   * @private
+   * @returns {Number}
+   */
+  get _totalPaymentCents() {
+    return this.paymentRows.reduce((s, r) => s + SellerForm._toCents(r.amount), 0);
+  }
+
+  /**
+   * Checks if the seller and payment totals are balanced.
+   * @private
+   * @returns {Boolean}
+   */
+  get _isBalanced() {
+    return this._totalSellerCents === this._totalPaymentCents && this._totalSellerCents > 0;
+  }
+
+  /**
+   * Difference (sellers - payments) in cents (in case you want to show a hint)
+   * @private
+   * @returns {Number}
+   */
+  get _deltaCents() {
+    return this._totalSellerCents - this._totalPaymentCents;
+  }
+
+  /**
    * Formats a number as currency.
    * @private
    * @param {Number} n
@@ -434,7 +480,7 @@ export class SellerForm extends LitElement {
                   <input
                     type="text"
                     class="flex-1 px-3 text-gray-600"
-                    .value=${`MÉTODOS DE PAGO: ${this.paymentRows.length}`}
+                    .value=${`MÉTODOS DE PAGO`}
                     readonly
                   />
                   <input
@@ -476,7 +522,11 @@ export class SellerForm extends LitElement {
               </button>
               <button
                 type="submit"
-                class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                class="rounded-md px-4 py-2 text-white
+                ${this._isBalanced
+                  ? 'bg-blue-600 hover:bg-blue-700'
+                  : 'bg-gray-300 cursor-not-allowed'}"
+                ?disabled=${!this._isBalanced}
               >
                 Agregar
               </button>
