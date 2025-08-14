@@ -166,6 +166,24 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Handles the event to get branch select options.
+   * @public
+   */
+  getBranchSelect() {
+    this._isRequestSelect = true;
+    this._branchesDm.getBranches();
+  }
+
+  /**
+   * Handles the event to get seller select options.
+   * @public
+   */
+  getEmployeeSelect() {
+    this._isRequestSelect = true;
+    this._employeeDm.getEmployee();
+  }
+
+  /**
    * Dispatch request to get sales branch chart report.
    * @public
    */
@@ -311,6 +329,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   _setDataEmployee(e) {
     this.dataEmployee = e.detail;
+
+    if (this._isRequestSelect) {
+      this.dispatchEvent(
+        new CustomEvent('feature-sales-management-crud-dm-set-data-employee-select', {
+          detail: this.dataEmployee,
+        }),
+      );
+    }
+
     this.dataEmployee = {
       data: this.dataEmployee.map(item => [
         item.idEmployee,
@@ -339,6 +366,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
 
   _setDataBranches(e) {
     this.dataBranches = e.detail;
+
+    if (this._isRequestSelect) {
+      this.dispatchEvent(
+        new CustomEvent('feature-sales-management-crud-dm-set-data-branch-select', {
+          detail: this.dataBranches,
+        }),
+      );
+    }
+
     this.dataBranches = {
       data: this.dataBranches.map(item => [item.idBranch, item.branchName]),
     };

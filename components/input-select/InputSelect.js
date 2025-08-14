@@ -35,7 +35,7 @@ export class InputSelect extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has('selectType')) {
-      this._requestOptions(this.selectType);
+      this._requestOptions();
     }
   }
 
@@ -44,15 +44,13 @@ export class InputSelect extends LitElement {
    * @private
    * @event input-select-request-data
    */
-  _requestOptions(type) {
-    if (type === 'paymentMethod') {
-      this.dispatchEvent(
-        new CustomEvent('input-select-request-data', {
-          composed: true,
-          bubbles: true,
-        }),
-      );
-    }
+  _requestOptions() {
+    this.dispatchEvent(
+      new CustomEvent('input-select-request-data', {
+        composed: true,
+        bubbles: true,
+      }),
+    );
   }
 
   /**
@@ -83,12 +81,34 @@ export class InputSelect extends LitElement {
         class="border border-gray-300 rounded-lg px-3 py-1.5 shadow-xl text-gray-700"
       >
         <option value="" selected disabled hidden>SELECCIONA</option>
-        ${this?.optionValue?.map(
-          option =>
-            html` <option value="${option.idPaymentMethod}">${option.paymentMethodName}</option>`,
-        )}
+        ${this._mapOptions(this.selectType)}
       </select>
     `;
+  }
+
+  /**
+   * Maps options based on the select type.
+   * @private
+   * @param {String} selectType
+   */
+  _mapOptions(selectType) {
+    const dictionary = {
+      paymentMethod: () =>
+        this.optionValue.map(
+          item => html`<option value=${item.idPaymentMethod}>${item.paymentMethodName}</option>`,
+        ),
+      branch: () =>
+        this.optionValue.map(
+          item => html`<option value=${item.idBranch}>${item.branchName}</option>`,
+        ),
+      seller: () =>
+        this.optionValue.map(
+          item =>
+            html`<option value=${item.idEmployee}>${`${item.firstName} ${item.lastName}`}</option>`,
+        ),
+    };
+    const dispatchDictionary = dictionary[selectType];
+    return dispatchDictionary();
   }
 
   render() {

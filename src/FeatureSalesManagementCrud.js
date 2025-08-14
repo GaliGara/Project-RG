@@ -103,6 +103,22 @@ export class FeatureSalesManagementCrud extends LitElement {
         type: Array,
       },
       /**
+       * Data for payment method select options.
+       * @type {Array}
+       * @default []
+       */
+      _dataBranchSelect: {
+        type: Array,
+      },
+      /**
+       * Data for payment method select options.
+       * @type {Array}
+       * @default []
+       */
+      _dataEmployeeSelect: {
+        type: Array,
+      },
+      /**
        * Data for payment method report daily page.
        * @type {Array}
        * @default []
@@ -134,6 +150,8 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._dataEmployeeReportDaily = [];
     this._dataPaymentMethodReport = [];
     this._dataPaymentMethodSelect = [];
+    this._dataEmployeeSelect = [];
+    this._dataBranchSelect = [];
     this._dataPaymentMethodReportDaily = [];
     this._loadingCount = 0;
     this._user = null;
@@ -186,6 +204,10 @@ export class FeatureSalesManagementCrud extends LitElement {
           this._ensureFetched('ventas', dm => dm.getSalesBranch());
           return html`
             <feature-sales-management-crud-sales
+              @input-select-request-data="${this._handleGetDataSelect}"
+              .optionValueBranch="${this._dataBranchSelect}"
+              .optionValueSeller="${this._dataEmployeeSelect}"
+              .optionValuePaymentMethod="${this._dataPaymentMethodSelect}"
               .dataGridSales="${this?.dataSalesBranch}"
             ></feature-sales-management-crud-sales>
           `;
@@ -378,6 +400,16 @@ export class FeatureSalesManagementCrud extends LitElement {
   }
 
   /**
+   * Handles the event to get data of select options.
+   * @private
+   */
+  _handleGetDataSelect() {
+    this._salesManagementCrudDm.getBranchSelect();
+    this._salesManagementCrudDm.getEmployeeSelect();
+    this._salesManagementCrudDm.getPaymentMethodSelect();
+  }
+
+  /**
    * Handles the event to get payment method report daily.
    * @param {String} data
    * @private
@@ -486,6 +518,12 @@ export class FeatureSalesManagementCrud extends LitElement {
         }}"
         @feature-sales-management-crud-dm-set-data-payment-method-select="${e => {
           this._dataPaymentMethodSelect = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-data-branch-select="${e => {
+          this._dataBranchSelect = e.detail;
+        }}"
+        @feature-sales-management-crud-dm-set-data-employee-select="${e => {
+          this._dataEmployeeSelect = e.detail;
         }}"
         @feature-sales-management-crud-dm-set-data-payment-method-report-daily="${e => {
           this._dataPaymentMethodReportDaily = e.detail;

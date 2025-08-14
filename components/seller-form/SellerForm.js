@@ -1,112 +1,165 @@
 import { LitElement, html, nothing } from 'lit';
+import '../input-select/InputSelect.js';
 
 export class SellerForm extends LitElement {
   static get properties() {
     return {
       /**
-       * Boolean to show form
+       * Boolean to show form.
        * @type {Boolean}
-       * @default 'false'
+       * @default false
        */
       showForm: { type: Boolean },
+      /**
+       * Array of branch options.
+       * @type {Array}
+       * @default []
+       */
+      selectDataBranch: {
+        type: Array,
+      },
+      /**
+       * Array of seller options.
+       * @type {Array}
+       * @default []
+       */
+      selectDataSeller: {
+        type: Array,
+      },
+      /**
+       * Array of payment method options.
+       * @type {Array}
+       * @default []
+       */
+      selectDataPaymentMethod: {
+        type: Array,
+      },
     };
   }
 
   constructor() {
     super();
     this.showForm = false;
+    this.selectDataBranch = [];
+    this.selectDataSeller = [];
+    this.selectDataPaymentMethod = [];
   }
 
-  /**
-   * Overrides LitElement's default behavior to render into the light DOM.
-   * @returns {SellerForm} This component without shadow DOM.
-   */
   createRenderRoot() {
     return this;
   }
 
   /**
+   * Renders the button for opening the sale form modal.
+   * @private
+   * @returns {TemplateResult}
+   */
+  _tplButtonModal() {
+    return html`
+      <button
+        class="new-form-btn"
+        @click=${() => {
+          this.showForm = !this.showForm;
+        }}
+      >
+        AGREGAR
+      </button>
+    `;
+  }
+
+  /**
    * Renders the modal form for adding a new sale.
-   * @returns {import('lit-html').TemplateResult}
+   * @private
+   * @returns {TemplateResult}
    */
   _tplSaleFormModal() {
     return html`
-      <div id="card-sell" class="modal-seller">
-        <div class="card-div">
-          <h2 class="card-title">Registro de venta</h2>
-          <form>
-            <div class="grid-div">
-              <div>
-                <label class="card-label">Sucursal:</label>
-                <select name="branch" class="card-select">
-                  <option>Select</option>
-                  <option>Mitika</option>
-                </select>
+      <div id="card-sell" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
+          <h2 class="mb-4 text-2xl font-semibold">Registro nuevo</h2>
+
+          <form class="space-y-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Sucursal:</label>
+                <input-select
+                  select-type="branch"
+                  .optionValue="${this.selectDataBranch}"
+                ></input-select>
               </div>
 
-              <div>
-                <label class="card-label">Fecha:</label>
-                <input type="date" name="date" class="card-input" />
+              <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Fecha:</label>
+                <input
+                  type="date"
+                  name="date"
+                  class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
 
-              <div class="col-span-1">
-                <label class="card-label">Vendedor:</label>
-                <select name="seller" class="card-select">
-                  <option>Select</option>
-                  <option>Enrique</option>
-                </select>
+              <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Vendedor:</label>
+                <input-select
+                  select-type="seller"
+                  .optionValue="${this.selectDataSeller}"
+                ></input-select>
               </div>
 
-              <div class="col-span-1">
+              <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Venta:</label>
                 <input
                   type="number"
                   step=".01"
                   placeholder="Venta"
-                  class="card-input mt-6 text-right"
+                  class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              <div class="col-span-1">
-                <label class="card-label">Metodo de Pago:</label>
-                <select name="paymentType" class="card-select">
-                  <option>Select</option>
-                  <option>Cash</option>
-                  <option>Card</option>
-                </select>
+              <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Método de pago:</label>
+                <input-select
+                  select-type="paymentMethod"
+                  .optionValue="${this.selectDataPaymentMethod}"
+                ></input-select>
               </div>
 
-              <div class="col-span-1">
+              <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Cantidad:</label>
                 <input
                   type="number"
                   step=".01"
                   placeholder="Cantidad"
-                  class="card-input mt-6 text-right"
+                  class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              <div class="col-span-2">
-                <label class="card-label">Notas:</label>
+              <div class="col-span-1 md:col-span-2 flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Notas:</label>
                 <textarea
                   name="notes"
                   rows="3"
-                  placeholder="Escribe una observacion..."
-                  class="card-textarea"
+                  placeholder="Escribe una observación..."
+                  class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 ></textarea>
               </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="card-buttons">
+            <div class="flex justify-end gap-2 pt-2">
               <button
                 type="button"
-                class="close-btn"
+                class="rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-100"
                 @click=${() => {
                   this.showForm = false;
                 }}
               >
                 Cerrar
               </button>
-              <button class="agree-btn">Agregar</button>
+              <button
+                type="submit"
+                class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              >
+                Agregar
+              </button>
             </div>
           </form>
         </div>
@@ -115,18 +168,7 @@ export class SellerForm extends LitElement {
   }
 
   render() {
-    return html`
-      <button
-        class="new-form-btn"
-        @click=${() => {
-          this.showForm = !this.showForm;
-        }}
-      >
-        Agregar Venta
-      </button>
-
-      ${this.showForm ? this._tplSaleFormModal() : nothing}
-    `;
+    return html` ${this._tplButtonModal()} ${this.showForm ? this._tplSaleFormModal() : nothing} `;
   }
 }
 customElements.define('seller-form', SellerForm);
