@@ -780,6 +780,14 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._branchesDm.createBranch(body);
   }
 
+  updateBranch(id, body) {
+    this._branchesDm.updateBranch(id, body);
+  }
+
+  deleteBranch(id) {
+    this._branchesDm.deleteBranch(id);
+  }
+
   createPaymentMethod(body) {
     this._paymentMethodDm.createPaymentMethod(body);
   }

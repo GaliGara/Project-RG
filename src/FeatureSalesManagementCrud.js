@@ -362,7 +362,15 @@ export class FeatureSalesManagementCrud extends LitElement {
    * @param {Object} detail
    */
   handleBranchSubmit(detail) {
-    this._salesManagementCrudDm.createBranch(detail);
+    const { action } = detail;
+
+    if (action === 'create') {
+      this._salesManagementCrudDm.createBranch(detail);
+    } else if (action === 'update') {
+      this._salesManagementCrudDm.updateBranch(detail.id, detail);
+    } else if (action === 'delete') {
+      this._salesManagementCrudDm.deleteBranch(detail.id);
+    }
   }
 
   /**

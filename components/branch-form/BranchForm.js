@@ -92,6 +92,7 @@ export class BranchForm extends LitElement {
         detail: {
           id: this.inputBranch?.id ?? null,
           branchName: this.branchName,
+          action: this.inputBranch?.id ? 'update' : 'create',
         },
         bubbles: true,
         composed: true,
@@ -120,7 +121,7 @@ export class BranchForm extends LitElement {
         class="new-form-btn"
         @click=${() => {
           this.showForm = true;
-          this.paymentMethod = {};  
+          this.paymentMethod = {};
           this.internalValue = '';
         }}
       >
