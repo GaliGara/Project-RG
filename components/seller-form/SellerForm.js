@@ -86,6 +86,28 @@ export class SellerForm extends LitElement {
   }
 
   /**
+   * Formats a number as currency.
+   * @private
+   * @param {Number} n
+   * @returns {String}
+   */
+  static _formatMoney(n) {
+    return `$${Number(n || 0).toLocaleString('es-MX', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  }
+
+  /**
+   * Gets the total amount of all seller rows.
+   * @private
+   * @returns {Number}
+   */
+  get _totalAmount() {
+    return this.sellerRows.reduce((s, r) => s + Number(r.amount || 0), 0);
+  }
+
+  /**
    * Creates a new row for the seller table.
    * @private
    * @param {String} sellerId
@@ -94,6 +116,15 @@ export class SellerForm extends LitElement {
    */
   static _newRow(sellerId, sellerName, amount) {
     return { id: `${Date.now()}-${Math.random()}`, sellerId, sellerName, amount };
+  }
+
+  /**
+   * Removes a row from the seller table.
+   * @private
+   * @param {String} id
+   */
+  _removeRow(id) {
+    this.sellerRows = this.sellerRows.filter(r => r.id !== id);
   }
 
   /**
@@ -108,13 +139,8 @@ export class SellerForm extends LitElement {
       return;
     }
     const el = e.target;
-    if (el && 'value' in el) {
-      this.currentSellerId = el.value;
-      this.currentSellerName = el.options?.[el.selectedIndex]?.text || '';
-      return;
-    }
-    this.currentSellerId = '';
-    this.currentSellerName = '';
+    this.currentSellerId = el?.value || '';
+    this.currentSellerName = el?.options?.[el.selectedIndex]?.text || '';
   };
 
   /**
@@ -132,6 +158,7 @@ export class SellerForm extends LitElement {
       ...this.sellerRows,
       SellerForm._newRow(this.currentSellerId, this.currentSellerName, this.currentAmount),
     ];
+    // Reset
     this.currentSellerId = '';
     this.currentSellerName = '';
     this.currentAmount = 0;
@@ -221,12 +248,34 @@ export class SellerForm extends LitElement {
                 </div>
               </div>
 
-              ${this.sellerRows.map((row, i) => SellerForm._tplRowSeller(i, row))}
+              ${this.sellerRows.map((row, i) => this._tplRowSeller(i, row))}
 
               <div class="col-span-2 -mt-2">
-                <div class="flex h-7 w-full rounded-lg border border-gray-300 bg-gray-100">
-                  <input type="text" placeholder="TOTAL VENDEDORES" class="flex-1 px-3" readonly />
-                  <input type="text" placeholder="$" class="flex-1 px-3" readonly />
+                <div
+                  class="flex h-9 w-full items-center rounded-lg border border-gray-300 bg-gray-200"
+                >
+                  <input
+                    type="text"
+                    placeholder="TOTAL VENDEDORES"
+                    class="flex-1 px-3 text-gray-500"
+                    .value=${`TOTAL VENDEDORES`}
+                    readonly
+                  />
+                  <input
+                    type="text"
+                    placeholder="$"
+                    class="w-40 px-3 text-right text-gray-500"
+                    .value=${SellerForm._formatMoney(this._totalAmount)}
+                    readonly
+                  />
+                  <button
+                    type="button"
+                    class="h-full px-3 rounded-r-lg bg-black text-white"
+                    title="Eliminar fila"
+                    disabled
+                  >
+                    =
+                  </button>
                 </div>
               </div>
 
@@ -287,10 +336,10 @@ export class SellerForm extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  static _tplRowSeller(index, row) {
+  _tplRowSeller(index, row) {
     return html`
       <div class="col-span-2 -mt-2">
-        <div class="flex h-7 w-full rounded-lg border border-gray-300 bg-gray-100">
+        <div class="flex h-9 w-full items-center rounded-lg border border-gray-300 bg-gray-200">
           <input type="hidden" name="seller_id_${index}" .value=${row?.sellerId ?? ''} />
           <input
             type="text"
@@ -302,10 +351,17 @@ export class SellerForm extends LitElement {
           <input
             type="text"
             name="seller_amount_${index}"
-            class="flex-1 px-3 text-gray-500"
-            .value=${row?.amount ?? ''}
+            class="w-40 px-3 text-right text-gray-500"
+            .value=${SellerForm._formatMoney(row?.amount)}
             readonly
           />
+          <button
+            type="button"
+            class="h-full px-3 bg-red-800 rounded-r-lg text-white"
+            @click=${() => this._removeRow(row.id)}
+          >
+            ✕
+          </button>
         </div>
       </div>
     `;
