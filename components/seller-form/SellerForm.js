@@ -34,6 +34,38 @@ export class SellerForm extends LitElement {
       selectDataPaymentMethod: {
         type: Array,
       },
+      /**
+       * Array of seller rows.
+       * @type {Array}
+       * @default []
+       */
+      sellerRows: {
+        type: Array,
+      },
+      /**
+       * Array of seller rows.
+       * @type {Number}
+       * @default 0
+       */
+      currentAmount: {
+        type: Number,
+      },
+      /**
+       * Current seller ID.
+       * @type {String}
+       * @default ""
+       */
+      currentSellerId: {
+        type: String,
+      },
+      /**
+       * Current seller name.
+       * @type {String}
+       * @default ""
+       */
+      currentSellerName: {
+        type: String,
+      },
     };
   }
 
@@ -43,11 +75,67 @@ export class SellerForm extends LitElement {
     this.selectDataBranch = [];
     this.selectDataSeller = [];
     this.selectDataPaymentMethod = [];
+    this.sellerRows = [];
+    this.currentAmount = 0;
+    this.currentSellerId = '';
+    this.currentSellerName = '';
   }
 
   createRenderRoot() {
     return this;
   }
+
+  /**
+   * Creates a new row for the seller table.
+   * @private
+   * @param {String} sellerId
+   * @param {String} sellerName
+   * @param {Number} amount
+   */
+  static _newRow(sellerId, sellerName, amount) {
+    return { id: `${Date.now()}-${Math.random()}`, sellerId, sellerName, amount };
+  }
+
+  /**
+   * Handles changes in the seller select input.
+   * @private
+   * @param {Event} e
+   */
+  _onSellerChange = e => {
+    if (e.detail && (e.detail.id || e.detail.value)) {
+      this.currentSellerId = e.detail.id ?? e.detail.value ?? '';
+      this.currentSellerName = e.detail.name ?? e.detail.label ?? '';
+      return;
+    }
+    const el = e.target;
+    if (el && 'value' in el) {
+      this.currentSellerId = el.value;
+      this.currentSellerName = el.options?.[el.selectedIndex]?.text || '';
+      return;
+    }
+    this.currentSellerId = '';
+    this.currentSellerName = '';
+  };
+
+  /**
+   * Handles the addition of a new seller row.
+   * @private
+   * @param {Event} e
+   */
+  _onAddRowSeller = e => {
+    e.preventDefault();
+    if (!this.currentSellerId || !(this.currentAmount > 0)) {
+      alert('Selecciona un vendedor y una cantidad antes de agregar.');
+      return;
+    }
+    this.sellerRows = [
+      ...this.sellerRows,
+      SellerForm._newRow(this.currentSellerId, this.currentSellerName, this.currentAmount),
+    ];
+    this.currentSellerId = '';
+    this.currentSellerName = '';
+    this.currentAmount = 0;
+  };
 
   /**
    * Renders the button for opening the sale form modal.
@@ -84,7 +172,7 @@ export class SellerForm extends LitElement {
                 <label class="mb-1 text-sm font-medium text-gray-700">Sucursal:</label>
                 <input-select
                   select-type="branch"
-                  .optionValue="${this.selectDataBranch}"
+                  .optionValue=${this.selectDataBranch}
                 ></input-select>
               </div>
 
@@ -100,10 +188,12 @@ export class SellerForm extends LitElement {
                 <label class="mb-1 text-sm font-medium text-gray-700">Vendedor:</label>
                 <input-select
                   select-type="seller"
-                  .optionValue="${this.selectDataSeller}"
+                  .optionValue=${this.selectDataSeller}
+                  @change=${this._onSellerChange}
+                  @input-select-change=${this._onSellerChange}
                 ></input-select>
               </div>
-              <div class="col-span-2 -mt-2">
+              <div class="col-span-2 -mt-1">
                 <div class="flex h-10 w-full overflow-hidden rounded-xl border border-gray-300">
                   <span
                     class="flex items-center justify-center px-3 min-w-10 border-r border-gray-200 bg-gray-100 text-gray-600"
@@ -115,12 +205,28 @@ export class SellerForm extends LitElement {
                     step=".01"
                     placeholder="VENTA"
                     class="flex-1 px-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 border-0"
+                    .value=${this.currentAmount ? String(this.currentAmount) : ''}
+                    @input=${e => {
+                      this.currentAmount = parseFloat(e.target.value) || 0;
+                    }}
                   />
                   <button
+                    id="addRowSeller"
+                    type="button"
                     class="flex aspect-square h-full items-center justify-center bg-green-800 text-white"
+                    @click=${this._onAddRowSeller}
                   >
                     +
                   </button>
+                </div>
+              </div>
+
+              ${this.sellerRows.map((row, i) => SellerForm._tplRowSeller(i, row))}
+
+              <div class="col-span-2 -mt-2">
+                <div class="flex h-7 w-full rounded-lg border border-gray-300 bg-gray-100">
+                  <input type="text" placeholder="TOTAL VENDEDORES" class="flex-1 px-3" readonly />
+                  <input type="text" placeholder="$" class="flex-1 px-3" readonly />
                 </div>
               </div>
 
@@ -129,7 +235,7 @@ export class SellerForm extends LitElement {
                 <div class="flex items-center gap-2">
                   <input-select
                     select-type="paymentMethod"
-                    .optionValue="${this.selectDataPaymentMethod}"
+                    .optionValue=${this.selectDataPaymentMethod}
                     class="flex-1"
                   ></input-select>
                   <input
@@ -176,8 +282,37 @@ export class SellerForm extends LitElement {
     `;
   }
 
+  /**
+   * Template for new row seller.
+   * @returns {TemplateResult}
+   * @private
+   */
+  static _tplRowSeller(index, row) {
+    return html`
+      <div class="col-span-2 -mt-2">
+        <div class="flex h-7 w-full rounded-lg border border-gray-300 bg-gray-100">
+          <input type="hidden" name="seller_id_${index}" .value=${row?.sellerId ?? ''} />
+          <input
+            type="text"
+            name="seller_total_${index}"
+            class="flex-1 px-3 text-gray-500"
+            .value=${row?.sellerName ?? ''}
+            readonly
+          />
+          <input
+            type="text"
+            name="seller_amount_${index}"
+            class="flex-1 px-3 text-gray-500"
+            .value=${row?.amount ?? ''}
+            readonly
+          />
+        </div>
+      </div>
+    `;
+  }
+
   render() {
-    return html` ${this._tplButtonModal()} ${this.showForm ? this._tplSaleFormModal() : nothing} `;
+    return html`${this._tplButtonModal()} ${this.showForm ? this._tplSaleFormModal() : nothing}`;
   }
 }
 customElements.define('seller-form', SellerForm);
