@@ -76,13 +76,30 @@ export class InputSelect extends LitElement {
    */
   _tplSelect() {
     return html`
-      <select
-        @change="${e => this._onChange(e)}"
-        class="border border-gray-300 rounded-lg px-3 py-1.5 shadow-xl text-gray-700"
-      >
-        <option value="" selected disabled hidden>SELECCIONA</option>
-        ${this._mapOptions(this.selectType)}
-      </select>
+      <div class="relative">
+        <select
+          @change="${e => this._onChange(e)}"
+          class="w-full appearance-none -webkit-appearance-none pr-10 border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" selected disabled hidden>SELECCIONA</option>
+          ${this._mapOptions(this.selectType)}
+        </select>
+
+        <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </span>
+      </div>
     `;
   }
 
@@ -103,8 +120,7 @@ export class InputSelect extends LitElement {
         ),
       seller: () =>
         this.optionValue.map(
-          item =>
-            html`<option value=${item.idEmployee}>${`${item.firstName} ${item.lastName}`}</option>`,
+          item => html`<option value=${item.idEmployee}>${item.fullName}</option>`,
         ),
     };
     const dispatchDictionary = dictionary[selectType];

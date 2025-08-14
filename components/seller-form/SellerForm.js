@@ -96,41 +96,50 @@ export class SellerForm extends LitElement {
                   class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-
-              <div class="flex flex-col">
+              <div class="flex flex-col col-span-2">
                 <label class="mb-1 text-sm font-medium text-gray-700">Vendedor:</label>
                 <input-select
                   select-type="seller"
                   .optionValue="${this.selectDataSeller}"
                 ></input-select>
               </div>
-
-              <div class="flex flex-col">
-                <label class="mb-1 text-sm font-medium text-gray-700">Venta:</label>
-                <input
-                  type="number"
-                  step=".01"
-                  placeholder="Venta"
-                  class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div class="col-span-2 -mt-2">
+                <div class="flex h-10 w-full overflow-hidden rounded-xl border border-gray-300">
+                  <span
+                    class="flex items-center justify-center px-3 min-w-10 border-r border-gray-200 bg-gray-100 text-gray-600"
+                  >
+                    $
+                  </span>
+                  <input
+                    type="number"
+                    step=".01"
+                    placeholder="VENTA"
+                    class="flex-1 px-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 border-0"
+                  />
+                  <button
+                    class="flex aspect-square h-full items-center justify-center bg-green-800 text-white"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
-              <div class="flex flex-col">
-                <label class="mb-1 text-sm font-medium text-gray-700">Método de pago:</label>
-                <input-select
-                  select-type="paymentMethod"
-                  .optionValue="${this.selectDataPaymentMethod}"
-                ></input-select>
-              </div>
-
-              <div class="flex flex-col">
-                <label class="mb-1 text-sm font-medium text-gray-700">Cantidad:</label>
-                <input
-                  type="number"
-                  step=".01"
-                  placeholder="Cantidad"
-                  class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div class="col-span-3">
+                <label class="mb-1 block text-sm font-medium text-gray-700">TIPO DE PAGO</label>
+                <div class="flex items-center gap-2">
+                  <input-select
+                    select-type="paymentMethod"
+                    .optionValue="${this.selectDataPaymentMethod}"
+                    class="flex-1"
+                  ></input-select>
+                  <input
+                    type="number"
+                    step=".01"
+                    placeholder="CANTIDAD"
+                    class="w-32 rounded-l-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm"
+                  />
+                  <button class="-ml-2 h-10 w-10 rounded-r-lg bg-green-800 text-white">+</button>
+                </div>
               </div>
 
               <div class="col-span-1 md:col-span-2 flex flex-col">
