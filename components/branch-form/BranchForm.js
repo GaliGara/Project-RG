@@ -4,7 +4,7 @@ export class BranchForm extends LitElement {
   static get properties() {
     return {
       /**
-       * List of branches
+       * branche name
        * @type {String}
        * @default ''
        */
@@ -16,6 +16,7 @@ export class BranchForm extends LitElement {
        * @default 'false'
        */
       showForm: { type: Boolean },
+      inputBranch: { type: Object },
     };
   }
 
@@ -23,6 +24,7 @@ export class BranchForm extends LitElement {
     super();
     this.branchName = '';
     this.showForm = false;
+    this.inputBranch = {};
   }
 
   /**
@@ -41,7 +43,9 @@ export class BranchForm extends LitElement {
     return html`
       <div class="modal-branch">
         <div class="card-div">
-          <h2 class="card-title">Registrar Sucursal</h2>
+          <h2 class="card-title">
+            ${this.inputBranch?.id ? 'Editar Sucursal:' : 'Agregar Sucursal:'}
+          </h2>
           <form id="branch-form" @submit=${this.submit}>
             <div class="grid-div">
               <div class="grid-cols-2">
@@ -85,11 +89,29 @@ export class BranchForm extends LitElement {
     event.preventDefault();
     this.dispatchEvent(
       new CustomEvent('request-submit', {
-        detail: { branchName: this.branchName },
+        detail: {
+          id: this.inputBranch?.id ?? null,
+          branchName: this.branchName,
+        },
+        bubbles: true,
+        composed: true,
       }),
     );
     event.target.reset();
     this.showForm = false;
+    this.inputBranch = {};
+    this.branchName = '';
+  }
+
+  updated(changedProps) {
+    if (
+      changedProps.has('inputBranch') &&
+      this.inputBranch &&
+      Object.keys(this.inputBranch).length > 0
+    ) {
+      this.showForm = true;
+      this.branchName = this.inputBranch.name || '';
+    }
   }
 
   render() {
@@ -97,7 +119,9 @@ export class BranchForm extends LitElement {
       <button
         class="new-form-btn"
         @click=${() => {
-          this.showForm = !this.showForm;
+          this.showForm = true;
+          this.paymentMethod = {};  
+          this.internalValue = '';
         }}
       >
         Agregar Sucursal

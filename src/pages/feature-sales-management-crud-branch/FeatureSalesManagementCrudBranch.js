@@ -6,12 +6,14 @@ export class FeatureSalesManagementCrudBranch extends LitElement {
   static get properties() {
     return {
       dataGridBranch: { type: Object },
+      editBranch: { type: Object },
     };
   }
 
   constructor() {
     super();
     this.dataGridBranch = {};
+    this.editBranch = {};
   }
 
   createRenderRoot() {
@@ -37,40 +39,45 @@ export class FeatureSalesManagementCrudBranch extends LitElement {
     `;
   };
 
-  static _onGridAction(e) {
-    const { action, id } = e.detail;
+  _onGridAction(e) {
+    const { action, id, rowIndex, rowData } = e.detail;
     // Aquí conectas con tu lógica (abrir modal, navegar, etc.)
     if (action === 'view') {
       console.log('Ver perfil de', id);
     } else if (action === 'delete') {
       console.log('Eliminar empleado', id);
     } else if (action === 'edit') {
-      console.log('Editar empleado', id);
+      this.editBranch = {
+        id: rowData[0],
+        name: rowData[1],
+      };
     }
   }
 
   get hasValidGridConfig() {
-  return (
-    Array.isArray(this.dataGridBranch?.data) &&
-    this.dataGridBranch.data.length > 0 &&
-    Array.isArray(this.dataGridBranch?.columns) &&
-    this.dataGridBranch.columns.length > 0
-  );
-}
+    return (
+      Array.isArray(this.dataGridBranch?.data) &&
+      this.dataGridBranch.data.length > 0 &&
+      Array.isArray(this.dataGridBranch?.columns) &&
+      this.dataGridBranch.columns.length > 0
+    );
+  }
 
-  render() { 
+  render() {
     return html`
       ${Object.keys(this.dataGridBranch || {}).length
-        ? html`<branch-form @request-submit=${e => this.submitPage(e.detail)}></branch-form>`
+        ? html`<branch-form 
+        .inputBranch='${this.editBranch}'
+        @request-submit=${e => this.submitPage(e.detail)}></branch-form>`
         : nothing}
-    ${this.hasValidGridConfig
-      ? html`
-      <grid-table
-        .config=${this.dataGridBranch}
-        enable-actions
-        .actionBuilder=${FeatureSalesManagementCrudBranch._actionButtons}
-        @grid-action=${FeatureSalesManagementCrudBranch._onGridAction}
-      ></grid-table>`:nothing}
+      ${this.hasValidGridConfig
+        ? html` <grid-table
+            .config=${this.dataGridBranch}
+            enable-actions
+            .actionBuilder=${FeatureSalesManagementCrudBranch._actionButtons}
+            @grid-action=${this._onGridAction}
+          ></grid-table>`
+        : nothing}
     `;
   }
 }
