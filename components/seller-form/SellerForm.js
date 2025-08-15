@@ -99,6 +99,30 @@ export class SellerForm extends LitElement {
       currentPaymentMethodName: {
         type: String,
       },
+      /**
+       * Value branch ID.
+       * @type {String}
+       * @default ""
+       */
+      branchValue: {
+        type: String,
+      },
+      /**
+       * Value sale date.
+       * @type {String}
+       * @default ""
+       */
+      dateValue: {
+        type: String,
+      },
+      /**
+       * Value sale notes.
+       * @type {String}
+       * @default ""
+       */
+      notesValue: {
+        type: String,
+      },
     };
   }
 
@@ -116,10 +140,33 @@ export class SellerForm extends LitElement {
     this.currentPaymentAmount = 0;
     this.currentPaymentMethodId = '';
     this.currentPaymentMethodName = '';
+    this.branchValue = '';
+    this.dateValue = '';
+    this.notesValue = '';
   }
 
   createRenderRoot() {
     return this;
+  }
+
+  /**
+   * Reset form.
+   * @private
+   */
+  _resetForm() {
+    this.branchValue = '';
+    this.dateValue = '';
+    this.notesValue = '';
+    this.sellerRows = [];
+    this.currentSellerId = '';
+    this.currentSellerName = '';
+    this.currentAmount = 0;
+    this.paymentRows = [];
+    this.currentPaymentMethodId = '';
+    this.currentPaymentMethodName = '';
+    this.currentPaymentAmount = 0;
+    this.showForm = false;
+    this.requestUpdate();
   }
 
   /**
@@ -344,13 +391,17 @@ export class SellerForm extends LitElement {
         <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
           <h2 class="mb-4 text-2xl font-semibold">Registro nuevo</h2>
 
-          <form class="space-y-4">
+          <form class="space-y-4" @submit=${e => e.preventDefault()}>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div class="flex flex-col">
                 <label class="mb-1 text-sm font-medium text-gray-700">Sucursal:</label>
                 <input-select
                   select-type="branch"
                   .optionValue=${this.selectDataBranch}
+                  @change=${e => {
+                    this.branchValue = e.target.value;
+                  }}
+                  .value=${this.branchValue}
                 ></input-select>
               </div>
 
@@ -360,6 +411,10 @@ export class SellerForm extends LitElement {
                   type="date"
                   name="date"
                   class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  .value=${this.dateValue}
+                  @input=${e => {
+                    this.dateValue = e.target.value;
+                  }}
                 />
               </div>
               <div class="flex flex-col col-span-2">
@@ -506,6 +561,10 @@ export class SellerForm extends LitElement {
                   rows="3"
                   placeholder="Escribe una observación..."
                   class="rounded-lg border border-gray-300 px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  .value=${this.notesValue}
+                  @input=${e => {
+                    this.notesValue = e.target.value;
+                  }}
                 ></textarea>
               </div>
             </div>
@@ -527,6 +586,7 @@ export class SellerForm extends LitElement {
                   ? 'bg-blue-600 hover:bg-blue-700'
                   : 'bg-gray-300 cursor-not-allowed'}"
                 ?disabled=${!this._isBalanced}
+                @click="${this._requestPostData}"
               >
                 Agregar
               </button>
@@ -535,6 +595,35 @@ export class SellerForm extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  /**
+   * Request post sales.
+   * @private
+   */
+  _requestPostData() {
+    const requestPostSales = {
+      branchId: this.branchValue,
+      date: this.dateValue,
+      notes: this.notesValue,
+      employees: this.sellerRows.map(item => ({
+        employeeId: item.sellerId,
+        amount: item.amount,
+      })),
+      payments: this.paymentRows.map(item => ({
+        paymentMethodId: item.methodId,
+        amount: item.amount,
+      })),
+    };
+
+    this.dispatchEvent(
+      new CustomEvent('seller-form-request-post-sales', {
+        detail: requestPostSales,
+        bubbles: true,
+        composed: true,
+      }),
+    );
+    this._resetForm();
   }
 
   /**

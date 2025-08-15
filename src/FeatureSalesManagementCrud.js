@@ -204,11 +204,12 @@ export class FeatureSalesManagementCrud extends LitElement {
           this._ensureFetched('ventas', dm => dm.getSalesBranch());
           return html`
             <feature-sales-management-crud-sales
-              @input-select-request-data="${this._handleGetDataSelect}"
               .optionValueBranch="${this._dataBranchSelect}"
               .optionValueSeller="${this._dataEmployeeSelect}"
               .optionValuePaymentMethod="${this._dataPaymentMethodSelect}"
               .dataGridSales="${this?.dataSalesBranch}"
+              @input-select-request-data="${this._handleGetDataSelect}"
+              @seller-form-request-post-sales="${e => this._handleSalesRequestPostSales(e.detail)}"
             ></feature-sales-management-crud-sales>
           `;
         },
@@ -423,6 +424,15 @@ export class FeatureSalesManagementCrud extends LitElement {
     this._salesManagementCrudDm.getBranchSelect();
     this._salesManagementCrudDm.getEmployeeSelect();
     this._salesManagementCrudDm.getPaymentMethodSelect();
+  }
+
+  /**
+   * Handles the event to create a new sales.
+   * @param {Object} body
+   * @private
+   */
+  _handleSalesRequestPostSales(body) {
+    this._salesManagementCrudDm.createSale(body);
   }
 
   /**

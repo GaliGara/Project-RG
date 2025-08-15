@@ -765,6 +765,14 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Creates a new sale.
+   * @param {Object} body
+   */
+  createSale(body) {
+    this._salesDm.createSale(body);
+  }
+
+  /**
    * Create the api post data key - value from body object
    * @param {Object} body
    */
@@ -810,6 +818,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @sales-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
         @sales-api-dm-fetch-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
         @sales-api-dm-fetch=${e => this._setDataSalesBranch(e)}
+        @create-sales-api-dm-fetch=${() => this.getSalesBranch()}
       ></sales-api-dm>
       <employee-api-dm
         @employee-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
