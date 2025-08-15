@@ -210,6 +210,8 @@ export class FeatureSalesManagementCrud extends LitElement {
               .dataGridSales="${this?.dataSalesBranch}"
               @input-select-request-data="${this._handleGetDataSelect}"
               @seller-form-request-post-sales="${e => this._handleSalesRequestPostSales(e.detail)}"
+              @feature-sales-management-crud-sales-request-delete-sale="${e =>
+                this._handleSalesRequestDeleteSale(e.detail)}"
             ></feature-sales-management-crud-sales>
           `;
         },
@@ -433,6 +435,15 @@ export class FeatureSalesManagementCrud extends LitElement {
    */
   _handleSalesRequestPostSales(body) {
     this._salesManagementCrudDm.createSale(body);
+  }
+
+  /**
+   * Handles the event to delete a sale.
+   * @param {Object} body
+   * @private
+   */
+  _handleSalesRequestDeleteSale(data) {
+    this._salesManagementCrudDm.deleteSales(data);
   }
 
   /**

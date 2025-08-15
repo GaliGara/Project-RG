@@ -72,6 +72,44 @@ export class SalesApiDm extends LitElement {
       this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
+
+  /**
+   * Deletes a sale from the branch, employee, and payment table.
+   * @public
+   * @param {String} branchId
+   * @param {String} date
+   * @event loading-start
+   * @event loading-end
+   * @event delete-sales-api-dm-fetch
+   * @event delete-sales-api-dm-fetch-error
+   * @event delete-sales-api-dm-error
+   */
+  async deleteSales(branchId, date) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+    try {
+      const res = await fetch(
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/sales?branchId=${branchId}&date=${date}`,
+        {
+          method: 'DELETE',
+        },
+      );
+      if (!res.ok) {
+        const error = await res.json();
+        this.dispatchEvent(new CustomEvent('delete-sales-api-dm-fetch-error', { detail: error }));
+        return;
+      }
+      const data = await res.json();
+      this.dispatchEvent(
+        new CustomEvent('delete-sales-api-dm-fetch', {
+          detail: data,
+        }),
+      );
+    } catch (error) {
+      this.dispatchEvent(new CustomEvent('delete-sales-api-dm-error', { detail: error }));
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+    }
+  }
 }
 
 customElements.define('sales-api-dm', SalesApiDm);

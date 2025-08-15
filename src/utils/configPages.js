@@ -34,7 +34,14 @@ export const columnsEmployee = [
 
 export const columnsBranch = ['ID', 'Sucursal'];
 
-export const columnsSalesBranch = ['ID', 'Sucursal', 'Fecha', 'Total Ventas', 'Notas'];
+export const columnsSalesBranch = [
+  'ID',
+  { name: 'idBranch', hidden: true },
+  'Sucursal',
+  'Fecha',
+  'Total Ventas',
+  'Notas',
+];
 
 export const columnsPaymentMethod = ['ID', 'Tipo de Pago'];
 

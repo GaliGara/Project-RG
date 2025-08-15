@@ -308,6 +308,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this.dataSalesBranch = {
       data: this.dataSalesBranch.map(item => [
         item.idSalesBranch,
+        item.idBranch,
         item.branchName,
         item.dateSalesBranch,
         item.salesBranchTotal,
@@ -773,6 +774,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
+   * Deletes a sale.
+   * @param {Object} body
+   */
+  deleteSales(body) {
+    const { branchId, dateSale } = body;
+    this._salesDm.deleteSales(branchId, dateSale);
+  }
+
+  /**
    * Create the api post data key - value from body object
    * @param {Object} body
    */
@@ -819,6 +829,7 @@ export class FeatureSalesManagementCrudDM extends LitElement {
         @sales-api-dm-fetch-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}
         @sales-api-dm-fetch=${e => this._setDataSalesBranch(e)}
         @create-sales-api-dm-fetch=${() => this.getSalesBranch()}
+        @delete-sales-api-dm-fetch=${() => this.getSalesBranch()}
       ></sales-api-dm>
       <employee-api-dm
         @employee-api-dm-error=${e => FeatureSalesManagementCrudDM._catchError(e.detail)}

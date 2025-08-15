@@ -62,9 +62,17 @@ export class FeatureSalesManagementCrudSales extends LitElement {
   };
 
   static _onGridAction(e) {
-    const { action, id } = e.detail;
+    const { action, rowData } = e.detail;
+
+    const branchId = rowData[1];
+    const dateSale = rowData[3];
+
     if (action === 'delete') {
-      console.log('Eliminar empleado', id);
+      this.dispatchEvent(
+        new CustomEvent('feature-sales-management-crud-sales-request-delete-sale', {
+          detail: { branchId, dateSale },
+        }),
+      );
     }
   }
 
