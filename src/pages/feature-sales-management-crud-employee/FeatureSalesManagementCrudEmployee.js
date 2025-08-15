@@ -6,12 +6,15 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
   static get properties() {
     return {
       dataGridEmployee: { type: Object },
+
+      editEmployee: { type: Object },
     };
   }
 
   constructor() {
     super();
     this.dataGridEmployee = {};
+    this.editEmployee = {};
   }
 
   createRenderRoot() {
@@ -37,15 +40,28 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
     `;
   };
 
-  static _onGridAction(e) {
-    const { action, id } = e.detail;
-    // Aquí conectas con tu lógica (abrir modal, navegar, etc.)
-    if (action === 'view') {
-      console.log('Ver perfil de', id);
-    } else if (action === 'delete') {
-      console.log('Eliminar empleado', id);
+  _onGridAction(e) {
+    const { action, id, rowData } = e.detail;
+
+    if (action === 'delete') {
+      this.dispatchEvent(
+        new CustomEvent('submit-event', {
+          detail: {
+            id,
+            action: 'delete',
+          },
+        }),
+      );
     } else if (action === 'edit') {
-      console.log('Editar empleado', id);
+      this.editEmployee = {
+        id: rowData[0],
+        firstName: rowData[2],
+        lastName: rowData[3], 
+        middleName: rowData[4],
+        bank: rowData[5], 
+        accountNumber: rowData[6], 
+        position: rowData[7], 
+      };
     }
   }
 
@@ -63,7 +79,7 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
       ${Object.keys(this.dataGridEmployee || {}).length
         ? html`
             <employer-form
-              .dataTable="${this?.dataGridEmployee}"
+              .inputEmployee="${this.editEmployee}"
               @request-submit=${e => this.submitPage(e.detail)}
             ></employer-form>
             ${this.hasValidGridConfig
@@ -71,7 +87,7 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
                   .config=${this.dataGridEmployee}
                   enable-actions
                   .actionBuilder=${FeatureSalesManagementCrudEmployee._actionButtons}
-                  @grid-action=${FeatureSalesManagementCrudEmployee._onGridAction}
+                  @grid-action=${this._onGridAction}
                 ></grid-table>`
               : nothing}
           `

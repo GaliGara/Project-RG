@@ -1,16 +1,8 @@
 import { LitElement, html, nothing } from 'lit';
 
-
 export class EmployerForm extends LitElement {
   static get properties() {
     return {
-      /**
-       * List of employees
-       * @type {Array}
-       * @default '[]'
-       */
-      employees: { type: Array },
-
       /**
        * Name of employe
        * @type {String}
@@ -32,6 +24,12 @@ export class EmployerForm extends LitElement {
        */
       middleName: { type: String },
 
+      bank: { type: String },
+
+      accountNumber: { type: Number },
+
+      position: { type: String },
+
       /**
        * Boolean to show form template
        * @type {Boolean}
@@ -46,6 +44,7 @@ export class EmployerForm extends LitElement {
        */
       formData: { type: Object },
 
+      inputEmployee: { type: Object },
     };
   }
 
@@ -57,6 +56,10 @@ export class EmployerForm extends LitElement {
     this.middleName = '';
     this.showForm = false;
     this.formData = {};
+    this.inputEmployee = {};
+    this.bank = '';
+    this.accountNumber = null;
+    this.inputEmployee = {};
   }
 
   /**
@@ -73,7 +76,12 @@ export class EmployerForm extends LitElement {
    */
   handleNameInput(e) {
     const field = e.target.name;
-    const value = e.target.value.trim();
+    let value = e.target.value;
+    if (field !== 'position') value = value.trim();
+
+    if (field === 'accountNumber') {
+      value = value ? Number(value) : null;
+    }
     this[field] = value;
   }
 
@@ -84,7 +92,6 @@ export class EmployerForm extends LitElement {
   get fullName() {
     return [this.firstName, this.lastName, this.middleName].filter(Boolean).join(' ');
   }
-  
 
   /**
    * Renders the employee form modal.
@@ -144,17 +151,35 @@ export class EmployerForm extends LitElement {
 
               <div class="col-span-1">
                 <label class="card-label">Banco:</label>
-                <input type="text" name="bank" class="card-input" />
+                <input
+                  type="text"
+                  name="bank"
+                  class="card-input"
+                  .value=${this.bank}
+                  @input=${this.handleNameInput}
+                />
               </div>
 
               <div class="col-span-2">
                 <label class="card-label">Nuemero de Cuenta:</label>
-                <input type="number" step="1" name="accountNumber" class="card-input" />
+                <input
+                  type="number"
+                  step="1"
+                  name="accountNumber"
+                  class="card-input"
+                  .value=${this.accountNumber ?? ''}
+                  @input=${this.handleNameInput}
+                />
               </div>
 
               <div class="col-span-2">
                 <label class="card-label">Puesto:</label>
-                <select name="position" class="card-select">
+                <select
+                  name="position"
+                  class="card-select"
+                  .value=${this.position}
+                  @change=${this.handleNameInput}
+                >
                   <option value="Vendedor">Vendedor</option>
                   <option value="Manager">Manager</option>
                   <option value="Director">Director</option>
@@ -196,21 +221,56 @@ export class EmployerForm extends LitElement {
     );
     event.target.reset();
     this.showForm = false;
+    this.firstName = '';
+    this.lastName = '';
+    this.middleName = '';
+    this.inputEmployee = {};
   }
 
+  updated(changedProps) {
+    if (
+      changedProps.has('inputEmployee') &&
+      this.inputEmployee &&
+      Object.keys(this.inputEmployee).length > 0
+    ) {
+      this.showForm = true;
+
+      const {
+        firstName = '',
+        lastName = '',
+        middleName = '',
+        bank = '',
+        accountNumber = null,
+        position = '',
+      } = this.inputEmployee;
+
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.middleName = middleName;
+      this.bank = bank;
+      this.accountNumber = accountNumber;
+      this.position = position;
+    }
+  }
 
   render() {
     return html`
       <button
         class="new-form-btn"
         @click=${() => {
-          this.showForm = !this.showForm;
+          this.inputEmployee = {};
+          this.firstName = '';
+          this.lastName = '';
+          this.middleName = '';
+          this.bank = '';
+          this.accountNumber = null;
+          this.position = '';
+          this.showForm = true;
         }}
       >
         Agregar Empleado
       </button>
       ${this.showForm ? this._tplFormModal() : nothing}
-
     `;
   }
 }
