@@ -121,8 +121,8 @@ export class BranchForm extends LitElement {
         class="new-form-btn"
         @click=${() => {
           this.showForm = true;
-          this.paymentMethod = {};
-          this.internalValue = '';
+          this.inputBranch = {};
+          this.branchName = '';
         }}
       >
         Agregar Sucursal

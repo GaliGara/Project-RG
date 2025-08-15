@@ -386,7 +386,15 @@ export class FeatureSalesManagementCrud extends LitElement {
    * @param {Object} detail
    */
   handlePaymentMethodSubmit(detail) {
-    this._salesManagementCrudDm.createPaymentMethod(detail);
+    const { action } = detail;
+
+    if (action === 'create') {
+      this._salesManagementCrudDm.createPaymentMethod(detail);
+    } else if (action === 'update') {
+      this._salesManagementCrudDm.updatePaymentMethod(detail.id, detail);
+    } else if (action === 'delete') {
+      this._salesManagementCrudDm.deletePaymentMethod(detail.id);
+    }
   }
 
   /**

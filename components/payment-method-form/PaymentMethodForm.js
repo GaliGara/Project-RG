@@ -8,7 +8,7 @@ export class PaymentMethodForm extends LitElement {
        * @type {Object}
        * @default ''
        */
-      paymentMethod: { type: Object },
+      inputPaymentMethod: { type: Object },
 
       /**
        * Boolean to show form
@@ -16,15 +16,15 @@ export class PaymentMethodForm extends LitElement {
        * @default 'false'
        */
       showForm: { type: Boolean },
-      internalValue: { type: String },
+      inputPaymentMethodName: { type: String },
     };
   }
 
   constructor() {
     super();
-    this.paymentMethod = {};
+    this.inputPaymentMethod = {};
     this.showForm = false;
-    this.internalValue = '';
+    this.inputPaymentMethodName = '';
   }
 
   /**
@@ -44,9 +44,9 @@ export class PaymentMethodForm extends LitElement {
       <div class="modal-branch">
         <div class="card-div">
           <h2 class="card-title">
-            ${this.paymentMethod?.id ? 'Editar Forma de Pago:' : 'Agregar Forma de Pago:'}
+            ${this.inputPaymentMethod?.id ? 'Editar Forma de Pago:' : 'Agregar Forma de Pago:'}
           </h2>
-          <form id="branch-form" @submit="${this.submit}">
+          <form id="payment-method-form" @submit="${this.submit}">
             <div class="grid-div">
               <div class="grid-cols-2">
                 <label class="card-label">Nombre del Tipo de Pago:</label>
@@ -54,9 +54,9 @@ export class PaymentMethodForm extends LitElement {
                   class="card-input"
                   type="text"
                   name="branch"
-                  .value=${this.internalValue}
+                  .value=${this.inputPaymentMethodName}
                   @input=${e => {
-                    this.internalValue = e.target.value;
+                    this.inputPaymentMethodName = e.target.value;
                   }}
                 />
               </div>
@@ -90,8 +90,9 @@ export class PaymentMethodForm extends LitElement {
     this.dispatchEvent(
       new CustomEvent('request-submit', {
         detail: {
-          id: this.paymentMethod?.id ?? null,
-          paymentMethodName: this.internalValue,
+          id: this.inputPaymentMethod?.id ?? null,
+          paymentMethodName: this.inputPaymentMethodName,
+          action: this.inputPaymentMethod?.id ? 'update' : 'create',
         },
         bubbles: true,
         composed: true,
@@ -99,18 +100,18 @@ export class PaymentMethodForm extends LitElement {
     );
     event.target.reset();
     this.showForm = false;
-    this.paymentMethod = {};
-    this.internalValue = '';
+    this.inputPaymentMethod = {};
+    this.inputPaymentMethodName = '';
   }
 
   updated(changedProps) {
     if (
-      changedProps.has('paymentMethod') &&
-      this.paymentMethod &&
-      Object.keys(this.paymentMethod).length > 0
+      changedProps.has('inputPaymentMethod') &&
+      this.inputPaymentMethod &&
+      Object.keys(this.inputPaymentMethod).length > 0
     ) {
       this.showForm = true;
-      this.internalValue = this.paymentMethod.name || '';
+      this.inputPaymentMethodName = this.inputPaymentMethod.name || '';
     }
   }
 
@@ -120,8 +121,8 @@ export class PaymentMethodForm extends LitElement {
         class="new-form-btn"
         @click=${() => {
           this.showForm = true;
-          this.paymentMethod = {}; // Limpiar datos anteriores
-          this.internalValue = ''; // Limpiar input
+          this.inputPaymentMethod = {}; // Limpiar datos anteriores
+          this.inputPaymentMethodName = ''; // Limpiar input
         }}
       >
         Agregar

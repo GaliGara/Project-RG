@@ -792,6 +792,14 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._paymentMethodDm.createPaymentMethod(body);
   }
 
+  updatePaymentMethod(id, body) {
+    this._paymentMethodDm.updatePaymentMethod(id, body);
+  }
+
+  deletePaymentMethod(id) {
+    this._paymentMethodDm.deletePaymentMethod(id);
+  }
+
   static _catchError(detail) {
     console.error('Error:', detail);
   }
