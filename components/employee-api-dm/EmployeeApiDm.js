@@ -5,44 +5,100 @@ export class EmployeeApiDm extends LitElement {
     return {};
   }
 
-  async getEmployee() {
-    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+  async _fetchJson({ url, method = 'GET', body = null, successEvent, errorEvent }) {
     try {
-      const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/employees');
+      const options = {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        ...(body && { body: JSON.stringify(body) }),
+      };
 
-      if (!res.ok) {
-        const error = await res.json();
-        this.dispatchEvent(new CustomEvent('employee-api-dm-fetch-error', { detail: error }));
-        return;
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const error = await response.json();
+        this.dispatchEvent(new CustomEvent(errorEvent, { detail: error }));
+        return null;
       }
-      const data = await res.json();
-      this.dispatchEvent(new CustomEvent('employee-api-dm-fetch', { detail: data }));
+
+      const data = await response.json();
+      this.dispatchEvent(new CustomEvent(successEvent, { detail: data }));
+      return data;
     } catch (error) {
-      this.dispatchEvent(new CustomEvent('employee-api-dm-error', { detail: error }));
-    } finally {
-      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+      this.dispatchEvent(new CustomEvent(errorEvent, { detail: error }));
+      return null;
     }
   }
 
   async createEmployee(body) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+
+    await this._fetchJson({
+      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/employees',
+      method: 'POST',
+      body,
+      successEvent: 'employee-api-dm-post',
+      errorEvent: 'employee-api-dm-post-error',
+    });
+    console.log('post');
+    this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+  }
+
+  async getEmployee() {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+
+    const data = await this._fetchJson({
+      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/employees',
+      method: 'GET',
+      successEvent: 'employee-api-dm-fetch',
+      errorEvent: 'employee-api-dm-fetch-error',
+    });
+    console.log('get');
+
+    this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+    return data || [];
+  }
+
+  async updateEmployee(id, body) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+
+    await this._fetchJson({
+      url: `https://keysarcosmetics.fly.dev/keysarCosmetics/employees/${id}`,
+      method: 'PUT',
+      body,
+      successEvent: 'employee-api-dm-put',
+      errorEvent: 'employee-api-dm-put-error',
+    });
+    console.log('put');
+    this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
+  }
+
+  async deleteEmployee(id) {
+    this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
+
     try {
-      const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/employees', {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        `https://keysarcosmetics.fly.dev/keysarCosmetics/employees/${id}`,
+        {
+          method: 'DELETE',
         },
-      });
+      );
 
       if (!res.ok) {
         const error = await res.json();
-        this.dispatchEvent(new CustomEvent('employee-api-dm-fetch-post-error', { detail: error }));
-        return;
+        this.dispatchEvent(
+          new CustomEvent('employee-api-dm-fetch-delete-error', { detail: error }),
+        );
+      } else {
+        console.log('del');
+        this.dispatchEvent(new CustomEvent('employee-api-dm-delete', { detail: { id } }));
       }
-      const data = await res.json();
-      this.dispatchEvent(new CustomEvent('employee-api-dm-post', { detail: data }));
     } catch (error) {
-      this.dispatchEvent(new CustomEvent('employee-api-dm-post-error', { detail: error }));
+      this.dispatchEvent(new CustomEvent('employee-api-dm-delete-error', { detail: error }));
+    } finally {
+      this.dispatchEvent(new CustomEvent('loading-end', { bubbles: true, composed: true }));
     }
   }
 }

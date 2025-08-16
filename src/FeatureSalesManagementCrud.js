@@ -381,7 +381,29 @@ export class FeatureSalesManagementCrud extends LitElement {
    * @param {Object} detail
    */
   handleEmployeeSubmit(detail) {
-    this._salesManagementCrudDm.createEmployee(detail);
+    const { formData, action, id } = detail;
+    // const id = formData.get('id');
+
+    let body;
+
+    if (action === 'delete') {
+      // Para delete no necesitamos body (o puede ser null)
+      body = null;
+    } else if (formData instanceof FormData) {
+      body = Object.fromEntries(formData.entries());
+    } else if (typeof formData === 'object') {
+      body = formData; // Ya es objeto plano
+    } else {
+      return;
+    }
+
+    if (action === 'create') {
+      this._salesManagementCrudDm.createEmployee(body);
+    } else if (action === 'update') {
+      this._salesManagementCrudDm.updateEmployee(id, body);
+    } else if (action === 'delete') {
+      this._salesManagementCrudDm.deleteEmployee(id, body);
+    }
   }
 
   /**

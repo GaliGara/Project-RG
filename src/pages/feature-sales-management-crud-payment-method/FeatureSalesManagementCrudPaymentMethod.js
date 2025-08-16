@@ -29,6 +29,8 @@ export class FeatureSalesManagementCrudPaymentMethod extends LitElement {
     this.dispatchEvent(
       new CustomEvent('submit-payment-method-event', {
         detail: { ...data, action },
+        bubbles: true,
+        composed: true,
       }),
     );
   }

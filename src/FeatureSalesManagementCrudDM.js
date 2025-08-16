@@ -787,11 +787,15 @@ export class FeatureSalesManagementCrudDM extends LitElement {
    * @param {Object} body
    */
   createEmployee(body) {
-    const data = {};
-    for (const [key, value] of body.entries()) {
-      data[key] = value;
-    }
-    this._employeeDm.createEmployee(data);
+    this._employeeDm.createEmployee(body);
+  }
+
+    updateEmployee(id, body) {
+    this._employeeDm.updateEmployee(id, body);
+  }
+
+  deleteEmployee(id) {
+    this._employeeDm.deleteEmployee(id);
   }
 
   createBranch(body) {

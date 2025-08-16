@@ -59,7 +59,6 @@ export class EmployerForm extends LitElement {
     this.inputEmployee = {};
     this.bank = '';
     this.accountNumber = null;
-    this.inputEmployee = {};
   }
 
   /**
@@ -102,7 +101,9 @@ export class EmployerForm extends LitElement {
     return html`
       <div id="card-sell" class="modal-employer">
         <div class="card-div">
-          <h2 class="card-title">Registro de Empleados</h2>
+          <h2 class="card-title">
+            ${this.inputEmployee?.id ? 'Editar datos de Empleado' : 'Registar Empleado'}
+          </h2>
           <form @submit=${this.submit}>
             <div class="grid-div">
               <div class="col-span-2">
@@ -214,9 +215,25 @@ export class EmployerForm extends LitElement {
   submit(event) {
     event.preventDefault();
     this.formData = new FormData(event.target);
+
+    // const isUpdate = !!this.inputEmployee?.id;
+    // const action = isUpdate ? 'update' : 'create';
+
+    // // Convertir formData a objeto plano
+    // const plainData = Object.fromEntries(this.formData.entries());
+    // if (isUpdate) {
+    //   plainData.id = this.inputEmployee.id;
+    // }
+
     this.dispatchEvent(
       new CustomEvent('request-submit', {
-        detail: this.formData,
+        detail: {
+          id: this.inputEmployee?.id ?? null,
+          formData: this.formData,
+          action: this.inputEmployee?.id ? 'update' : 'create',
+        },
+        bubbles: true,
+        composed: true,
       }),
     );
     event.target.reset();
@@ -224,6 +241,9 @@ export class EmployerForm extends LitElement {
     this.firstName = '';
     this.lastName = '';
     this.middleName = '';
+    this.bank = '';
+    this.accountNumber = null;
+    this.position = '';
     this.inputEmployee = {};
   }
 

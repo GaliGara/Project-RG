@@ -26,14 +26,20 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
    * @param {Object} data
    */
   submitPage(data) {
-    this.dispatchEvent(new CustomEvent('submit-employee-event', { detail: data }));
+    const { action } = data;
+    this.dispatchEvent(
+      new CustomEvent('submit-employee-event', {
+        detail: { ...data, action },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   static _actionButtons = row => {
     const id = row?.cells?.[0]?.data; // asumiendo que "ID" es la 1a columna
     return `
     <div class="flex items-center gap-2">
-      <button class="px-2 py-1 rounded-md border text-xs hover:bg-gray-50" data-action="view" data-id="${id}">View</button>
       <button class="px-2 py-1 rounded-md border text-xs hover:bg-gray-50" data-action="edit" data-id="${id}">Edit</button>
       <button class="px-2 py-1 rounded-md border text-xs hover:bg-red-50 text-red-600 border-red-200" data-action="delete" data-id="${id}">Delete</button>
     </div>
@@ -45,7 +51,7 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
 
     if (action === 'delete') {
       this.dispatchEvent(
-        new CustomEvent('submit-event', {
+        new CustomEvent('submit-employee-event', {
           detail: {
             id,
             action: 'delete',
@@ -56,11 +62,11 @@ export class FeatureSalesManagementCrudEmployee extends LitElement {
       this.editEmployee = {
         id: rowData[0],
         firstName: rowData[2],
-        lastName: rowData[3], 
+        lastName: rowData[3],
         middleName: rowData[4],
-        bank: rowData[5], 
-        accountNumber: rowData[6], 
-        position: rowData[7], 
+        bank: rowData[5],
+        accountNumber: rowData[6],
+        position: rowData[7],
       };
     }
   }
