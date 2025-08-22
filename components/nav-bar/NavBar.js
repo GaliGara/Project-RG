@@ -35,6 +35,10 @@ export class NavBar extends LitElement {
     this._menuOpen = !this._menuOpen;
   }
 
+  _handleLogout() {
+    this.dispatchEvent(new CustomEvent('nav-bar-logout', { bubbles: true, composed: true }));
+  }
+
   render() {
     return html`
       ${this._menuOpen
@@ -146,6 +150,12 @@ export class NavBar extends LitElement {
           Dashboard
         </a>
         <div class="border-b border-y-sky-500"></div>
+        <button
+          class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left tracking-wide transition-colors"
+          @click=${this._handleLogOut}
+        >
+          Cerrar sesión
+        </button>
       </nav>
     `;
   }
