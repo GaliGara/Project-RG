@@ -15,10 +15,8 @@ export class SalesApiDm extends LitElement {
     try {
       const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch', {
         method: 'GET',
-        cache: 'no-store',
         headers: {
-          'cache-control': 'no-store',
-          pragma: 'no-cache',
+          'Content-Type': 'application/json',
         },
       });
       if (!res.ok) {
