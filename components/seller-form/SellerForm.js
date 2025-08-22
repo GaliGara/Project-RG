@@ -272,14 +272,11 @@ export class SellerForm extends LitElement {
    * @param {Event} e
    */
   _onSellerChange(e) {
-    if (e.detail && (e.detail.id || e.detail.value)) {
-      this.currentSellerId = e.detail.id ?? e.detail.value ?? '';
-      this.currentSellerName = e.detail.name ?? e.detail.label ?? '';
-      return;
-    }
-    const el = e.target;
-    this.currentSellerId = el?.value || '';
-    this.currentSellerName = el?.options?.[el.selectedIndex]?.text || '';
+    const id = String(e.detail ?? '');
+    this.currentSellerId = id;
+
+    const item = (this.selectDataSeller ?? []).find(o => String(o.idEmployee) === id);
+    this.currentSellerName = item?.fullName ?? '';
   }
 
   /**
@@ -328,14 +325,11 @@ export class SellerForm extends LitElement {
    * @param {Event} e
    */
   _onPaymentMethodChange(e) {
-    if (e.detail && (e.detail.id || e.detail.value)) {
-      this.currentPaymentMethodId = e.detail.id ?? e.detail.value ?? '';
-      this.currentPaymentMethodName = e.detail.name ?? e.detail.label ?? '';
-      return;
-    }
-    const el = e.target;
-    this.currentPaymentMethodId = el?.value || '';
-    this.currentPaymentMethodName = el?.options?.[el.selectedIndex]?.text || '';
+    const id = String(e.detail ?? '');
+    this.currentPaymentMethodId = id;
+
+    const item = (this.selectDataPaymentMethod ?? []).find(o => String(o.idPaymentMethod) === id);
+    this.currentPaymentMethodName = item?.paymentMethodName ?? '';
   }
 
   /**
@@ -422,9 +416,8 @@ export class SellerForm extends LitElement {
                 <input-select
                   select-type="seller"
                   .optionValue=${this.selectDataSeller}
-                  @change=${this._onSellerChange}
-                  @input-select-change=${this._onSellerChange}
                   .value=${this.currentSellerId || ''}
+                  @input-select-change=${this._onSellerChange}
                 ></input-select>
               </div>
               <div class="col-span-2 -mt-1">
@@ -499,7 +492,6 @@ export class SellerForm extends LitElement {
                     .optionValue=${this.selectDataPaymentMethod}
                     class="flex-1"
                     .value=${this.currentPaymentMethodId || ''}
-                    @change=${this._onPaymentMethodChange}
                     @input-select-change=${this._onPaymentMethodChange}
                   ></input-select>
                   <input

@@ -20,6 +20,14 @@ export class InputSelect extends LitElement {
       optionValue: {
         type: Array,
       },
+      /**
+       * Value of the select input.
+       * @type {String}
+       * @default ''
+       */
+      value: {
+        type: String,
+      },
     };
   }
 
@@ -31,11 +39,22 @@ export class InputSelect extends LitElement {
     super();
     this.selectType = '';
     this.optionValue = [];
+    this.value = '';
   }
 
-  updated(changedProperties) {
-    if (changedProperties.has('selectType')) {
-      this._requestOptions();
+  updated(changed) {
+    if (changed.has('selectType')) this._requestOptions();
+
+    if (changed.has('optionValue')) {
+      const ids = (this.optionValue ?? []).map(o => {
+        if (this.selectType === 'paymentMethod') return String(o.idPaymentMethod);
+        if (this.selectType === 'branch') return String(o.idBranch);
+        if (this.selectType === 'seller') return String(o.idEmployee);
+        return '';
+      });
+      if (this.value && !ids.includes(String(this.value))) {
+        this.value = '';
+      }
     }
   }
 
@@ -59,10 +78,10 @@ export class InputSelect extends LitElement {
    * @event input-select-changed
    */
   _onChange(event) {
-    const selectedValue = event.target.value;
+    this.value = event.target.value;
     this.dispatchEvent(
-      new CustomEvent('input-select-changed', {
-        detail: selectedValue,
+      new CustomEvent('input-select-change', {
+        detail: this.value,
         bubbles: true,
         composed: true,
       }),
@@ -79,6 +98,7 @@ export class InputSelect extends LitElement {
       <div class="relative">
         <select
           @change="${e => this._onChange(e)}"
+          .value=${this.value}
           class="w-full appearance-none -webkit-appearance-none pr-10 border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="" selected disabled hidden>SELECCIONA</option>
