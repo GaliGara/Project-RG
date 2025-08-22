@@ -120,18 +120,30 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     this._datePaymentMethod = {};
   }
 
+  /**
+   * Getter to access the sales api dm from the Shadow DOM
+   */
   get _salesDm() {
     return this.shadowRoot.querySelector('sales-api-dm');
   }
 
+  /**
+   * Getter to access the employee api dm from the Shadow DOM
+   */
   get _employeeDm() {
     return this.shadowRoot.querySelector('employee-api-dm');
   }
 
+  /**
+   * Getter to access the branches api dm from the Shadow DOM
+   */
   get _branchesDm() {
     return this.shadowRoot.querySelector('branches-api-dm');
   }
 
+  /**
+   * Getter to access the payment method api dm from the Shadow DOM
+   */
   get _paymentMethodDm() {
     return this.shadowRoot.querySelector('payment-method-api-dm');
   }
@@ -140,18 +152,30 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     return this.shadowRoot.querySelector('report-api-dm');
   }
 
+  /**
+   * Get the employee data via api dm
+   */
   getEmployee() {
     this._employeeDm.getEmployee();
   }
 
+  /**
+   * Get the sales branch data via api dm
+   */
   getSalesBranch() {
     this._salesDm.getSalesBranch();
   }
 
+  /**
+   * Get the branhces data via api dm
+   */
   getBranches() {
     this._branchesDm.getBranches();
   }
 
+  /**
+   * Get the employee data via api dm
+   */
   getPaymentMethod() {
     this._paymentMethodDm.getPaymentMethod();
   }
@@ -303,6 +327,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     };
   }
 
+  /**
+   * Transforms the raw data into a structured format with defined columns
+   * @param {CustomEvent} e Event containing raw sales branch data
+   */
   _setDataSalesBranch(e) {
     this.dataSalesBranch = e.detail;
     this.dataSalesBranch = {
@@ -328,6 +356,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  /**
+   * Transforms the raw data into a structured table format.
+   * @param {*} e Event containing raw employee data
+   */
   _setDataEmployee(e) {
     this.dataEmployee = e.detail;
 
@@ -365,6 +397,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  /**
+   * Transforms the raw data into a structured format.
+   * @param {CustomEvent} e Event containing raw branch data
+   */
   _setDataBranches(e) {
     this.dataBranches = e.detail;
 
@@ -392,6 +428,10 @@ export class FeatureSalesManagementCrudDM extends LitElement {
     );
   }
 
+  /**
+   * Transforms the raw data into a structured format.
+   * @param {*} e Event containing raw payment method data 
+   */
   _setDataPaymentMethod(e) {
     this.dataPaymentMethod = e.detail;
 
@@ -783,45 +823,84 @@ export class FeatureSalesManagementCrudDM extends LitElement {
   }
 
   /**
-   * Create the api post data key - value from body object
+   * Execute create method to create the api post data key - value from body object
    * @param {Object} body
    */
   createEmployee(body) {
     this._employeeDm.createEmployee(body);
   }
 
-    updateEmployee(id, body) {
+  /**
+   * Execute update method from employee api dm
+   * @param {Number} id employee id
+   * @param {Object} body put data 
+   */
+  updateEmployee(id, body) {
     this._employeeDm.updateEmployee(id, body);
   }
 
+  /**
+   * Execute delete method from employee api dm
+   * @param {Number} id employee id 
+   */
   deleteEmployee(id) {
     this._employeeDm.deleteEmployee(id);
   }
 
+  /**
+   * Execute create method from branche api dm
+   * @param {Object} body data object
+   */
   createBranch(body) {
     this._branchesDm.createBranch(body);
   }
 
+  /**
+   * Execute update method from branch api dm
+   * @param {Number} id 
+   * @param {Object} body data object
+   */
   updateBranch(id, body) {
     this._branchesDm.updateBranch(id, body);
   }
 
+  /**
+   * Execute delete method from branch api dm
+   * @param {Number} id 
+   */
   deleteBranch(id) {
     this._branchesDm.deleteBranch(id);
   }
 
+  /**
+   * Execute create method from payment method api dm
+   * @param {Object} body data object 
+   */
   createPaymentMethod(body) {
     this._paymentMethodDm.createPaymentMethod(body);
   }
 
+  /**
+   * Execute update method from payment method api dm
+   * @param {Number} id 
+   * @param {Object} body data object
+   */
   updatePaymentMethod(id, body) {
     this._paymentMethodDm.updatePaymentMethod(id, body);
   }
 
+  /**
+   * Execute delete method form payment method api dm
+   * @param {Number} id 
+   */
   deletePaymentMethod(id) {
     this._paymentMethodDm.deletePaymentMethod(id);
   }
 
+  /**
+   * Handle the api dm error events 
+   * @param {Event} detail 
+   */
   static _catchError(detail) {
     console.error('Error:', detail);
   }
