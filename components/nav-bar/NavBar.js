@@ -152,7 +152,7 @@ export class NavBar extends LitElement {
         <div class="border-b border-y-sky-500"></div>
         <button
           class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left tracking-wide transition-colors"
-          @click=${this._handleLogOut}
+          @click=${this._handleLogout}
         >
           Cerrar sesión
         </button>
