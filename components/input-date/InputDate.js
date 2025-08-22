@@ -3,9 +3,23 @@ import { LitElement, html, nothing } from 'lit';
 export class InputDate extends LitElement {
   static get properties() {
     return {
+      /**
+       * Type of date input.
+       * @type {String}
+       * @default ''
+       */
       typeDate: {
         type: String,
         attribute: 'type-date',
+      },
+      /**
+       * Whether to show the date input without the day.
+       * @type {Boolean}
+       * @default false
+       */
+      withoutDay: {
+        type: Boolean,
+        attribute: 'without-day',
       },
     };
   }
@@ -13,6 +27,7 @@ export class InputDate extends LitElement {
   constructor() {
     super();
     this.typeDate = '';
+    this.withoutDay = false;
   }
 
   createRenderRoot() {
@@ -48,7 +63,7 @@ export class InputDate extends LitElement {
         );
       }
     }
-    if (this.typeDate === 'unique') {
+    if (this.typeDate === 'unique' || this.withoutDay) {
       if (startDate) {
         this.dispatchEvent(
           new CustomEvent('input-date-unique-data', {
@@ -99,8 +114,24 @@ export class InputDate extends LitElement {
     `;
   }
 
+  /**
+   * Template for input daye mounth.
+   * @returns {TemplateResult}
+   * @private
+   */
+  _tplDateMounth() {
+    return html`
+      <input
+        type="month"
+        id="startDateDashboardReport"
+        @change=${this._sendDate}
+        class="border border-gray-300 rounded-lg px-3 py-1.5 shadow-xl text-gray-700"
+      />
+    `;
+  }
+
   render() {
-    return html`${this._tplDate()}`;
+    return html`${this.withoutDay ? this._tplDateMounth() : this._tplDate()}`;
   }
 }
 customElements.define('input-date', InputDate);

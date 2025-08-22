@@ -61,7 +61,7 @@ export class FeatureSalesManagementCrudReportDailyPaymentMethod extends LitEleme
             .optionValue=${this.inputSelectData}
           ></input-select>
         </div>
-        <input-date type-date="unique"></input-date>
+        <input-date type-date="unique" without-day></input-date>
       </div>
     `;
   }

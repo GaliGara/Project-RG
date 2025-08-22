@@ -5,7 +5,14 @@ import '../../../components/grid-table/GridTable.js';
 export class FeatureSalesManagementCrudReportDailySalesSeller extends LitElement {
   static get properties() {
     return {
-      dailySalesSellerData: { type: Array },
+      /**
+       * Set of data for daily sales by seller report.
+       * @type {Array}
+       * @default []
+       */
+      dailySalesSellerData: {
+        type: Array,
+      },
     };
   }
 
@@ -38,7 +45,7 @@ export class FeatureSalesManagementCrudReportDailySalesSeller extends LitElement
         <p class="text-sm text-center font-semibold text-gray-700 uppercase">
           Selecciona fecha para mostrar datos
         </p>
-        <input-date type-date="unique"></input-date>
+        <input-date type-date="unique" without-day></input-date>
       </div>
     `;
   }
