@@ -1,5 +1,7 @@
 import { LitElement } from 'lit';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export class PaymentMethodApiDm extends LitElement {
   static get properties() {
     return {};
@@ -36,7 +38,7 @@ export class PaymentMethodApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     await this._fetchJson({
-      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/payment-methods',
+      url: `${API_BASE}/payment-methods`,
       method: 'POST',
       body,
       successEvent: 'payment-method-api-dm-post',
@@ -50,7 +52,7 @@ export class PaymentMethodApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     const data = await this._fetchJson({
-      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/payment-methods',
+      url: `${API_BASE}/payment-methods`,
       method: 'GET',
       successEvent: 'payment-method-api-dm-fetch',
       errorEvent: 'payment-method-api-dm-fetch-error',
@@ -65,7 +67,7 @@ export class PaymentMethodApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     await this._fetchJson({
-      url: `https://keysarcosmetics.fly.dev/keysarCosmetics/payment-methods/${id}`,
+      url: `${API_BASE}/payment-methods/${id}`,
       method: 'PUT',
       body,
       successEvent: 'payment-method-api-dm-put',
@@ -80,7 +82,7 @@ export class PaymentMethodApiDm extends LitElement {
 
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/payment-methods/${id}`,
+        `${API_BASE}/payment-methods/${id}`,
         {
           method: 'DELETE',
         },

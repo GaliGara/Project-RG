@@ -1,5 +1,7 @@
 import { LitElement } from 'lit';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export class BranchesApiDm extends LitElement {
   static get properties() {
     return {};
@@ -37,7 +39,7 @@ export class BranchesApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     await this._fetchJson({
-      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/branches',
+      url: `${API_BASE}/branches`,
       method: 'POST',
       body,
       successEvent: 'branches-api-dm-post',
@@ -51,7 +53,7 @@ export class BranchesApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     const data = await this._fetchJson({
-      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/branches',
+      url: `${API_BASE}/branches`,
       method: 'GET',
       successEvent: 'branches-api-dm-fetch',
       errorEvent: 'branches-api-dm-fetch-error',
@@ -65,7 +67,7 @@ export class BranchesApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     await this._fetchJson({
-      url: `https://keysarcosmetics.fly.dev/keysarCosmetics/branches/${id}`,
+      url: `${API_BASE}/branches/${id}`,
       method: 'PUT',
       body,
       successEvent: 'branches-api-dm-put',
@@ -79,7 +81,7 @@ export class BranchesApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     try {
-      const res = await fetch(`https://keysarcosmetics.fly.dev/keysarCosmetics/branches/${id}`, {
+      const res = await fetch(`${API_BASE}/branches/${id}`, {
         method: 'DELETE',
       });
 

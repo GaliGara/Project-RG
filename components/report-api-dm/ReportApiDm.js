@@ -1,5 +1,7 @@
 import { LitElement } from 'lit';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export class ReportApiDm extends LitElement {
   /**
    * Fetch sales branch chart report data from the endpoint.
@@ -14,7 +16,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        'https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch/chart?month=2025-07',
+        `${API_BASE}/dashboard/sales/branch/chart?month=2025-07`,
         {
           method: 'GET',
           credentials: 'include',
@@ -53,7 +55,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch?date=${date}`,
+        `${API_BASE}/dashboard/sales/branch?date=${date}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -96,7 +98,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/dashboard/sales/branch/total?date=${date}`,
+        `${API_BASE}/dashboard/sales/branch/total?date=${date}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -139,7 +141,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/branches?startDate=${startDate}&endDate=${endDate}`,
+        `${API_BASE}/reports/branches?startDate=${startDate}&endDate=${endDate}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -182,7 +184,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/employees?startDate=${startDate}&endDate=${endDate}`,
+        `${API_BASE}/reports/employees?startDate=${startDate}&endDate=${endDate}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -221,7 +223,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/employees/daily?year=${year}&month=${month}`,
+        `${API_BASE}/reports/employees/daily?year=${year}&month=${month}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -260,7 +262,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/payment-methods?startDate=${startDate}&endDate=${endDate}`,
+        `${API_BASE}/reports/payment-methods?startDate=${startDate}&endDate=${endDate}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -300,7 +302,7 @@ export class ReportApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/reports/payment-methods/daily?idPaymentMethod=${idPaymentMethod}&year=${year}&month=${month}`,
+        `${API_BASE}/reports/payment-methods/daily?idPaymentMethod=${idPaymentMethod}&year=${year}&month=${month}`,
         {
           method: 'GET',
           credentials: 'include',

@@ -1,5 +1,7 @@
 import { LitElement } from 'lit';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export class SalesApiDm extends LitElement {
   /**
    * Fetch get sales branch data from the endpoint.
@@ -13,7 +15,7 @@ export class SalesApiDm extends LitElement {
   async getSalesBranch() {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
-      const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/sales/branch', {
+      const res = await fetch(`${API_BASE}/sales/branch`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +48,7 @@ export class SalesApiDm extends LitElement {
   async createSale(body) {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
-      const res = await fetch('https://keysarcosmetics.fly.dev/keysarCosmetics/sales', {
+      const res = await fetch(`${API_BASE}/sales`, {
         method: 'POST',
         body: JSON.stringify(body),
         headers: {
@@ -86,7 +88,7 @@ export class SalesApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/sales?branchId=${branchId}&date=${date}`,
+        `${API_BASE}/sales?branchId=${branchId}&date=${date}`,
         {
           method: 'DELETE',
         },

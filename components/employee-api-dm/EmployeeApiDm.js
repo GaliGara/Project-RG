@@ -1,5 +1,7 @@
 import { LitElement } from 'lit';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export class EmployeeApiDm extends LitElement {
   static get properties() {
     return {};
@@ -36,7 +38,7 @@ export class EmployeeApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     await this._fetchJson({
-      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/employees',
+      url: `${API_BASE}/employees`,
       method: 'POST',
       body,
       successEvent: 'employee-api-dm-post',
@@ -50,7 +52,7 @@ export class EmployeeApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     const data = await this._fetchJson({
-      url: 'https://keysarcosmetics.fly.dev/keysarCosmetics/employees',
+      url: `${API_BASE}/employees`,
       method: 'GET',
       successEvent: 'employee-api-dm-fetch',
       errorEvent: 'employee-api-dm-fetch-error',
@@ -65,7 +67,7 @@ export class EmployeeApiDm extends LitElement {
     this.dispatchEvent(new CustomEvent('loading-start', { bubbles: true, composed: true }));
 
     await this._fetchJson({
-      url: `https://keysarcosmetics.fly.dev/keysarCosmetics/employees/${id}`,
+      url: `${API_BASE}/employees/${id}`,
       method: 'PUT',
       body,
       successEvent: 'employee-api-dm-put',
@@ -80,7 +82,7 @@ export class EmployeeApiDm extends LitElement {
 
     try {
       const res = await fetch(
-        `https://keysarcosmetics.fly.dev/keysarCosmetics/employees/${id}`,
+        `${API_BASE}/employees/${id}`,
         {
           method: 'DELETE',
         },
