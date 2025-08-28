@@ -26,7 +26,7 @@ export class EmployerForm extends LitElement {
 
       bank: { type: String },
 
-      accountNumber: { type: Number },
+      accountNumber: { type: String },
 
       position: { type: String },
 
@@ -58,7 +58,7 @@ export class EmployerForm extends LitElement {
     this.formData = {};
     this.inputEmployee = {};
     this.bank = '';
-    this.accountNumber = null;
+    this.accountNumber = String;
   }
 
   /**
@@ -74,14 +74,11 @@ export class EmployerForm extends LitElement {
    * @param {InputEvent} e - The input event from name fields.
    */
   handleNameInput(e) {
-    const field = e.target.name;
-    let value = e.target.value;
-    if (field !== 'position') value = value.trim();
-
-    if (field === 'accountNumber') {
-      value = value ? Number(value) : null;
-    }
-    this[field] = value;
+    const {name, value: inputValue} = e.target
+    let value = inputValue
+    if (name !== 'position') value = value.trim();
+    
+    this[name] = value;
   }
 
   /**
@@ -162,10 +159,10 @@ export class EmployerForm extends LitElement {
               </div>
 
               <div class="col-span-2">
-                <label class="card-label">Nuemero de Cuenta:</label>
+                <label class="card-label">Numero de Cuenta:</label>
                 <input
-                  type="number"
-                  step="1"
+                  type="text"
+                  inputmode="numeric"
                   name="accountNumber"
                   class="card-input"
                   .value=${this.accountNumber ?? ''}
