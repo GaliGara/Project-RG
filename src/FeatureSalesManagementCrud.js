@@ -269,7 +269,7 @@ export class FeatureSalesManagementCrud extends LitElement {
             .inputSelectData=${this._dataPaymentMethodSelect}
             @input-select-request-data="${this._handleGetPaymentMethodSelect}"
             @input-date-unique-data="${e => this._handleGetPaymentMethodReportDaily(e.detail)}"
-            @input-select-changed="${e => this._handleRequestPaymentMethodSelect(e.detail)}"
+            @input-select-change="${e => this._handleRequestPaymentMethodSelect(e.detail)}"
           >
           </feature-sales-management-crud-report-daily-payment-method>
         `,

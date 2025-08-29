@@ -75,7 +75,7 @@ export class InputSelect extends LitElement {
   /**
    * Dispatch selected date.
    * @private
-   * @event input-select-changed
+   * @event input-select-change
    */
   _onChange(event) {
     this.value = event.target.value;
