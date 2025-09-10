@@ -56,7 +56,7 @@ export class NavBar extends LitElement {
       </header>
 
       <nav
-        class=${`fixed top-0 left-0 h-screen w-100 bg-gray-800 text-white flex flex-col gap-6 p-6 pb-24 md:pb-6 shadow-xl z-50 overflow-y-auto transform transition-transform duration-300 ease-in-out ${this._menuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        class=${`fixed inset-0 max-h-screen w-100 bg-gray-800 text-white flex flex-col gap-6 p-6 pb-24 md:pb-6 shadow-xl z-50 overflow-y-auto transform transition-transform duration-300 ease-in-out ${this._menuOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <button
           class="text-white text-3xl hover:text-gray-400 self-end transition"

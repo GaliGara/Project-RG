@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from 'lit';
-import { Grid, html as ghtml } from 'https://unpkg.com/gridjs?module';
+import { Grid, html as ghtml } from 'gridjs';
 
 export class GridTable extends LitElement {
   static get properties() {
@@ -42,6 +42,31 @@ export class GridTable extends LitElement {
       link.href = href;
       document.head.appendChild(link);
     }
+    const style = document.createElement('style');
+    style.textContent = `
+    .gridjs-wrapper {
+      overflow-x: auto;
+    }
+
+    .gridjs-table {
+      width: 100%;
+      table-layout: auto;
+      border-collapse: collapse;
+    }
+
+    .gridjs-th,
+    .gridjs-td {
+      text-align: center;
+      vertical-align: middle;
+      padding: 0.5rem 1rem;
+      min-width: 100px; /* Ajusta según lo necesario */
+    }
+
+    .gridjs-th:last-child,
+    .gridjs-td:last-child {
+      min-width: 140px; /* Para acciones con botones */
+    }`;
+    document.head.appendChild(style);
   }
 
   static _normalizeColumns(columns) {
@@ -50,25 +75,27 @@ export class GridTable extends LitElement {
 
   _buildColumns(baseColumns) {
     let cols = GridTable._normalizeColumns(baseColumns);
-    const hasActions = cols.some(c => (c?.name ?? '') === 'Actions');
+    const hasActions = cols.some(c => (c?.name ?? '') === 'Acciones');
 
     if (this.enableActions) {
-      if (!hasActions) cols = cols.concat([{ name: 'Actions' }]);
+      if (!hasActions) cols = cols.concat([{ name: 'Acciones' }]);
       cols = cols.map(c => {
-        if ((c?.name ?? '') !== 'Actions') return c;
+        if ((c?.name ?? '') !== 'Acciones') return c;
         return {
           ...c,
           sort: false,
-          width: '1%',
+          minWidth: '33%',
           formatter: (_, row) => {
             const id = row?.cells?.[0]?.data;
-            const htmlStr = this.actionBuilder ? this.actionBuilder(row) : nothing;
+            const htmlStr = this.actionBuilder
+              ? `<div class="flex justify-center gap-2">${this.actionBuilder(row)}</div>`
+              : nothing;
             return ghtml(htmlStr);
           },
         };
       });
     } else {
-      cols = cols.filter(c => (c?.name ?? '') !== 'Actions');
+      cols = cols.filter(c => (c?.name ?? '') !== 'Acciones');
     }
     return cols;
   }
