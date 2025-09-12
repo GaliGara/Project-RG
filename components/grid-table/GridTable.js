@@ -44,28 +44,89 @@ export class GridTable extends LitElement {
     }
     const style = document.createElement('style');
     style.textContent = `
-    .gridjs-wrapper {
-      overflow-x: auto;
+  /* Centra el grid completo */
+  #grid-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  /* Contenedor principal */
+  .gridjs-container {
+    width: 100%;
+    max-width: 1200px; /* <- más ancho */
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+  }
+
+  /* Tabla */
+  .gridjs-table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    background-color: #f3f4f6 !important;
+  }
+
+  .gridjs-th {
+    background-color: #e5e7eb !important; /* ← Encabezado gris más oscuro */
+    color: #374151 !important;            /* ← Texto gris oscuro */
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.5rem 1rem;
+    min-width: 100px;
+  }
+
+
+  .gridjs-td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.5rem 1rem;
+    min-width: 100px;
+    background-color: #f3f4f6 !important;
+  }
+
+  .gridjs-th:last-child,
+  .gridjs-td:last-child {
+    min-width: 140px;
+  }
+
+  /* Encabezado (buscador, botones, etc.) */
+  .gridjs-head {
+    display: flex;
+    justify-content: space-between; /* <- separa buscador y botones */
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .gridjs-search {
+    flex: 1 1 auto;
+    max-width: 400px;
+  }
+
+  /* Pie de página */
+  .gridjs-footer {
+    background-color: #e5e7eb !important; 
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #d1d5db;
+    margin-top: 1rem;
+    border-radius: 0 0 0.5rem 0.5rem; 
+  }
+@media (max-width: 640px) {
+  .gridjs-pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
     }
 
-    .gridjs-table {
-      width: 100%;
-      table-layout: auto;
-      border-collapse: collapse;
-    }
-
-    .gridjs-th,
-    .gridjs-td {
-      text-align: center;
-      vertical-align: middle;
-      padding: 0.5rem 1rem;
-      min-width: 100px; /* Ajusta según lo necesario */
-    }
-
-    .gridjs-th:last-child,
-    .gridjs-td:last-child {
-      min-width: 140px; /* Para acciones con botones */
-    }`;
+`;
     document.head.appendChild(style);
   }
 

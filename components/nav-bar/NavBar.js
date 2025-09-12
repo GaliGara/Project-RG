@@ -45,14 +45,14 @@ export class NavBar extends LitElement {
         ? html`<div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"></div>`
         : nothing}
 
-      <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+      <header class="bg-gray-900 text-white p-4 flex justify-between items-center">
         <button
           class="text-2xl border border-white rounded px-3 py-1 hover:bg-gray-700 hover:border-gray-400 transition"
           @click=${this._toggleMenu}
         >
           ☰
         </button>
-        <h1 class="ml-auto text-xl font-semibold">KEYSAR COSMETICS</h1>
+        <h1 class="text-[#efd8a1] ml-auto text-xl font-semibold">KEYSAR COSMETICS</h1>
       </header>
 
       <nav
@@ -68,7 +68,7 @@ export class NavBar extends LitElement {
           &times;
         </button>
 
-        <div class="border-b border-y-sky-500"></div>
+        <div class="border-b border-[#efd8a1]"></div>
         <p class="text-gray-400 italic text-sm uppercase font-bold">formularios</p>
         <a
           href="/"
@@ -105,7 +105,7 @@ export class NavBar extends LitElement {
         >
           Metodos de Pago
         </a>
-        <div class="border-b border-y-sky-500"></div>
+        <div class="border-b border-[#efd8a1]"></div>
         <p class="text-gray-400 italic text-sm uppercase font-bold">reportes</p>
         <a
           href="/reportes/metodo-pago"
@@ -149,7 +149,7 @@ export class NavBar extends LitElement {
         >
           Dashboard
         </a>
-        <div class="border-b border-y-sky-500"></div>
+        <div class="border-b border-[#efd8a1]"></div>
         <button
           class="hover:bg-gray-600 rounded uppercase font-bold text-gray-300 text-left tracking-wide transition-colors"
           @click=${this._handleLogout}

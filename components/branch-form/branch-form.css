@@ -67,5 +67,5 @@
 }
 
 .new-form-btn {
-  @apply bg-purple-500 text-white px-4 py-2 rounded-xl hover:bg-purple-600 transition mx-auto block;
+  @apply bg-[#efd8a1] text-white px-4 py-2 rounded-xl hover:bg-purple-600 transition mx-auto block;
 }
