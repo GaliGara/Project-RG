@@ -15,7 +15,7 @@
 
 /* Grid del formulario */
 .grid-div {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  @apply grid grid-cols-1  gap-4;
 }
 
 /* Etiquetas comunes */
@@ -34,17 +34,16 @@
 
 /* Inputs, selects y textareas con estilo uniforme */
 .card-input,
-.card-select,
-.card-textarea {
-  @apply w-full border border-gray-300 rounded-md;
+.card-select {
+  @apply w-full border border-gray-300 rounded-lg py-1.5 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 .card-input {
-  @apply col-span-3;
+  @apply col-span-3 px-3;
 }
 
 .card-select {
-  @apply col-span-7;
+  @apply col-span-7 ;
 }
 
 /* Contenedor de botones */
@@ -55,7 +54,7 @@
 /* Botones base */
 .close-btn,
 .agree-btn {
-  @apply px-4 py-2 rounded-md;
+  @apply px-4 py-2 rounded-md mt-3;
 }
 
 .close-btn {

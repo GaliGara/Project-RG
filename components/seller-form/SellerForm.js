@@ -386,7 +386,7 @@ export class SellerForm extends LitElement {
           <h2 class="mb-4 text-2xl font-semibold">Registro nuevo</h2>
 
           <form class="space-y-4" @submit=${e => e.preventDefault()}>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="grid grid-cols-1 gap-4 ">
               <div class="flex flex-col">
                 <label class="mb-1 text-sm font-medium text-gray-700">Sucursal:</label>
                 <input-select
@@ -546,7 +546,7 @@ export class SellerForm extends LitElement {
                 </div>
               </div>
 
-              <div class="col-span-1 md:col-span-2 flex flex-col">
+              <div class="col-span-2 flex flex-col">
                 <label class="mb-1 text-sm font-medium text-gray-700">Notas:</label>
                 <textarea
                   name="notes"

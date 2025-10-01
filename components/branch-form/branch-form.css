@@ -15,7 +15,7 @@
 
 /* Grid del formulario */
 .grid-div {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  @apply grid grid-cols-1 gap-4;
 }
 
 /* Etiquetas comunes */
@@ -36,7 +36,7 @@
 .card-input,
 .card-select,
 .card-textarea {
-  @apply w-full border border-gray-300 rounded-md;
+  @apply w-full border border-gray-300 rounded-lg;
 }
 
 .card-input {
