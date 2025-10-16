@@ -16,6 +16,12 @@ export class PaymentMethodForm extends LitElement {
        * @default 'false'
        */
       showForm: { type: Boolean },
+
+      /**
+       * Input text to handel method name
+       * @type {String}
+       * @default ''
+       */
       inputPaymentMethodName: { type: String },
     };
   }
@@ -54,6 +60,7 @@ export class PaymentMethodForm extends LitElement {
                   class="card-input"
                   type="text"
                   name="branch"
+                  maxlength="33"
                   .value=${this.inputPaymentMethodName}
                   @input=${e => {
                     this.inputPaymentMethodName = e.target.value;
@@ -87,6 +94,22 @@ export class PaymentMethodForm extends LitElement {
    */
   submit(event) {
     event.preventDefault();
+
+    const trimedName = this.inputPaymentMethodName.trim();
+
+    if (!trimedName) {
+      alert('El nombre del metodo de pago no puede estar vacio.');
+      return;
+    }
+    if (trimedName.length > 33) {
+      alert('El nombre del metodo de pago no debe superar los 15 caracteres.');
+      return;
+    }
+    if (trimedName.length < 3) {
+      alert('El nombre del método de pago debe tener al menos 3 caracteres.');
+      return;
+    }
+
     this.dispatchEvent(
       new CustomEvent('request-submit', {
         detail: {
@@ -98,12 +121,20 @@ export class PaymentMethodForm extends LitElement {
         composed: true,
       }),
     );
+
     event.target.reset();
     this.showForm = false;
     this.inputPaymentMethod = {};
     this.inputPaymentMethodName = '';
   }
 
+  /**
+   * Lifecycle method called whenever reactive properties change.
+   * If a new `inputPaymentMethod` object is passed in and is not empty,
+   * the form is shown and the input field is pre-filled with the method name.
+   *
+   * @param {Map<string | number | symbol, unknown} changedProps
+   */
   updated(changedProps) {
     if (
       changedProps.has('inputPaymentMethod') &&
@@ -115,20 +146,28 @@ export class PaymentMethodForm extends LitElement {
     }
   }
 
-  render() {
+  /**
+   * Method to show button and reset properties
+   * @returns HTML Button Template
+   */
+  tplButtonModal() {
     return html`
       <button
         class="new-form-btn"
         @click=${() => {
           this.showForm = true;
-          this.inputPaymentMethod = {}; // Limpiar datos anteriores
-          this.inputPaymentMethodName = ''; // Limpiar input
+          this.inputPaymentMethod = {};
+          this.inputPaymentMethodName = '';
         }}
       >
         Agregar
       </button>
+    `;
+  }
 
-      ${this.showForm ? this._tplPaymentMethodFormModal() : nothing}
+  render() {
+    return html`
+      ${this.tplButtonModal()} ${this.showForm ? this._tplPaymentMethodFormModal() : nothing}
     `;
   }
 }
