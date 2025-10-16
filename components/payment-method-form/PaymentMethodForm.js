@@ -4,9 +4,9 @@ export class PaymentMethodForm extends LitElement {
   static get properties() {
     return {
       /**
-       * Payment Method
-       * @type {Object}
-       * @default ''
+       *This property should be bound from the parent component.
+       *@type {Object}
+       *@default {}
        */
       inputPaymentMethod: { type: Object },
 

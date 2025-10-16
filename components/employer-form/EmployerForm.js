@@ -60,7 +60,9 @@ export class EmployerForm extends LitElement {
       formData: { type: Object },
 
       /**
-       * The data object of input employee
+       *This property should be bound from the parent component.
+       *@type {Object}
+       *@default {}
        */
       inputEmployee: { type: Object },
     };
@@ -275,6 +277,11 @@ _tplFormModal() {
     this.resetForm();
   }
 
+    /**
+   * Lifecycle method called whenever reactive properties change.
+   * 
+   * @param {Map<string | number | symbol, unknown} changedProps
+   */
   updated(changedProps) {
     if (
       changedProps.has('inputEmployee') &&

@@ -16,6 +16,12 @@ export class BranchForm extends LitElement {
        * @default 'false'
        */
       showForm: { type: Boolean },
+
+      /**
+       *This property should be bound from the parent component.
+       *@type {Object}
+       *@default {}
+       */
       inputBranch: { type: Object },
     };
   }
@@ -54,6 +60,7 @@ export class BranchForm extends LitElement {
                   class="card-input"
                   type="text"
                   name="branch"
+                  maxlength="33"
                   .value=${this.branchName}
                   @input=${e => {
                     this.branchName = e.target.value;
@@ -87,6 +94,24 @@ export class BranchForm extends LitElement {
    */
   submit(event) {
     event.preventDefault();
+
+    const trimmedName = this.branchName.trim();
+
+    if (!trimmedName) {
+      alert('El nombre de la sucursal no puede estar vacío.');
+      return;
+    }
+
+    if (trimmedName.length < 3) {
+      alert('El nombre de la sucursal debe tener al menos 3 caracteres.');
+      return;
+    }
+
+    if (trimmedName.length > 33) {
+      alert('El nombre de la sucursal no debe superar los 33 caracteres.');
+      return;
+    }
+
     this.dispatchEvent(
       new CustomEvent('request-submit', {
         detail: {
@@ -98,12 +123,18 @@ export class BranchForm extends LitElement {
         composed: true,
       }),
     );
+
     event.target.reset();
     this.showForm = false;
     this.inputBranch = {};
     this.branchName = '';
   }
 
+  /**
+   * Lifecycle method called whenever reactive properties change.
+   *
+   * @param {Map<string | number | symbol, unknown} changedProps
+   */
   updated(changedProps) {
     if (
       changedProps.has('inputBranch') &&
@@ -115,7 +146,11 @@ export class BranchForm extends LitElement {
     }
   }
 
-  render() {
+  /**
+   * Method to show button and reset properties
+   * @returns HTML Button Template
+   */
+  _tplButtonModal() {
     return html`
       <button
         class="new-form-btn"
@@ -127,8 +162,12 @@ export class BranchForm extends LitElement {
       >
         Agregar Sucursal
       </button>
+    `;
+  }
 
-      ${this.showForm ? this._tplBranchFormModal() : nothing}
+  render() {
+    return html`
+      ${this._tplButtonModal()} ${this.showForm ? this._tplBranchFormModal() : nothing}
     `;
   }
 }
